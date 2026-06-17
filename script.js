@@ -199,3 +199,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+/* ═══════════════════════════════════════
+   CBC UPDATE — ADDITIONAL SCRIPTS
+   ═══════════════════════════════════════ */
+
+/* ── SENIOR SCHOOL PATHWAY TABS ── */
+document.querySelectorAll('.pathway-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.pathway-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pathway-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    const target = document.getElementById('pathway-' + tab.dataset.pathway);
+    if (target) {
+      target.classList.add('active');
+      target.querySelectorAll('.fade-up').forEach(el => {
+        el.classList.remove('visible');
+        setTimeout(() => el.classList.add('visible'), 50);
+      });
+    }
+  });
+});
+
+/* ── PRELOADER BRAND UPDATE ── */
+const preloaderLogo = document.querySelector('.preloader-logo');
+if (preloaderLogo && preloaderLogo.textContent.includes('KCSE')) {
+  preloaderLogo.innerHTML = 'Kenya<span style="color:var(--gold-light)">Vault</span>';
+}
