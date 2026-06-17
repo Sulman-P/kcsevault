@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact Us — KenyaVault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+
+/* ── CONTACT PAGE ── */
+
+.contact-hero {
+  background: var(--dark);
+  background-image:
+    radial-gradient(ellipse 60% 70% at 70% 40%, rgba(13,110,63,0.28), transparent 65%),
+    radial-gradient(ellipse 40% 50% at 10% 70%, rgba(212,160,23,0.08), transparent 60%);
+  padding: 72px 0 64px;
+}
+.contact-hero-inner { max-width: 560px; }
+.contact-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+  color: var(--white); margin-bottom: 14px; letter-spacing: -0.8px;
+}
+.contact-hero h1 em { font-style: normal; color: var(--gold-light); }
+.contact-hero p { color: #8FBAA6; font-size: 1rem; line-height: 1.75; }
+
+/* RESPONSE TIME BADGES */
+.response-badges {
+  display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap;
+}
+.rb-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.78rem; font-weight: 600;
+  padding: 6px 14px; border-radius: 99px;
+  border: 1px solid rgba(255,255,255,0.15); color: #8FBAA6;
+}
+.rb-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.rb-green .rb-dot { background: #4ADE80; animation: pulse 1.5s infinite; }
+.rb-gold .rb-dot { background: var(--gold-light); }
+
+/* CONTACT LAYOUT */
+.contact-layout {
+  display: grid; grid-template-columns: 1fr 420px;
+  gap: 32px; padding: 48px 0 80px;
+}
+
+/* CONTACT METHODS */
+.contact-methods { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+
+.contact-method-card {
+  display: flex; align-items: flex-start; gap: 18px;
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 22px 24px;
+  transition: var(--transition); text-decoration: none; color: inherit;
+}
+.contact-method-card:hover {
+  box-shadow: var(--shadow-md); border-color: var(--green);
+  transform: translateY(-2px);
+}
+.contact-method-card.whatsapp:hover { border-color: #25D366; }
+.contact-method-card.email:hover { border-color: #3B82F6; }
+
+.cm-icon {
+  width: 52px; height: 52px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
+}
+.cm-whatsapp { background: #DCFCE7; }
+.cm-email { background: #EFF6FF; }
+.cm-hours { background: var(--gold-pale); }
+.cm-location { background: var(--green-pale); }
+
+.cm-info { flex: 1; }
+.cm-title {
+  font-family: 'Sora', sans-serif; font-weight: 700;
+  font-size: 0.95rem; color: var(--dark); margin-bottom: 4px;
+}
+.cm-value { font-size: 0.9rem; color: var(--text-2); font-weight: 600; margin-bottom: 3px; }
+.cm-note { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.cm-action {
+  align-self: center; flex-shrink: 0;
+  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.8rem;
+  padding: 9px 16px; border-radius: 8px; border: 1.5px solid var(--border);
+  color: var(--text); transition: var(--transition);
+}
+.whatsapp .cm-action:hover { background: #25D366; color: var(--white); border-color: #25D366; }
+.email .cm-action:hover { background: #3B82F6; color: var(--white); border-color: #3B82F6; }
+
+/* QUICK TOPICS */
+.quick-topics-section { margin-bottom: 32px; }
+.qt-title {
+  font-family: 'Sora', sans-serif; font-weight: 700;
+  font-size: 0.88rem; color: var(--dark); margin-bottom: 14px;
+  text-transform: uppercase; letter-spacing: 0.6px;
+}
+.quick-topics { display: flex; flex-direction: column; gap: 10px; }
+.qt-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; border-radius: 10px;
+  background: var(--white); border: 1.5px solid var(--border);
+  cursor: pointer; transition: var(--transition);
+  text-decoration: none; color: inherit;
+}
+.qt-item:hover { border-color: var(--green); background: var(--green-pale); }
+.qt-icon { font-size: 1.2rem; flex-shrink: 0; }
+.qt-text { flex: 1; }
+.qt-text strong { font-size: 0.87rem; color: var(--dark); display: block; margin-bottom: 2px; }
+.qt-text span { font-size: 0.77rem; color: var(--muted); }
+.qt-arrow { color: var(--muted); font-size: 0.9rem; }
+
+/* FAQ MINI */
+.faq-mini { margin-top: 32px; }
+.faq-mini-title {
+  font-family: 'Sora', sans-serif; font-weight: 700;
+  font-size: 0.88rem; color: var(--dark); margin-bottom: 14px;
+  text-transform: uppercase; letter-spacing: 0.6px;
+}
+.faq-mini-list { display: flex; flex-direction: column; gap: 8px; }
+.faq-mini-item {
+  border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden;
+  transition: var(--transition);
+}
+.faq-mini-item.open { border-color: var(--green); }
+.faq-mini-q {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 13px 16px; background: var(--white); cursor: pointer;
+  font-family: 'Sora', sans-serif; font-weight: 600; font-size: 0.84rem;
+  color: var(--dark); text-align: left; border: none;
+  transition: var(--transition);
+}
+.faq-mini-q:hover { background: var(--surface); }
+.faq-mini-item.open .faq-mini-q { background: var(--green-pale); color: var(--green); }
+.faq-mini-arrow { flex-shrink: 0; transition: transform 0.3s; color: var(--muted); font-size: 0.9rem; }
+.faq-mini-item.open .faq-mini-arrow { transform: rotate(45deg); color: var(--green); }
+.faq-mini-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  font-size: 0.83rem; color: var(--text-2); line-height: 1.7;
+  padding: 0 16px; background: var(--white);
+}
+.faq-mini-item.open .faq-mini-a { max-height: 160px; padding: 0 16px 14px; }
+
+/* CONTACT FORM CARD */
+.form-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 32px;
+  position: sticky; top: 88px;
+  box-shadow: var(--shadow-sm);
+}
+.form-card-header { margin-bottom: 24px; }
+.form-card-header h3 {
+  font-family: 'Sora', sans-serif; font-weight: 800;
+  font-size: 1.2rem; color: var(--dark); margin-bottom: 6px;
+}
+.form-card-header p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block; font-size: 0.83rem; font-weight: 600;
+  color: var(--text); margin-bottom: 6px;
+}
+.form-label span { color: #EF4444; margin-left: 2px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text);
+  outline: none; transition: var(--transition); background: var(--surface);
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--green); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(13,110,63,0.08);
+}
+.form-input.error { border-color: #EF4444; }
+.form-error {
+  font-size: 0.75rem; color: #EF4444; margin-top: 4px; display: none;
+}
+.form-error.show { display: block; }
+.form-textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+.form-select { cursor: pointer; }
+
+/* Topic select */
+.form-topic-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 7px; margin-bottom: 16px;
+}
+.topic-option {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 12px; border-radius: 8px; cursor: pointer;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-size: 0.8rem; color: var(--muted); font-weight: 500;
+  transition: var(--transition);
+}
+.topic-option:hover { border-color: var(--green); color: var(--green); }
+.topic-option.selected { background: var(--green-pale); border-color: var(--green); color: var(--green); font-weight: 600; }
+
+/* Phone input */
+.phone-input-wrap { display: flex; gap: 0; }
+.phone-prefix {
+  display: flex; align-items: center; padding: 12px 12px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-right: none; border-radius: 10px 0 0 10px;
+  font-size: 0.88rem; color: var(--muted); font-weight: 600;
+  white-space: nowrap;
+}
+.phone-input-wrap .form-input {
+  border-radius: 0 10px 10px 0; border-left: none;
+  background: var(--surface);
+}
+.phone-input-wrap .form-input:focus {
+  border-left: 1.5px solid var(--green);
+  margin-left: -1.5px;
+}
+
+/* Submit button */
+.btn-submit {
+  width: 100%; background: var(--green); color: var(--white);
+  padding: 15px; border-radius: 12px; border: none;
+  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.98rem;
+  cursor: pointer; transition: var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 4px 18px rgba(13,110,63,0.25);
+}
+.btn-submit:hover {
+  background: var(--green-light); transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(13,110,63,0.35);
+}
+.btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+/* Form success state */
+.form-success {
+  display: none; text-align: center; padding: 20px 0;
+}
+.form-success.show { display: block; }
+.form-success-icon { font-size: 3.5rem; margin-bottom: 14px; }
+.form-success h4 {
+  font-family: 'Sora', sans-serif; font-weight: 800;
+  font-size: 1.2rem; color: var(--dark); margin-bottom: 8px;
+}
+.form-success p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.form-note {
+  text-align: center; font-size: 0.77rem; color: var(--muted);
+  margin-top: 12px; line-height: 1.6;
+}
+
+/* WhatsApp CTA section */
+.wa-cta-section {
+  background: var(--dark);
+  background-image: radial-gradient(ellipse 60% 80% at 60% 50%, rgba(37,211,102,0.12), transparent 60%);
+  padding: 64px 0;
+}
+.wa-cta-inner {
+  display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+}
+.wa-cta-icon {
+  width: 80px; height: 80px; border-radius: 20px;
+  background: #25D366; display: flex; align-items: center;
+  justify-content: center; font-size: 2.5rem; flex-shrink: 0;
+  box-shadow: 0 0 0 10px rgba(37,211,102,0.1);
+}
+.wa-cta-text h2 {
+  font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: 8px;
+}
+.wa-cta-text p { font-size: 0.92rem; color: #7AAB92; line-height: 1.7; }
+.wa-cta-actions { margin-left: auto; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; flex-shrink: 0; }
+.btn-whatsapp-big {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #25D366; color: var(--white);
+  padding: 15px 30px; border-radius: 12px;
+  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1rem;
+  transition: var(--transition);
+  box-shadow: 0 6px 24px rgba(37,211,102,0.3);
+}
+.btn-whatsapp-big:hover {
+  background: #20B858; transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(37,211,102,0.4);
+}
+.wa-number {
+  font-size: 0.82rem; color: #6B9980; text-align: right;
+}
+
+/* MAP / LOCATION SECTION */
+.location-section { background: var(--surface); padding: 64px 0; }
+.location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.location-info h3 {
+  font-family: 'Sora', sans-serif; font-weight: 700;
+  font-size: 1.2rem; color: var(--dark); margin-bottom: 16px;
+}
+.location-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 16px; font-size: 0.88rem; color: var(--text-2); line-height: 1.65;
+}
+.li-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+.location-placeholder {
+  background: var(--border); border-radius: 16px;
+  height: 220px; display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 10px; color: var(--muted); font-size: 0.88rem;
+}
+.location-placeholder .lp-icon { font-size: 2.5rem; }
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .contact-layout { grid-template-columns: 1fr; }
+  .form-card { position: static; }
+  .wa-cta-inner { flex-direction: column; align-items: flex-start; }
+  .wa-cta-actions { margin-left: 0; align-items: flex-start; }
+  .location-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .form-topic-grid { grid-template-columns: 1fr; }
+  .contact-methods { gap: 12px; }
+  .cm-action { display: none; }
+  .response-badges { flex-direction: column; gap: 7px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="shop.html" class="btn-nav-cta">Browse Shop →</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="shop.html" class="mobile-cta">Browse Shop →</a></li>
+  </ul>
+</div>
+
+<!-- CONTACT HERO -->
+<section class="contact-hero">
+  <div class="container">
+    <div class="contact-hero-inner fade-up">
+      <div class="hero-eyebrow"><span class="eyebrow-dot"></span>We're Here to Help</div>
+      <h1>Get in <em>Touch.</em></h1>
+      <p>Download issue? Question about a resource? Want a custom revision pack? We respond fast — usually within minutes on WhatsApp.</p>
+      <div class="response-badges">
+        <div class="rb-badge rb-green">
+          <div class="rb-dot"></div>
+          WhatsApp — replies in minutes
+        </div>
+        <div class="rb-badge rb-gold">
+          <div class="rb-dot"></div>
+          Email — replies within 24 hrs
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT LAYOUT -->
+<div class="container">
+<div class="contact-layout">
+
+  <!-- LEFT: Methods + Topics + FAQ -->
+  <div>
+
+    <!-- CONTACT METHODS -->
+    <div class="contact-methods">
+
+      <a href="https://wa.me/254768515494" target="_blank" class="contact-method-card whatsapp fade-up">
+        <div class="cm-icon cm-whatsapp">📱</div>
+        <div class="cm-info">
+          <div class="cm-title">WhatsApp — Fastest Response</div>
+          <div class="cm-value">+254 768 515 494</div>
+          <div class="cm-note">Best for: download issues, payment problems, urgent questions. We respond within minutes during business hours.</div>
+        </div>
+        <span class="cm-action">Open Chat →</span>
+      </a>
+
+      <a href="mailto:adminnexalearn@gmail.com" class="contact-method-card email fade-up delay-1">
+        <div class="cm-icon cm-email">📧</div>
+        <div class="cm-info">
+          <div class="cm-title">Email — Detailed Queries</div>
+          <div class="cm-value">adminnexalearn@gmail.com</div>
+          <div class="cm-note">Best for: bulk purchase inquiries, school partnerships, resource requests and formal communication.</div>
+        </div>
+        <span class="cm-action">Send Email →</span>
+      </a>
+
+      <div class="contact-method-card fade-up delay-2" style="cursor:default;">
+        <div class="cm-icon cm-hours">🕐</div>
+        <div class="cm-info">
+          <div class="cm-title">Business Hours</div>
+          <div class="cm-value">Monday – Saturday: 7:00 AM – 9:00 PM</div>
+          <div class="cm-note">Sunday: 9:00 AM – 5:00 PM. During school exam seasons we extend hours. Downloads are available 24/7 automatically.</div>
+        </div>
+      </div>
+
+      <div class="contact-method-card fade-up delay-3" style="cursor:default;">
+        <div class="cm-icon cm-location">🇰🇪</div>
+        <div class="cm-info">
+          <div class="cm-title">Based in Kenya</div>
+          <div class="cm-value">Serving all 47 counties</div>
+          <div class="cm-note">Resources available to any student in Kenya with an M-PESA account and a smartphone. No physical office — fully digital.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- QUICK TOPICS -->
+    <div class="quick-topics-section fade-up">
+      <div class="qt-title">💬 What do you need help with?</div>
+      <div class="quick-topics">
+        <a href="https://wa.me/254768515494?text=Hello%20KenyaVault%2C%20I%20paid%20but%20my%20download%20is%20not%20working.%20Can%20you%20help%3F" target="_blank" class="qt-item">
+          <span class="qt-icon">⬇️</span>
+          <div class="qt-text">
+            <strong>Download not working</strong>
+            <span>Tap to WhatsApp us immediately — we fix this in under 5 minutes</span>
+          </div>
+          <span class="qt-arrow">→</span>
+        </a>
+        <a href="https://wa.me/254768515494?text=Hello%20KenyaVault%2C%20I%20paid%20via%20M-PESA%20but%20did%20not%20receive%20my%20download.%20My%20transaction%20code%20is%3A" target="_blank" class="qt-item">
+          <span class="qt-icon">📱</span>
+          <div class="qt-text">
+            <strong>Paid but no download received</strong>
+            <span>Send us your M-PESA transaction code and we'll sort it immediately</span>
+          </div>
+          <span class="qt-arrow">→</span>
+        </a>
+        <a href="https://wa.me/254768515494?text=Hello%2C%20I%20would%20like%20to%20request%20a%20custom%20resource%20for%3A" target="_blank" class="qt-item">
+          <span class="qt-icon">📝</span>
+          <div class="qt-text">
+            <strong>Request a specific resource</strong>
+            <span>Don't see what you need? We can create it — WhatsApp us</span>
+          </div>
+          <span class="qt-arrow">→</span>
+        </a>
+        <a href="https://wa.me/254768515494?text=Hello%20KenyaVault%2C%20I%20am%20a%20school%20administrator%20and%20would%20like%20to%20discuss%20a%20bulk%20purchase%20for%20our%20students." target="_blank" class="qt-item">
+          <span class="qt-icon">🏫</span>
+          <div class="qt-text">
+            <strong>School / bulk purchase inquiry</strong>
+            <span>Special pricing available for schools and large orders</span>
+          </div>
+          <span class="qt-arrow">→</span>
+        </a>
+        <a href="https://wa.me/254768515494?text=Hello%20KenyaVault%2C%20I%20would%20like%20to%20request%20a%20refund%20for%20my%20order." target="_blank" class="qt-item">
+          <span class="qt-icon">↩️</span>
+          <div class="qt-text">
+            <strong>Refund request</strong>
+            <span>We honour our 7-day satisfaction guarantee. WhatsApp us with your order details</span>
+          </div>
+          <span class="qt-arrow">→</span>
+        </a>
+        <a href="https://wa.me/254768515494?text=Hello%20KenyaVault%2C%20I%20have%20a%20question%20about%3A" target="_blank" class="qt-item">
+          <span class="qt-icon">❓</span>
+          <div class="qt-text">
+            <strong>General question</strong>
+            <span>Anything else — just tap and WhatsApp us directly</span>
+          </div>
+          <span class="qt-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- MINI FAQ -->
+    <div class="faq-mini fade-up">
+      <div class="faq-mini-title">⚡ Quick Answers</div>
+      <div class="faq-mini-list">
+
+        <div class="faq-mini-item">
+          <button class="faq-mini-q">How quickly will I get my download after paying? <span class="faq-mini-arrow">+</span></button>
+          <div class="faq-mini-a">Instantly — within seconds of your M-PESA PIN confirmation. The download link appears on the screen immediately. You also receive an SMS receipt from M-PESA.</div>
+        </div>
+
+        <div class="faq-mini-item">
+          <button class="faq-mini-q">I paid but nothing happened. What do I do? <span class="faq-mini-arrow">+</span></button>
+          <div class="faq-mini-a">WhatsApp us immediately at +254 768 515 494 with your M-PESA transaction code. We will send you the download link manually within 5 minutes. This is rare but we have you covered.</div>
+        </div>
+
+        <div class="faq-mini-item">
+          <button class="faq-mini-q">Can I get a refund if I am not satisfied? <span class="faq-mini-arrow">+</span></button>
+          <div class="faq-mini-a">Yes. We offer a 7-day satisfaction guarantee. If the resource doesn't match its description, WhatsApp us and we'll issue a full refund or replacement immediately.</div>
+        </div>
+
+        <div class="faq-mini-item">
+          <button class="faq-mini-q">Do you make resources for schools and teachers? <span class="faq-mini-arrow">+</span></button>
+          <div class="faq-mini-a">Yes. We offer bulk licensing for schools, custom resource creation for teachers, and special pricing for large orders. Email adminnexalearn@gmail.com for a quote.</div>
+        </div>
+
+        <div class="faq-mini-item">
+          <button class="faq-mini-q">Can I request a resource that is not in the shop? <span class="faq-mini-arrow">+</span></button>
+          <div class="faq-mini-a">Yes — WhatsApp us with the subject, grade level and topic you need. If it fits our quality standards we'll create it, often within 48 hours.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end left col -->
+
+  <!-- RIGHT: FORM CARD -->
+  <div>
+    <div class="form-card fade-up delay-1">
+      <div class="form-card-header">
+        <h3>✉️ Send Us a Message</h3>
+        <p>Fill in the form and we'll respond via email or WhatsApp, whichever you prefer.</p>
+      </div>
+
+      <!-- TOPIC SELECTOR -->
+      <div class="form-group">
+        <div class="form-label">What is this about? <span>*</span></div>
+        <div class="form-topic-grid" id="topicGrid">
+          <div class="topic-option selected" data-topic="download">⬇️ Download Issue</div>
+          <div class="topic-option" data-topic="payment">💳 Payment Issue</div>
+          <div class="topic-option" data-topic="request">📝 Resource Request</div>
+          <div class="topic-option" data-topic="school">🏫 School/Bulk Order</div>
+          <div class="topic-option" data-topic="refund">↩️ Refund Request</div>
+          <div class="topic-option" data-topic="other">💬 Other</div>
+        </div>
+      </div>
+
+      <div id="contactForm">
+
+        <div class="form-group">
+          <label class="form-label" for="contactName">Your Name <span>*</span></label>
+          <input class="form-input" type="text" id="contactName" placeholder="e.g. Amina Wanjiru"/>
+          <div class="form-error" id="nameError">Please enter your name</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contactPhone">Phone Number <span>*</span></label>
+          <div class="phone-input-wrap">
+            <div class="phone-prefix">🇰🇪 +254</div>
+            <input class="form-input" type="tel" id="contactPhone" placeholder="712 345 678" maxlength="9"/>
+          </div>
+          <div class="form-error" id="phoneError">Please enter a valid Kenyan phone number</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contactEmail">Email Address <span style="color:var(--muted);font-weight:400;font-size:0.75rem;">(optional)</span></label>
+          <input class="form-input" type="email" id="contactEmail" placeholder="your@email.com"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contactSubject">Subject / Order Reference</label>
+          <input class="form-input" type="text" id="contactSubject" placeholder="e.g. Order KV-2025-00847 or Biology notes"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contactMessage">Your Message <span>*</span></label>
+          <textarea class="form-textarea" id="contactMessage" placeholder="Tell us what you need help with. The more detail you give, the faster we can help..."></textarea>
+          <div class="form-error" id="messageError">Please enter your message</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Preferred reply method</label>
+          <select class="form-select" id="replyMethod">
+            <option value="whatsapp">WhatsApp (fastest)</option>
+            <option value="email">Email</option>
+            <option value="either">Either is fine</option>
+          </select>
+        </div>
+
+        <button class="btn-submit" id="submitBtn">
+          <span id="submitText">Send Message</span>
+          <span id="submitIcon">✉️</span>
+        </button>
+        <p class="form-note">We typically respond within minutes on WhatsApp, or within 24 hours by email.</p>
+
+      </div><!-- end form -->
+
+      <!-- SUCCESS STATE -->
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">🎉</div>
+        <h4>Message Sent!</h4>
+        <p>Thank you for reaching out. We've received your message and will respond via <strong id="successReplyMethod">WhatsApp</strong> shortly.</p>
+        <br/>
+        <a href="https://wa.me/254768515494" target="_blank" class="btn-submit" style="text-decoration:none;display:inline-flex;">
+          💬 Also WhatsApp Us Directly
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end contact-layout -->
+</div><!-- end container -->
+
+<!-- WHATSAPP BIG CTA -->
+<section class="wa-cta-section">
+  <div class="container">
+    <div class="wa-cta-inner">
+      <div class="wa-cta-icon">📱</div>
+      <div class="wa-cta-text">
+        <h2>Fastest help is on WhatsApp.</h2>
+        <p>For download issues, payment problems or any urgent question — WhatsApp is the fastest way to reach us. We're real people, not bots, and we respond quickly.</p>
+      </div>
+      <div class="wa-cta-actions">
+        <a href="https://wa.me/254768515494?text=Hello%20KenyaVault%2C%20I%20need%20help%20with%3A" target="_blank" class="btn-whatsapp-big">
+          📱 WhatsApp Us Now
+        </a>
+        <div class="wa-number">+254 768 515 494</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION SECTION -->
+<section class="location-section">
+  <div class="container">
+    <div class="location-grid">
+      <div class="location-info">
+        <h3>🇰🇪 Proudly Kenyan</h3>
+        <div class="location-item">
+          <span class="li-icon">📍</span>
+          <span>Fully digital — accessible from anywhere in Kenya with M-PESA. No physical office needed.</span>
+        </div>
+        <div class="location-item">
+          <span class="li-icon">📱</span>
+          <span>M-PESA payments work with any Safaricom line. Instant downloads to any device.</span>
+        </div>
+        <div class="location-item">
+          <span class="li-icon">🏫</span>
+          <span>Resources used by students in Nairobi, Mombasa, Kisumu, Nakuru, Eldoret and rural Kenya.</span>
+        </div>
+        <div class="location-item">
+          <span class="li-icon">✉️</span>
+          <span><strong>Email:</strong> adminnexalearn@gmail.com</span>
+        </div>
+        <div class="location-item">
+          <span class="li-icon">📞</span>
+          <span><strong>WhatsApp:</strong> +254 768 515 494</span>
+        </div>
+      </div>
+      <div class="location-placeholder">
+        <div class="lp-icon">🗺️</div>
+        <div>Kenya — Serving all 47 counties</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
+      <p>Premium CBC and 8-4-4 resources for Kenyan learners. KJSEA 2025, Junior School, Senior School and Form 3 & 4.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">📘</a>
+        <a href="https://wa.me/254768515494" target="_blank" class="social-link">📱</a>
+        <a href="#" class="social-link">🎵</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="shop.html?level=kjsea">KJSEA 2025</a></li>
+        <li><a href="shop.html?level=junior">Junior School</a></li>
+        <li><a href="shop.html?level=844">Form 3 & 4</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://wa.me/254768515494" target="_blank">📱 WhatsApp</a></li>
+        <li><a href="mailto:adminnexalearn@gmail.com">📧 Email Us</a></li>
+        <li><a href="#">Refund Policy</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support Hours</h4>
+      <ul>
+        <li><a href="#" style="pointer-events:none;">Mon–Sat: 7am–9pm</a></li>
+        <li><a href="#" style="pointer-events:none;">Sun: 9am–5pm</a></li>
+        <li><a href="#" style="pointer-events:none;">Downloads: 24/7</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 KenyaVault. All rights reserved.</span>
+    <span>Made with ❤️ in Kenya 🇰🇪</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── TOPIC SELECTOR ── */
+  let selectedTopic = 'download';
+  document.querySelectorAll('.topic-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.topic-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedTopic = opt.dataset.topic;
+      // Pre-fill message placeholder
+      const msgEl = document.getElementById('contactMessage');
+      if (msgEl) {
+        const placeholders = {
+          download: 'My download is not working. My order reference is: ...',
+          payment: 'I paid via M-PESA but did not receive my download. My M-PESA code is: ...',
+          request: 'I would like to request a resource for: Subject: ... Grade: ... Topic: ...',
+          school: 'I am from [School Name] and would like to discuss a bulk purchase of ...',
+          refund: 'I would like to request a refund for order: ... Reason: ...',
+          other: 'Hello, I have a question about ...'
+        };
+        msgEl.placeholder = placeholders[selectedTopic] || 'Tell us what you need...';
+      }
+    });
+  });
+
+  /* ── FORM VALIDATION & SUBMIT ── */
+  const submitBtn = document.getElementById('submitBtn');
+  const submitText = document.getElementById('submitText');
+  const submitIcon = document.getElementById('submitIcon');
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      const name = document.getElementById('contactName').value.trim();
+      const phone = document.getElementById('contactPhone').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+      const replyMethod = document.getElementById('replyMethod').value;
+
+      let valid = true;
+
+      // Clear errors
+      document.querySelectorAll('.form-error').forEach(e => e.classList.remove('show'));
+      document.querySelectorAll('.form-input').forEach(i => i.classList.remove('error'));
+
+      if (!name) {
+        document.getElementById('nameError').classList.add('show');
+        document.getElementById('contactName').classList.add('error');
+        valid = false;
+      }
+      if (!phone || phone.length < 9) {
+        document.getElementById('phoneError').classList.add('show');
+        document.getElementById('contactPhone').classList.add('error');
+        valid = false;
+      }
+      if (!message) {
+        document.getElementById('messageError').classList.add('show');
+        document.getElementById('contactMessage').classList.add('error');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Loading state
+      submitText.textContent = 'Sending...';
+      submitIcon.textContent = '⏳';
+      submitBtn.disabled = true;
+
+      /*
+        REAL INTEGRATION:
+        POST to your backend (Node.js / PHP) or use EmailJS / Formspree:
+        fetch('https://formspree.io/f/YOUR_ID', {
+          method: 'POST',
+          body: JSON.stringify({ name, phone, message, topic: selectedTopic }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+      */
+
+      setTimeout(() => {
+        // Show success
+        document.getElementById('contactForm').style.display = 'none';
+        const successEl = document.getElementById('formSuccess');
+        successEl.classList.add('show');
+        document.getElementById('successReplyMethod').textContent =
+          replyMethod === 'whatsapp' ? 'WhatsApp' :
+          replyMethod === 'email' ? 'email' : 'WhatsApp or email';
+
+        // If WhatsApp preferred, also open WhatsApp
+        if (replyMethod === 'whatsapp' || replyMethod === 'either') {
+          const waMsg = encodeURIComponent(
+            `Hello KenyaVault,\n\nTopic: ${selectedTopic}\nName: ${name}\nPhone: +254${phone}\n\nMessage: ${message}`
+          );
+          setTimeout(() => {
+            window.open(`https://wa.me/254768515494?text=${waMsg}`, '_blank');
+          }, 1200);
+        }
+      }, 1800);
+    });
+  }
+
+  /* ── FAQ MINI ACCORDION ── */
+  document.querySelectorAll('.faq-mini-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-mini-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-mini-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+});
+</script>
+</body>
+</html>
