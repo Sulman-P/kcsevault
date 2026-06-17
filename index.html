@@ -3,48 +3,59 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>KCSE Vault — Kenya's #1 Science & Math Resource Hub</title>
+<title>KCSE Vault — Kenya's #1 CBC & KCSE Resource Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
 
-<!-- PRELOADER -->
 <div class="preloader" id="preloader">
   <div class="preloader-inner">
-    <div class="preloader-logo">KCSE<span>Vault</span></div>
+    <div class="preloader-logo">Kenya<span>Vault</span></div>
     <div class="preloader-bar"><div class="preloader-fill"></div></div>
+    <div class="preloader-sub">Your Complete Learning Resource Hub</div>
   </div>
 </div>
 
-<!-- NAV -->
 <nav class="navbar" id="navbar">
   <div class="nav-container">
-    <a class="nav-logo" href="index.html">KCSE<span>Vault</span></a>
+    <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html" class="active">Home</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Curriculum ▾</a>
+        <div class="dropdown-menu">
+          <div class="dropdown-col">
+            <div class="dropdown-heading">CBC</div>
+            <a href="shop.html?level=junior">Junior School (Gr 7–9)</a>
+            <a href="shop.html?level=senior">Senior School (Gr 10–12)</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-heading">8-4-4</div>
+            <a href="shop.html?level=844">Form 3 & 4 (Until 2028)</a>
+          </div>
+        </div>
+      </li>
       <li><a href="shop.html">Shop</a></li>
-      <li><a href="#subjects">Subjects</a></li>
-      <li><a href="#how">How It Works</a></li>
       <li><a href="about.html">About</a></li>
     </ul>
     <div class="nav-actions">
       <a href="shop.html" class="btn-nav-cta">Browse Shop →</a>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <ul>
     <li><a href="index.html">Home</a></li>
-    <li><a href="shop.html">Shop</a></li>
-    <li><a href="#subjects">Subjects</a></li>
-    <li><a href="#how">How It Works</a></li>
+    <li class="mobile-section-label">CBC Curriculum</li>
+    <li><a href="shop.html?level=junior">🏫 Junior School (Grade 7–9)</a></li>
+    <li><a href="shop.html?level=senior">🎓 Senior School (Grade 10–12)</a></li>
+    <li class="mobile-section-label">8-4-4 System</li>
+    <li><a href="shop.html?level=844">📚 Form 3 & 4</a></li>
+    <li><a href="shop.html">All Resources</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="shop.html" class="mobile-cta">Browse Shop →</a></li>
   </ul>
@@ -59,18 +70,15 @@
   </div>
   <div class="hero-content">
     <div class="hero-text fade-up">
-      <div class="hero-eyebrow">
-        <span class="eyebrow-dot"></span>
-        Kenya's #1 KCSE Resource Hub
-      </div>
-      <h1>Revise Smarter.<br/><em>Pass Boldly.</em></h1>
-      <p class="hero-sub">Premium notes, past papers & worksheets for Form 1–4. Crafted by a certified secondary school teacher. Download instantly. Pay via M-PESA.</p>
+      <div class="hero-eyebrow"><span class="eyebrow-dot"></span>CBC & 8-4-4 Resources · Kenya</div>
+      <h1>Learn Smarter.<br/><em>Excel Boldly.</em></h1>
+      <p class="hero-sub">Premium notes, past papers & worksheets for Junior School (CBC), Senior School (CBC) and Form 3–4 (8-4-4). Crafted by a certified Kenyan teacher. Pay via M-PESA, download instantly.</p>
       <div class="hero-actions">
         <a href="shop.html" class="btn-primary">
-          <span>Browse Resources</span>
+          <span>Browse All Resources</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#how" class="btn-ghost">How It Works</a>
+        <a href="#curriculum" class="btn-ghost">Explore Curriculum</a>
       </div>
       <div class="hero-trust">
         <div class="trust-avatars">
@@ -79,85 +87,62 @@
           <div class="avatar av3">FK</div>
           <div class="avatar av4">+</div>
         </div>
-        <p>Trusted by <strong>2,400+</strong> students across Kenya</p>
+        <p>Trusted by <strong>2,400+</strong> students & parents across Kenya</p>
       </div>
     </div>
     <div class="hero-visual fade-up delay-2">
       <div class="hero-card-stack">
+        <div class="hero-curriculum-badge hcb-cbc">
+          <span class="hcb-label">NEW</span>
+          <span class="hcb-name">CBC Curriculum</span>
+          <span class="hcb-sub">Junior & Senior School</span>
+        </div>
         <div class="hero-subject-card hsc-bio">
           <div class="hsc-icon">🔬</div>
-          <div class="hsc-info">
-            <div class="hsc-name">Biology</div>
-            <div class="hsc-count">48 resources</div>
-          </div>
+          <div class="hsc-info"><div class="hsc-name">Integrated Science</div><div class="hsc-count">Junior School · Grade 7–9</div></div>
           <div class="hsc-price">From KSh 80</div>
         </div>
         <div class="hero-subject-card hsc-chem">
-          <div class="hsc-icon">⚗️</div>
-          <div class="hsc-info">
-            <div class="hsc-name">Chemistry</div>
-            <div class="hsc-count">52 resources</div>
-          </div>
+          <div class="hsc-icon">📐</div>
+          <div class="hsc-info"><div class="hsc-name">Mathematics</div><div class="hsc-count">CBC & 8-4-4</div></div>
           <div class="hsc-price">From KSh 80</div>
         </div>
         <div class="hero-subject-card hsc-math">
-          <div class="hsc-icon">📐</div>
-          <div class="hsc-info">
-            <div class="hsc-name">Mathematics</div>
-            <div class="hsc-count">61 resources</div>
-          </div>
+          <div class="hsc-icon">🌍</div>
+          <div class="hsc-info"><div class="hsc-name">Social Studies</div><div class="hsc-count">Junior School · Grade 7–9</div></div>
           <div class="hsc-price">From KSh 80</div>
         </div>
         <div class="hero-subject-card hsc-phys">
-          <div class="hsc-icon">⚡</div>
-          <div class="hsc-info">
-            <div class="hsc-name">Physics</div>
-            <div class="hsc-count">45 resources</div>
-          </div>
+          <div class="hsc-icon">📚</div>
+          <div class="hsc-info"><div class="hsc-name">Form 3 & 4 Notes</div><div class="hsc-count">8-4-4 · Until 2028</div></div>
           <div class="hsc-price">From KSh 80</div>
         </div>
-        <div class="hero-floating-badge badge-mpesa">
-          <span>📱</span> M-PESA Accepted
-        </div>
-        <div class="hero-floating-badge badge-instant">
-          <span>⚡</span> Instant Download
-        </div>
+        <div class="hero-floating-badge badge-mpesa"><span>📱</span> M-PESA Accepted</div>
+        <div class="hero-floating-badge badge-instant"><span>⚡</span> Instant Download</div>
       </div>
     </div>
   </div>
   <div class="hero-stats-bar">
-    <div class="stat-item">
-      <div class="stat-num" data-count="206">0</div>
-      <div class="stat-label">Resources Available</div>
-    </div>
+    <div class="stat-item"><div class="stat-num" data-count="400">0</div><div class="stat-label">Resources Available</div></div>
     <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-num" data-count="2400">0</div>
-      <div class="stat-label">Happy Students</div>
-    </div>
+    <div class="stat-item"><div class="stat-num" data-count="2400">0</div><div class="stat-label">Happy Students</div></div>
     <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-num">4</div>
-      <div class="stat-label">Core Subjects</div>
-    </div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Curriculum Levels</div></div>
     <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-num">F1–F4</div>
-      <div class="stat-label">All Forms Covered</div>
-    </div>
+    <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">Subjects Covered</div></div>
   </div>
 </section>
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
   <div class="trust-bar-inner">
-    <div class="trust-item"><span>✅</span> Instant download after payment</div>
+    <div class="trust-item"><span>✅</span> Instant download</div>
     <div class="trust-sep">•</div>
     <div class="trust-item"><span>📱</span> Pay via M-PESA</div>
     <div class="trust-sep">•</div>
-    <div class="trust-item"><span>👩‍🏫</span> Made by a certified teacher</div>
+    <div class="trust-item"><span>👩‍🏫</span> Certified teacher</div>
     <div class="trust-sep">•</div>
-    <div class="trust-item"><span>📄</span> KCSE-aligned content</div>
+    <div class="trust-item"><span>📄</span> CBC & KNEC aligned</div>
     <div class="trust-sep">•</div>
     <div class="trust-item"><span>🔒</span> Secure checkout</div>
     <div class="trust-sep">•</div>
@@ -165,83 +150,250 @@
   </div>
 </div>
 
-<!-- SUBJECTS -->
-<section class="subjects section-pad" id="subjects">
+<!-- CBC TRANSITION BANNER -->
+<div class="transition-banner">
+  <div class="container">
+    <div class="tb-inner">
+      <div class="tb-icon">🔄</div>
+      <div class="tb-text">
+        <strong>Kenya is transitioning to CBC.</strong> We cover all three levels — Junior School (CBC), Senior School (CBC), and Form 3 & 4 (8-4-4 until 2028). One platform, every student.
+      </div>
+      <a href="#curriculum" class="tb-link">Explore Curriculum →</a>
+    </div>
+  </div>
+</div>
+
+<!-- CURRICULUM LEVELS -->
+<section class="curriculum section-pad" id="curriculum">
   <div class="container">
     <div class="section-header centered">
-      <div class="section-eyebrow">Browse by Subject</div>
-      <h2 class="section-title">Choose Your Subject</h2>
-      <p class="section-sub">Topical notes, past papers & revision worksheets across all four core sciences — Form 1 to Form 4.</p>
+      <div class="section-eyebrow">Choose Your Level</div>
+      <h2 class="section-title">What Are You Studying?</h2>
+      <p class="section-sub">Resources for every stage of Kenya's education system — CBC Junior School, CBC Senior School, and the existing 8-4-4 system.</p>
+    </div>
+    <div class="curriculum-grid">
+
+      <!-- JUNIOR SCHOOL -->
+      <a class="curriculum-card cc-junior fade-up" href="shop.html?level=junior">
+        <div class="cc-header">
+          <div class="cc-badge">CBC · NEW</div>
+          <div class="cc-emoji">🏫</div>
+          <div class="cc-glow"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-level">Junior School</div>
+          <h3>Grade 7 – 9</h3>
+          <p>Comprehensive resources for all CBC Junior School Learning Areas — aligned to the new competency-based curriculum.</p>
+          <div class="cc-subjects-preview">
+            <span>📐 Mathematics</span>
+            <span>🔬 Integrated Science</span>
+            <span>🌍 Social Studies</span>
+            <span>🌿 Agriculture</span>
+            <span>💻 Pre-Technical</span>
+            <span>+5 more</span>
+          </div>
+        </div>
+        <div class="cc-footer">
+          <span class="cc-count">10 Learning Areas</span>
+          <span class="cc-arrow">Explore →</span>
+        </div>
+      </a>
+
+      <!-- SENIOR SCHOOL -->
+      <a class="curriculum-card cc-senior fade-up delay-1" href="shop.html?level=senior">
+        <div class="cc-header">
+          <div class="cc-badge">CBC · COMING</div>
+          <div class="cc-emoji">🎓</div>
+          <div class="cc-glow"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-level">Senior School</div>
+          <h3>Grade 10 – 12</h3>
+          <p>Early resources for CBC Senior School subjects — get ahead before your classmates as the curriculum rolls out.</p>
+          <div class="cc-subjects-preview">
+            <span>🔬 Biology</span>
+            <span>⚗️ Chemistry</span>
+            <span>⚡ Physics</span>
+            <span>📐 Mathematics</span>
+            <span>💻 Computer Studies</span>
+            <span>+10 more</span>
+          </div>
+        </div>
+        <div class="cc-footer">
+          <span class="cc-count">15+ Subjects</span>
+          <span class="cc-arrow">Explore →</span>
+        </div>
+      </a>
+
+      <!-- 8-4-4 -->
+      <a class="curriculum-card cc-844 fade-up delay-2" href="shop.html?level=844">
+        <div class="cc-header">
+          <div class="cc-badge">8-4-4 · UNTIL 2028</div>
+          <div class="cc-emoji">📚</div>
+          <div class="cc-glow"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-level">8-4-4 System</div>
+          <h3>Form 3 & Form 4</h3>
+          <p>Full KCSE resources for the final cohorts sitting the 8-4-4 examinations through 2027. Past papers, notes, marking schemes.</p>
+          <div class="cc-subjects-preview">
+            <span>🔬 Biology</span>
+            <span>⚗️ Chemistry</span>
+            <span>📐 Mathematics</span>
+            <span>⚡ Physics</span>
+            <span>📝 Past Papers</span>
+            <span>+more</span>
+          </div>
+        </div>
+        <div class="cc-footer">
+          <span class="cc-count">4 Core Subjects</span>
+          <span class="cc-arrow">Explore →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- JUNIOR SCHOOL SUBJECTS -->
+<section class="subjects-section section-pad" id="junior">
+  <div class="container">
+    <div class="section-header split">
+      <div>
+        <div class="section-eyebrow">CBC · Junior School</div>
+        <h2 class="section-title">Grade 7–9 Learning Areas</h2>
+        <p class="section-sub">All CBC Junior School learning areas covered. Notes, worksheets and assessments aligned to the competency-based curriculum.</p>
+      </div>
+      <a href="shop.html?level=junior" class="btn-outline">All Junior Resources →</a>
+    </div>
+    <div class="subjects-grid-5">
+
+      <a class="subject-card sc-math fade-up" href="shop.html?level=junior&subject=mathematics">
+        <div class="sc-banner"><div class="sc-icon-wrap">📐</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Mathematics</h3><p>Numbers, algebra, geometry and statistics for Grade 7–9 CBC curriculum.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-eng fade-up delay-1" href="shop.html?level=junior&subject=english">
+        <div class="sc-banner"><div class="sc-icon-wrap">📖</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>English</h3><p>Comprehension, grammar, composition and oral skills for Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-kisw fade-up delay-2" href="shop.html?level=junior&subject=kiswahili">
+        <div class="sc-banner"><div class="sc-icon-wrap">🗣️</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Kiswahili</h3><p>Lugha, fasihi, uandishi na ujumbe wa mawasiliano kwa Shule ya Sekondari.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-sci fade-up delay-3" href="shop.html?level=junior&subject=integrated-science">
+        <div class="sc-banner"><div class="sc-icon-wrap">🔬</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Integrated Science</h3><p>Biology, Chemistry and Physics concepts blended for CBC Junior School learners.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-tech fade-up" href="shop.html?level=junior&subject=pre-technical">
+        <div class="sc-banner"><div class="sc-icon-wrap">🔧</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Pre-Technical Studies</h3><p>Technical drawing, woodwork basics, metalwork and design for Grade 7–9.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-soc fade-up delay-1" href="shop.html?level=junior&subject=social-studies">
+        <div class="sc-banner"><div class="sc-icon-wrap">🌍</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Social Studies</h3><p>History, geography and citizenship education for CBC Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-re fade-up delay-2" href="shop.html?level=junior&subject=religious-education">
+        <div class="sc-banner"><div class="sc-icon-wrap">✝️</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Religious Education</h3><p>CRE and IRE notes, activities and assessments for Junior School learners.</p><div class="sc-tags"><span>CRE</span><span>IRE</span><span>Grade 7–9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-art fade-up delay-3" href="shop.html?level=junior&subject=creative-arts">
+        <div class="sc-banner"><div class="sc-icon-wrap">🎨</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Creative Arts</h3><p>Visual arts, music, dance and drama integrated for CBC Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-agri fade-up" href="shop.html?level=junior&subject=agriculture">
+        <div class="sc-banner"><div class="sc-icon-wrap">🌿</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Agriculture</h3><p>Crop production, animal husbandry and farm management for Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+      <a class="subject-card sc-pe fade-up delay-1" href="shop.html?level=junior&subject=health-pe">
+        <div class="sc-banner"><div class="sc-icon-wrap">⚽</div><div class="sc-glow"></div></div>
+        <div class="sc-body"><h3>Health & P.E.</h3><p>Physical education, nutrition and health sciences for Junior School learners.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
+        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- SENIOR SCHOOL SUBJECTS -->
+<section class="subjects-section section-pad bg-surface" id="senior">
+  <div class="container">
+    <div class="section-header split">
+      <div>
+        <div class="section-eyebrow">CBC · Senior School</div>
+        <h2 class="section-title">Grade 10–12 Subjects</h2>
+        <p class="section-sub">Early resources for CBC Senior School. Get ahead now — these students will sit their first national exams from 2028 onwards.</p>
+      </div>
+      <a href="shop.html?level=senior" class="btn-outline">All Senior Resources →</a>
+    </div>
+    <div class="senior-pathway-tabs">
+      <button class="pathway-tab active" data-pathway="social science">🔬 Social Sciences Pathway</button>
+      <button class="pathway-tab" data-pathway="arts">📖 Arts & Sports Sciences</button>
+      <button class="pathway-tab" data-pathway="science">🔧 STEM Pathway</button>
+    </div>
+    <div class="pathway-content active" id="pathway-sciences">
+      <div class="subjects-grid-5">
+        <a class="subject-card sc-bio fade-up" href="shop.html?level=senior&subject=biology"><div class="sc-banner"><div class="sc-icon-wrap">🔬</div></div><div class="sc-body"><h3>Biology</h3><p>Senior School CBC Biology — cells, genetics, ecology and human health.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-chem fade-up delay-1" href="shop.html?level=senior&subject=chemistry"><div class="sc-banner"><div class="sc-icon-wrap">⚗️</div></div><div class="sc-body"><h3>Chemistry</h3><p>Organic, inorganic and physical chemistry for CBC Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-phys fade-up delay-2" href="shop.html?level=senior&subject=physics"><div class="sc-banner"><div class="sc-icon-wrap">⚡</div></div><div class="sc-body"><h3>Physics</h3><p>Mechanics, electricity, waves and modern physics for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-math fade-up delay-3" href="shop.html?level=senior&subject=core-mathematics"><div class="sc-banner"><div class="sc-icon-wrap">📐</div></div><div class="sc-body"><h3>Core Mathematics</h3><p>Advanced mathematics for sciences pathway students in Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-comp fade-up" href="shop.html?level=senior&subject=computer-studies"><div class="sc-banner"><div class="sc-icon-wrap">💻</div></div><div class="sc-body"><h3>Computer Studies</h3><p>Programming, databases, networking and ICT for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+      </div>
+    </div>
+    <div class="pathway-content" id="pathway-arts">
+      <div class="subjects-grid-5">
+        <a class="subject-card sc-eng fade-up" href="shop.html?level=senior&subject=literature"><div class="sc-banner"><div class="sc-icon-wrap">📖</div></div><div class="sc-body"><h3>Literature in English</h3><p>Prose, poetry, drama and oral literature for CBC Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-kisw fade-up delay-1" href="shop.html?level=senior&subject=kiswahili"><div class="sc-banner"><div class="sc-icon-wrap">🗣️</div></div><div class="sc-body"><h3>Kiswahili</h3><p>Fasihi, lugha na mawasiliano kwa Shule ya Sekondari ya Juu CBC.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-hist fade-up delay-2" href="shop.html?level=senior&subject=history"><div class="sc-banner"><div class="sc-icon-wrap">🏛️</div></div><div class="sc-body"><h3>History & Citizenship</h3><p>Kenya, Africa and world history with citizenship education for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-geo fade-up delay-3" href="shop.html?level=senior&subject=geography"><div class="sc-banner"><div class="sc-icon-wrap">🗺️</div></div><div class="sc-body"><h3>Geography</h3><p>Physical, human and environmental geography for CBC Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-bus fade-up" href="shop.html?level=senior&subject=business"><div class="sc-banner"><div class="sc-icon-wrap">📊</div></div><div class="sc-body"><h3>Business Studies</h3><p>Entrepreneurship, commerce, accounting basics and business management.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+      </div>
+    </div>
+    <div class="pathway-content" id="pathway-technical">
+      <div class="subjects-grid-5">
+        <a class="subject-card sc-agri fade-up" href="shop.html?level=senior&subject=agriculture"><div class="sc-banner"><div class="sc-icon-wrap">🌿</div></div><div class="sc-body"><h3>Agriculture</h3><p>Crop science, livestock, soil management and agribusiness for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-home fade-up delay-1" href="shop.html?level=senior&subject=home-science"><div class="sc-banner"><div class="sc-icon-wrap">🏠</div></div><div class="sc-body"><h3>Home Science</h3><p>Nutrition, clothing, household management and consumer education.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-math fade-up delay-2" href="shop.html?level=senior&subject=essential-mathematics"><div class="sc-banner"><div class="sc-icon-wrap">🔢</div></div><div class="sc-body"><h3>Essential Mathematics</h3><p>Practical mathematics for technical and applied pathway Senior School students.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-comp fade-up delay-3" href="shop.html?level=senior&subject=computer-studies"><div class="sc-banner"><div class="sc-icon-wrap">💻</div></div><div class="sc-body"><h3>Computer Studies</h3><p>ICT, programming and digital literacy for the technical pathway.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+        <a class="subject-card sc-re fade-up" href="shop.html?level=senior&subject=religious-education"><div class="sc-banner"><div class="sc-icon-wrap">✝️</div></div><div class="sc-body"><h3>Religious Education</h3><p>CRE and IRE for CBC Senior School — values, ethics and faith studies.</p><div class="sc-tags"><span>CRE</span><span>IRE</span><span>Gr 10–12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8-4-4 SECTION -->
+<section class="subjects-section section-pad" id="form34">
+  <div class="container">
+    <div class="section-header split">
+      <div>
+        <div class="section-eyebrow">8-4-4 System · Until 2028</div>
+        <h2 class="section-title">Form 3 & Form 4</h2>
+        <p class="section-sub">The final KCSE cohorts. Full past papers, topical notes and marking schemes for the last students sitting the 8-4-4 national examinations.</p>
+      </div>
+      <a href="shop.html?level=844" class="btn-outline">All 8-4-4 Resources →</a>
     </div>
     <div class="subjects-grid">
-      <a class="subject-card sc-bio fade-up" href="shop.html?subject=biology">
-        <div class="sc-banner">
-          <div class="sc-icon-wrap">🔬</div>
-          <div class="sc-glow"></div>
-        </div>
-        <div class="sc-body">
-          <h3>Biology</h3>
-          <p>Cell biology, ecology, genetics, reproduction and all KCSE Biology topics with detailed diagrams and marking schemes.</p>
-          <div class="sc-tags">
-            <span>Notes</span><span>Past Papers</span><span>Diagrams</span>
-          </div>
-        </div>
-        <div class="sc-footer">
-          <span class="sc-count">48 resources</span>
-          <span class="sc-price">From KSh 80</span>
-        </div>
-      </a>
-      <a class="subject-card sc-chem fade-up delay-1" href="shop.html?subject=chemistry">
-        <div class="sc-banner">
-          <div class="sc-icon-wrap">⚗️</div>
-          <div class="sc-glow"></div>
-        </div>
-        <div class="sc-body">
-          <h3>Chemistry</h3>
-          <p>Organic chemistry, reactions, periodic table and practical lab notes. Includes KCSE predicted questions with answers.</p>
-          <div class="sc-tags">
-            <span>Notes</span><span>Practicals</span><span>Past Papers</span>
-          </div>
-        </div>
-        <div class="sc-footer">
-          <span class="sc-count">52 resources</span>
-          <span class="sc-price">From KSh 80</span>
-        </div>
-      </a>
-      <a class="subject-card sc-math fade-up delay-2" href="shop.html?subject=mathematics">
-        <div class="sc-banner">
-          <div class="sc-icon-wrap">📐</div>
-          <div class="sc-glow"></div>
-        </div>
-        <div class="sc-body">
-          <h3>Mathematics</h3>
-          <p>Algebra, geometry, trigonometry and statistics. Step-by-step worked examples for every KCSE Mathematics topic.</p>
-          <div class="sc-tags">
-            <span>Notes</span><span>Worksheets</span><span>Holiday Packs</span>
-          </div>
-        </div>
-        <div class="sc-footer">
-          <span class="sc-count">61 resources</span>
-          <span class="sc-price">From KSh 80</span>
-        </div>
-      </a>
-      <a class="subject-card sc-phys fade-up delay-3" href="shop.html?subject=physics">
-        <div class="sc-banner">
-          <div class="sc-icon-wrap">⚡</div>
-          <div class="sc-glow"></div>
-        </div>
-        <div class="sc-body">
-          <h3>Physics</h3>
-          <p>Mechanics, electricity, waves and optics. Includes formula sheets, experiments and KCSE past paper solutions.</p>
-          <div class="sc-tags">
-            <span>Notes</span><span>Formula Sheets</span><span>Past Papers</span>
-          </div>
-        </div>
-        <div class="sc-footer">
-          <span class="sc-count">45 resources</span>
-          <span class="sc-price">From KSh 80</span>
-        </div>
-      </a>
+      <a class="subject-card sc-bio fade-up" href="shop.html?level=844&subject=biology"><div class="sc-banner"><div class="sc-icon-wrap">🔬</div><div class="sc-glow"></div></div><div class="sc-body"><h3>Biology</h3><p>KCSE Biology past papers 2018–2024, topical notes and marking schemes.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">48 resources</span><span class="sc-price">From KSh 80</span></div></a>
+      <a class="subject-card sc-chem fade-up delay-1" href="shop.html?level=844&subject=chemistry"><div class="sc-banner"><div class="sc-icon-wrap">⚗️</div><div class="sc-glow"></div></div><div class="sc-body"><h3>Chemistry</h3><p>Organic chemistry, practicals and KCSE past papers with full marking schemes.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">52 resources</span><span class="sc-price">From KSh 80</span></div></a>
+      <a class="subject-card sc-math fade-up delay-2" href="shop.html?level=844&subject=mathematics"><div class="sc-banner"><div class="sc-icon-wrap">📐</div><div class="sc-glow"></div></div><div class="sc-body"><h3>Mathematics</h3><p>Algebra, statistics, trigonometry and KCSE past papers with worked solutions.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">61 resources</span><span class="sc-price">From KSh 80</span></div></a>
+      <a class="subject-card sc-phys fade-up delay-3" href="shop.html?level=844&subject=physics"><div class="sc-banner"><div class="sc-icon-wrap">⚡</div><div class="sc-glow"></div></div><div class="sc-body"><h3>Physics</h3><p>Mechanics, electricity, waves and KCSE Physics past papers with marking schemes.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">45 resources</span><span class="sc-price">From KSh 80</span></div></a>
     </div>
   </div>
 </section>
@@ -255,185 +407,54 @@
       <p class="section-sub">No account needed. No waiting. Pay via M-PESA and download instantly.</p>
     </div>
     <div class="steps-grid">
-      <div class="step-card fade-up">
-        <div class="step-num">01</div>
-        <div class="step-icon">🔍</div>
-        <h4>Pick Your Resource</h4>
-        <p>Browse by subject, form level or topic. Preview what's inside before you pay.</p>
-      </div>
+      <div class="step-card fade-up"><div class="step-num">01</div><div class="step-icon">🔍</div><h4>Pick Your Resource</h4><p>Browse by curriculum level, subject or grade. Preview before you pay.</p></div>
       <div class="steps-arrow">→</div>
-      <div class="step-card fade-up delay-1">
-        <div class="step-num">02</div>
-        <div class="step-icon">📱</div>
-        <h4>Pay via M-PESA</h4>
-        <p>Enter your M-PESA number and confirm payment. Prices start from KSh 80.</p>
-      </div>
+      <div class="step-card fade-up delay-1"><div class="step-num">02</div><div class="step-icon">📱</div><h4>Pay via M-PESA</h4><p>Enter your M-PESA number and confirm payment. From KSh 80.</p></div>
       <div class="steps-arrow">→</div>
-      <div class="step-card fade-up delay-2">
-        <div class="step-num">03</div>
-        <div class="step-icon">⬇️</div>
-        <h4>Download Instantly</h4>
-        <p>Your PDF is ready immediately after payment. Print or study on your phone.</p>
-      </div>
+      <div class="step-card fade-up delay-2"><div class="step-num">03</div><div class="step-icon">⬇️</div><h4>Download Instantly</h4><p>Your PDF is ready immediately. Print or study on your phone.</p></div>
       <div class="steps-arrow">→</div>
-      <div class="step-card fade-up delay-3">
-        <div class="step-num">04</div>
-        <div class="step-icon">🎯</div>
-        <h4>Pass Your Exams</h4>
-        <p>KCSE-aligned, teacher-verified content designed to get you top grades.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURED RESOURCES -->
-<section class="featured section-pad" id="featured">
-  <div class="container">
-    <div class="section-header split">
-      <div>
-        <div class="section-eyebrow">Most Downloaded</div>
-        <h2 class="section-title">Popular Resources</h2>
-      </div>
-      <a href="shop.html" class="btn-outline">View All →</a>
-    </div>
-    <div class="resources-grid">
-
-      <a class="resource-card fade-up" href="shop.html">
-        <div class="rc-header bio-bg">
-          <span class="rc-emoji">🔬</span>
-          <span class="rc-badge badge-popular">Popular</span>
-        </div>
-        <div class="rc-body">
-          <div class="rc-subject bio-text">Biology</div>
-          <h4>KCSE Biology Past Papers 2018–2023 + Marking Schemes</h4>
-          <p>6 years of past papers with full marking schemes. Examiner comments for Paper 1, 2 & 3.</p>
-          <div class="rc-meta">
-            <span>📄 64 pages</span>
-            <span>⬇️ 312 downloads</span>
-          </div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 350</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
-      <a class="resource-card fade-up delay-1" href="shop.html">
-        <div class="rc-header chem-bg">
-          <span class="rc-emoji">⚗️</span>
-          <span class="rc-badge badge-exam">Exam Prep</span>
-        </div>
-        <div class="rc-body">
-          <div class="rc-subject chem-text">Chemistry</div>
-          <h4>Organic Chemistry — Reactions, Mechanisms & KCSE Tips</h4>
-          <p>Complete organic chemistry notes: alkanes, alkenes, functional groups and exam tips.</p>
-          <div class="rc-meta">
-            <span>📄 22 pages</span>
-            <span>⬇️ 241 downloads</span>
-          </div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 120</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
-      <a class="resource-card fade-up delay-2" href="shop.html">
-        <div class="rc-header math-bg">
-          <span class="rc-emoji">📐</span>
-          <span class="rc-badge badge-popular">Popular</span>
-        </div>
-        <div class="rc-body">
-          <div class="rc-subject math-text">Mathematics</div>
-          <h4>Form 4 Algebra & Quadratic Equations — Complete Notes</h4>
-          <p>Factorisation, completing the square and quadratic formula with 25 worked examples.</p>
-          <div class="rc-meta">
-            <span>📄 18 pages</span>
-            <span>⬇️ 398 downloads</span>
-          </div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 100</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
-      <a class="resource-card fade-up delay-3" href="shop.html">
-        <div class="rc-header phys-bg">
-          <span class="rc-emoji">⚡</span>
-          <span class="rc-badge badge-new">New</span>
-        </div>
-        <div class="rc-body">
-          <div class="rc-subject phys-text">Physics</div>
-          <h4>Physics Formula Sheet — All Topics Form 1 to Form 4</h4>
-          <p>Every formula in the KCSE Physics syllabus on 8 clean pages. Perfect for last-minute revision.</p>
-          <div class="rc-meta">
-            <span>📄 8 pages</span>
-            <span>⬇️ 512 downloads</span>
-          </div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 80</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
+      <div class="step-card fade-up delay-3"><div class="step-num">04</div><div class="step-icon">🎯</div><h4>Excel in School</h4><p>CBC-aligned and KNEC-verified content built for Kenyan learners.</p></div>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="testimonials section-pad" id="testimonials">
+<section class="testimonials section-pad bg-white">
   <div class="container">
     <div class="section-header centered">
       <div class="section-eyebrow">Student Reviews</div>
-      <h2 class="section-title">What Students Say</h2>
+      <h2 class="section-title">What Students & Parents Say</h2>
     </div>
     <div class="testi-grid">
       <div class="testi-card fade-up">
+        <div class="testi-badge">🏫 Junior School</div>
         <div class="testi-stars">★★★★★</div>
-        <p>"The Chemistry notes are so clear — I finally understood organic reactions after struggling for months. Got a B+ in my mocks!"</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:#3B82F6">AW</div>
-          <div>
-            <div class="testi-name">Amina Wanjiru</div>
-            <div class="testi-role">Form 4, Nairobi</div>
-          </div>
-        </div>
+        <p>"The Integrated Science notes for Grade 8 are excellent. My son finally understands the CBC approach — practical, relatable examples throughout."</p>
+        <div class="testi-author"><div class="testi-avatar" style="background:#3B82F6">PM</div><div><div class="testi-name">Peter Mwangi</div><div class="testi-role">Parent · Grade 8 student · Nairobi</div></div></div>
       </div>
       <div class="testi-card fade-up delay-1">
+        <div class="testi-badge">📚 Form 4 · 8-4-4</div>
         <div class="testi-stars">★★★★★</div>
-        <p>"The Math holiday package kept my son busy and prepared. He came back to school more confident than ever. Worth every shilling."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:#0D6E3F">JM</div>
-          <div>
-            <div class="testi-name">James Mutua</div>
-            <div class="testi-role">Parent, Mombasa</div>
-          </div>
-        </div>
+        <p>"The Chemistry notes are so clear — I finally understood organic reactions after struggling for months. Got a B+ in my mock exams!"</p>
+        <div class="testi-author"><div class="testi-avatar" style="background:#0D6E3F">AW</div><div><div class="testi-name">Amina Wanjiru</div><div class="testi-role">Form 4 · Nairobi</div></div></div>
       </div>
       <div class="testi-card fade-up delay-2">
+        <div class="testi-badge">🎓 Senior School</div>
         <div class="testi-stars">★★★★★</div>
-        <p>"Downloaded the Biology past papers pack and went through every marking scheme. That's exactly how I knew what examiners wanted."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:#D4A017">FK</div>
-          <div>
-            <div class="testi-name">Faith Kipchoge</div>
-            <div class="testi-role">Form 4 candidate, Eldoret</div>
-          </div>
-        </div>
+        <p>"Getting CBC Senior School resources this early is a huge advantage. The Geography notes for Grade 10 are thorough and well organised."</p>
+        <div class="testi-author"><div class="testi-avatar" style="background:#D4A017">FK</div><div><div class="testi-name">Faith Kipchoge</div><div class="testi-role">Grade 10 · Eldoret</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
+<!-- CTA -->
 <section class="cta-section">
   <div class="cta-inner">
     <div class="cta-text">
-      <div class="cta-eyebrow">📱 M-PESA accepted · Instant access</div>
-      <h2>Your KCSE revision starts today.</h2>
-      <p>Join thousands of students across Kenya who revise smarter with KCSE Vault resources.</p>
+      <div class="cta-eyebrow">📱 M-PESA accepted · Instant access · CBC & 8-4-4</div>
+      <h2>Your learning journey starts today.</h2>
+      <p>Junior School, Senior School or Form 3 & 4 — we have resources for every Kenyan student.</p>
     </div>
     <div class="cta-actions">
       <a href="shop.html" class="btn-primary btn-large">Browse All Resources →</a>
@@ -446,8 +467,8 @@
 <footer class="footer">
   <div class="footer-top">
     <div class="footer-brand">
-      <a class="nav-logo" href="index.html">KCSE<span>Vault</span></a>
-      <p>Premium Science & Math resources for Kenyan secondary school students. Made by a teacher, for students who want to excel.</p>
+      <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
+      <p>Premium CBC and 8-4-4 resources for Kenyan learners — Junior School, Senior School and Form 3 & 4. Made by a certified teacher.</p>
       <div class="footer-socials">
         <a href="#" class="social-link">📘</a>
         <a href="#" class="social-link">📱</a>
@@ -455,37 +476,37 @@
       </div>
     </div>
     <div class="footer-col">
-      <h4>Subjects</h4>
+      <h4>Junior School (CBC)</h4>
       <ul>
-        <li><a href="shop.html?subject=biology">Biology</a></li>
-        <li><a href="shop.html?subject=chemistry">Chemistry</a></li>
-        <li><a href="shop.html?subject=mathematics">Mathematics</a></li>
-        <li><a href="shop.html?subject=physics">Physics</a></li>
+        <li><a href="shop.html?level=junior&subject=mathematics">Mathematics</a></li>
+        <li><a href="shop.html?level=junior&subject=integrated-science">Integrated Science</a></li>
+        <li><a href="shop.html?level=junior&subject=english">English</a></li>
+        <li><a href="shop.html?level=junior&subject=social-studies">Social Studies</a></li>
+        <li><a href="shop.html?level=junior">View All →</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Resources</h4>
+      <h4>Senior School (CBC)</h4>
       <ul>
-        <li><a href="#">Topical Notes</a></li>
-        <li><a href="#">Past Papers</a></li>
-        <li><a href="#">Worksheets</a></li>
-        <li><a href="#">Holiday Packs</a></li>
-        <li><a href="#">Formula Sheets</a></li>
+        <li><a href="shop.html?level=senior&subject=biology">Biology</a></li>
+        <li><a href="shop.html?level=senior&subject=chemistry">Chemistry</a></li>
+        <li><a href="shop.html?level=senior&subject=core-mathematics">Core Mathematics</a></li>
+        <li><a href="shop.html?level=senior&subject=history">History & Citizenship</a></li>
+        <li><a href="shop.html?level=senior">View All →</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Info</h4>
+      <h4>8-4-4 Form 3 & 4</h4>
       <ul>
-        <li><a href="about.html">About</a></li>
-        <li><a href="#how">How It Works</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Refund Policy</a></li>
-        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="shop.html?level=844&subject=biology">Biology</a></li>
+        <li><a href="shop.html?level=844&subject=chemistry">Chemistry</a></li>
+        <li><a href="shop.html?level=844&subject=mathematics">Mathematics</a></li>
+        <li><a href="shop.html?level=844&subject=physics">Physics</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 KCSEVault. All rights reserved.</span>
+    <span>© 2026 KenyaVault. All rights reserved.</span>
     <span>Made with ❤️ in Kenya 🇰🇪</span>
   </div>
 </footer>
