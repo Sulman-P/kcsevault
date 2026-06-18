@@ -970,12 +970,12 @@ a{text-decoration:none;color:inherit;}
           <div class="admin-card-body">
             <div class="form-row form-row-2">
               <div class="form-group">
-                <label class="form-label">Supabase Project URL</label>
+                <label class="form-label">https://rewpminmqnrtwdvglxxr.supabase.co/rest/v1/</label>
                 <input class="form-input" type="url" id="supabaseUrl" placeholder="https://xxxx.supabase.co"/>
               </div>
               <div class="form-group">
-                <label class="form-label">Supabase Anon Key</label>
-                <input class="form-input" type="text" id="supabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..."/>
+                <label class="form-label">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs</label>
+                <input class="form-input" type="text" id="supabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs"/>
               </div>
             </div>
             <div class="btn-row">
@@ -1004,8 +1004,8 @@ a{text-decoration:none;color:inherit;}
 // ── SUPABASE CONFIG ──
 // Replace these with your actual Supabase project values
 // Get them from: https://supabase.com → your project → Settings → API
-const SUPABASE_URL = localStorage.getItem('kv_supabase_url') || 'YOUR_SUPABASE_URL';
-const SUPABASE_KEY = localStorage.getItem('kv_supabase_key') || 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = localStorage.getItem('kv_supabase_url') || 'https://rewpminmqnrtwdvglxxr.supabase.co/rest/v1/';
+const SUPABASE_KEY = localStorage.getItem('kv_supabase_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
 
 let supabase = null;
 let currentUser = null;
