@@ -11,7 +11,7 @@ const MEGAPAY_CONFIG = {
   PAYBILL: '522522',
   ACCOUNT: 'KenyaVault',
   BASE_URL: 'https://api.megapay.co.ke/api/v1',
-  CALLBACK_URL: 'https://kcsevault.odhiambosulman3.workers.dev/api/payment/callback'
+  CALLBACK_URL: 'https://kenyavault.odhiambosulman3.workers.dev/api/payment/callback'
 };
 
 // Then use MEGAPAY_CONFIG everywhere in your code
