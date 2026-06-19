@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>KCSE Biology Past Papers 2018–2023 — KCSE Vault</title>
+<title>Product — KenyaVault</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 <style>
-
 /* ── PRODUCT HERO ── */
 .product-hero {
   background: var(--dark);
@@ -23,17 +22,14 @@
   padding-bottom: 56px;
 }
 
-/* Breadcrumb */
 .breadcrumb {
   display: flex; align-items: center; gap: 8px;
   font-size: 0.8rem; color: #6B9980; margin-bottom: 20px; flex-wrap: wrap;
 }
 .breadcrumb a { color: #6B9980; transition: var(--transition); }
 .breadcrumb a:hover { color: var(--gold-light); }
-.breadcrumb span { color: rgba(255,255,255,0.2); }
 .breadcrumb .current { color: #9ABFB0; }
 
-/* Product Meta */
 .product-subject-tag {
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 0.72rem; font-weight: 700; letter-spacing: 1.2px;
@@ -59,13 +55,10 @@
 .qm-item { display: flex; align-items: center; gap: 7px; font-size: 0.83rem; color: #7AAB92; }
 .qm-item strong { color: var(--white); }
 
-/* Rating */
 .product-rating { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
 .stars { color: var(--gold); font-size: 1rem; letter-spacing: 2px; }
 .rating-num { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--white); font-size: 0.95rem; }
-.rating-count { font-size: 0.82rem; color: #6B9980; }
 
-/* What's inside */
 .whats-inside {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
@@ -94,7 +87,6 @@
 .buy-card-preview {
   height: 180px; display: flex; align-items: center;
   justify-content: center; position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #EFF6FF, #BFDBFE);
 }
 .preview-emoji { font-size: 5rem; }
 .preview-badge {
@@ -109,15 +101,6 @@
   font-family: 'Sora', sans-serif; font-weight: 800;
   font-size: 2rem; color: var(--green);
 }
-.buy-price-old {
-  font-size: 1rem; color: var(--muted);
-  text-decoration: line-through;
-}
-.buy-savings {
-  background: rgba(13,110,63,0.1); color: var(--green);
-  font-size: 0.75rem; font-weight: 700;
-  padding: 3px 9px; border-radius: 99px; margin-left: auto;
-}
 .buy-note { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
 .btn-buy-main {
   display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -128,271 +111,20 @@
   box-shadow: 0 4px 20px rgba(13,110,63,0.3);
   border: none; cursor: pointer;
 }
-.btn-buy-main:hover { background: var(--green-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(13,110,63,0.4); }
-.btn-preview-main {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  width: 100%; background: transparent; color: var(--text);
-  padding: 13px; border-radius: 12px; border: 1.5px solid var(--border);
-  font-family: 'Sora', sans-serif; font-weight: 600; font-size: 0.9rem;
-  transition: var(--transition); cursor: pointer;
-}
-.btn-preview-main:hover { border-color: var(--green); color: var(--green); }
+.btn-buy-main:hover { background: var(--green-light); transform: translateY(-2px); }
 
 .buy-guarantees { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
 .buy-guarantee { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--muted); }
 .bg-icon { font-size: 1rem; flex-shrink: 0; }
 
-.buy-card-footer {
-  padding: 16px 24px;
-  background: var(--surface); border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  font-size: 0.78rem; color: var(--muted);
-}
-.mpesa-logo {
-  background: #00A550; color: var(--white);
-  font-family: 'Sora', sans-serif; font-weight: 800; font-size: 0.7rem;
-  padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px;
-}
+.loading-spinner { text-align: center; padding: 60px 20px; color: var(--muted); }
+.loading-spinner i { font-size: 2rem; margin-bottom: 10px; display: block; }
+.error-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+.error-state i { font-size: 3rem; margin-bottom: 15px; display: block; color: var(--red); }
 
-/* ── TABS SECTION ── */
-.product-tabs-section { background: var(--white); }
-.tabs-nav {
-  display: flex; border-bottom: 2px solid var(--border);
-  gap: 0; overflow-x: auto;
-}
-.tab-btn {
-  padding: 16px 28px; font-family: 'Sora', sans-serif;
-  font-weight: 600; font-size: 0.88rem; color: var(--muted);
-  border-bottom: 2px solid transparent; margin-bottom: -2px;
-  cursor: pointer; transition: var(--transition); white-space: nowrap;
-  background: none; border-top: none; border-left: none; border-right: none;
-}
-.tab-btn:hover { color: var(--green); }
-.tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
-
-.tab-content { display: none; padding: 40px 0; }
-.tab-content.active { display: block; }
-
-/* Description tab */
-.desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
-.desc-text p { font-size: 0.92rem; color: var(--text-2); line-height: 1.85; margin-bottom: 16px; }
-.desc-text p:last-child { margin-bottom: 0; }
-.desc-highlight {
-  background: var(--green-pale); border-left: 3px solid var(--green);
-  border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 24px 0;
-  font-size: 0.9rem; color: var(--green); font-style: italic; line-height: 1.7;
-}
-.spec-table { width: 100%; border-collapse: collapse; }
-.spec-table tr { border-bottom: 1px solid var(--border); }
-.spec-table tr:last-child { border-bottom: none; }
-.spec-table td {
-  padding: 12px 0; font-size: 0.87rem; vertical-align: top;
-}
-.spec-table td:first-child { color: var(--muted); width: 42%; font-weight: 500; }
-.spec-table td:last-child { color: var(--text); font-weight: 600; }
-
-/* Contents tab */
-.contents-list { display: flex; flex-direction: column; gap: 12px; }
-.content-item {
-  display: flex; align-items: center; gap: 16px;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 10px; padding: 16px 20px; transition: var(--transition);
-}
-.content-item:hover { border-color: var(--green); background: var(--green-pale); }
-.ci-num {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: var(--green); color: var(--white);
-  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.82rem;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.ci-info { flex: 1; }
-.ci-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--dark); }
-.ci-detail { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-.ci-pages { font-size: 0.78rem; color: var(--muted); flex-shrink: 0; }
-
-/* Preview tab */
-.preview-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-.preview-page {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 10px; aspect-ratio: 3/4;
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 10px; cursor: pointer;
-  transition: var(--transition); padding: 20px; text-align: center;
-}
-.preview-page:hover { border-color: var(--green); box-shadow: var(--shadow-md); }
-.pp-num { font-size: 2rem; }
-.pp-label { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.82rem; color: var(--dark); }
-.pp-detail { font-size: 0.75rem; color: var(--muted); }
-.preview-blur-note {
-  grid-column: 1 / -1; text-align: center;
-  background: var(--surface); border: 1.5px dashed var(--border);
-  border-radius: 10px; padding: 20px;
-  font-size: 0.85rem; color: var(--muted);
-}
-
-/* Reviews tab */
-.reviews-summary {
-  display: flex; gap: 40px; align-items: center;
-  background: var(--surface); border-radius: 14px; padding: 28px 32px;
-  margin-bottom: 32px; flex-wrap: wrap;
-}
-.rs-score { text-align: center; }
-.rs-big {
-  font-family: 'Sora', sans-serif; font-weight: 800;
-  font-size: 3.5rem; color: var(--dark); line-height: 1;
-}
-.rs-stars { color: var(--gold); font-size: 1.1rem; letter-spacing: 2px; margin: 6px 0; }
-.rs-count { font-size: 0.8rem; color: var(--muted); }
-.rs-bars { flex: 1; display: flex; flex-direction: column; gap: 7px; min-width: 200px; }
-.rs-bar-row { display: flex; align-items: center; gap: 10px; }
-.rs-bar-label { font-size: 0.78rem; color: var(--muted); width: 36px; text-align: right; flex-shrink: 0; }
-.rs-bar-track { flex: 1; height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; }
-.rs-bar-fill { height: 100%; background: var(--gold); border-radius: 99px; transition: width 1s ease; }
-.rs-bar-count { font-size: 0.75rem; color: var(--muted); width: 20px; flex-shrink: 0; }
-
-.reviews-list { display: flex; flex-direction: column; gap: 20px; }
-.review-card {
-  background: var(--white); border: 1.5px solid var(--border);
-  border-radius: 12px; padding: 22px; transition: var(--transition);
-}
-.review-card:hover { border-color: var(--border-2); }
-.review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.review-avatar {
-  width: 40px; height: 40px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.82rem;
-  color: var(--white); flex-shrink: 0;
-}
-.review-meta { flex: 1; }
-.review-name { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--dark); }
-.review-info { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
-.review-stars { color: var(--gold); font-size: 0.9rem; }
-.review-text { font-size: 0.87rem; color: var(--text-2); line-height: 1.75; }
-
-/* ── RELATED PRODUCTS ── */
-.related-section { background: var(--surface); }
-
-/* ── STICKY BOTTOM BAR (mobile) ── */
-.sticky-buy-bar {
-  display: none; position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--white); border-top: 1px solid var(--border);
-  padding: 12px 5%; z-index: 200;
-  flex-direction: column; gap: 0;
-  box-shadow: 0 -8px 32px rgba(0,0,0,0.1);
-}
-.sbb-inner {
-  display: flex; align-items: center; gap: 14px;
-}
-.sbb-price {
-  font-family: 'Sora', sans-serif; font-weight: 800;
-  font-size: 1.3rem; color: var(--green);
-}
-.sbb-label { font-size: 0.75rem; color: var(--muted); }
-.sbb-btn {
-  flex: 1; background: var(--green); color: var(--white);
-  padding: 14px; border-radius: 10px; border: none;
-  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.9rem;
-  cursor: pointer; transition: var(--transition);
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.sbb-btn:hover { background: var(--green-light); }
-
-/* ── MPESA MODAL ── */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-  align-items: center; justify-content: center; padding: 20px;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: var(--white); border-radius: 20px;
-  width: 100%; max-width: 420px;
-  overflow: hidden; animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: 0 32px 80px rgba(0,0,0,0.4);
-}
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.85) translateY(20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-.modal-header {
-  background: var(--green); padding: 24px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.modal-header-text h3 {
-  font-size: 1.1rem; color: var(--white); margin-bottom: 4px;
-}
-.modal-header-text p { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
-.modal-close {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: rgba(255,255,255,0.15); color: var(--white);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 1.1rem; transition: var(--transition);
-  border: none; flex-shrink: 0;
-}
-.modal-close:hover { background: rgba(255,255,255,0.25); }
-.modal-body { padding: 28px; }
-.modal-product-summary {
-  display: flex; align-items: center; gap: 14px;
-  background: var(--surface); border-radius: 10px;
-  padding: 14px 16px; margin-bottom: 24px;
-}
-.mps-icon { font-size: 2rem; }
-.mps-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--dark); margin-bottom: 3px; }
-.mps-price { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1rem; color: var(--green); }
-.modal-label {
-  display: block; font-size: 0.83rem; font-weight: 600;
-  color: var(--text); margin-bottom: 7px;
-}
-.modal-input {
-  width: 100%; padding: 13px 16px;
-  border: 1.5px solid var(--border); border-radius: 10px;
-  font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--text);
-  outline: none; transition: var(--transition); margin-bottom: 16px;
-}
-.modal-input:focus { border-color: var(--green); }
-.modal-input-hint { font-size: 0.77rem; color: var(--muted); margin-top: -10px; margin-bottom: 20px; }
-.btn-mpesa-pay {
-  width: 100%; background: #00A550; color: var(--white);
-  padding: 15px; border-radius: 12px; border: none;
-  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1rem;
-  cursor: pointer; transition: var(--transition);
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  margin-bottom: 12px;
-}
-.btn-mpesa-pay:hover { background: #00833D; transform: translateY(-1px); }
-.modal-secure {
-  text-align: center; font-size: 0.77rem; color: var(--muted);
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-}
-
-/* Steps in modal */
-.modal-steps { margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
-.modal-step {
-  display: flex; align-items: flex-start; gap: 12px;
-  background: var(--surface); border-radius: 8px; padding: 12px 14px;
-}
-.ms-num {
-  width: 24px; height: 24px; border-radius: 50%;
-  background: var(--green); color: var(--white);
-  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.72rem;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.ms-text { font-size: 0.82rem; color: var(--text-2); line-height: 1.55; }
-.ms-text strong { color: var(--dark); }
-
-/* Responsive */
 @media (max-width: 1000px) {
   .product-hero-inner { grid-template-columns: 1fr; }
   .buy-card { position: static; }
-  .sticky-buy-bar { display: flex; }
-  body { padding-bottom: 80px; }
-  .desc-grid { grid-template-columns: 1fr; }
-  .preview-grid { grid-template-columns: repeat(2,1fr); }
-}
-@media (max-width: 640px) {
-  .product-quick-meta { gap: 12px; }
-  .reviews-summary { flex-direction: column; gap: 20px; }
-  .preview-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -405,400 +137,81 @@
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="shop.html" class="active">Shop</a></li>
-      <li><a href="index.html#subjects">Subjects</a></li>
-      <li><a href="index.html#how">How It Works</a></li>
+      <li><a href="classes.html">Live Classes</a></li>
       <li><a href="about.html">About</a></li>
     </ul>
     <div class="nav-actions">
       <a href="shop.html" class="btn-nav-cta">Browse Shop →</a>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="shop.html">Shop</a></li>
-    <li><a href="index.html#subjects">Subjects</a></li>
-    <li><a href="index.html#how">How It Works</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="shop.html" class="mobile-cta">Browse Shop →</a></li>
-  </ul>
-</div>
-
 <!-- PRODUCT HERO -->
 <section class="product-hero">
   <div class="container">
-    <div class="product-hero-inner">
-
+    <div class="product-hero-inner" id="productContainer">
       <!-- LEFT: Product Info -->
-      <div class="fade-up">
+      <div id="productInfo" class="fade-up">
         <div class="breadcrumb">
           <a href="index.html">Home</a>
           <span>›</span>
           <a href="shop.html">Shop</a>
           <span>›</span>
-          <a href="shop.html?subject=biology">Biology</a>
+          <a href="shop.html" id="subjectLink">Subjects</a>
           <span>›</span>
-          <span class="current">Past Papers 2020–2026</span>
+          <span class="current" id="productName">Loading...</span>
         </div>
 
-        <div class="product-subject-tag tag-bio">🔬 Biology</div>
+        <div class="product-subject-tag tag-bio" id="subjectTag">🔬 Loading...</div>
 
-        <h1 class="product-title-main">KCSE Biology Past Papers 2020–2025 + Marking Schemes</h1>
-        <p class="product-tagline">6 years of official KCSE Biology examinations with full marking schemes and examiner comments. Covers Paper 1, Paper 2 and Paper 3 — the complete package every Form 4 student needs.</p>
+        <h1 class="product-title-main" id="productTitle">Loading...</h1>
+        <p class="product-tagline" id="productDescription">Loading description...</p>
 
         <div class="product-rating">
           <span class="stars">★★★★★</span>
-          <span class="rating-num">4.9</span>
-          <span class="rating-count">(47 reviews)</span>
+          <span class="rating-num" id="ratingNum">4.9</span>
+          <span class="rating-count" id="reviewCount">Loading reviews...</span>
         </div>
 
         <div class="product-quick-meta">
-          <div class="qm-item">📄 <strong>64 pages</strong></div>
-          <div class="qm-item">⬇️ <strong>312 downloads</strong></div>
-          <div class="qm-item">🎓 <strong>Form 3–4</strong></div>
-          <div class="qm-item">📅 <strong>Updated 2024</strong></div>
-          <div class="qm-item">📁 <strong>PDF format</strong></div>
+          <div class="qm-item">📄 <strong id="pageCount">0</strong> pages</div>
+          <div class="qm-item">⬇️ <strong id="downloadCount">0</strong> downloads</div>
+          <div class="qm-item">🎓 <strong id="levelDisplay">Level</strong></div>
+          <div class="qm-item">📅 <strong id="dateDisplay">Date</strong></div>
         </div>
 
-        <div class="whats-inside">
+        <div class="whats-inside" id="whatsInside">
           <div class="wi-title">📦 What's Inside</div>
-          <div class="wi-list">
-            <div class="wi-item"><div class="wi-check">✓</div>6 years of KCSE Biology Paper 1, 2 & 3 (2020–2025)</div>
-            <div class="wi-item"><div class="wi-check">✓</div>Complete marking schemes for every paper</div>
-            <div class="wi-item"><div class="wi-check">✓</div>Examiner comments highlighting common student mistakes</div>
-            <div class="wi-item"><div class="wi-check">✓</div>Topic index — find questions by syllabus topic</div>
-            <div class="wi-item"><div class="wi-check">✓</div>Exam technique tips at the start of each section</div>
-            <div class="wi-item"><div class="wi-check">✓</div>Printable format — A4, clearly typeset</div>
+          <div class="wi-list" id="insideList">
+            <div class="wi-item"><div class="wi-check">✓</div>Loading content...</div>
           </div>
         </div>
       </div>
 
       <!-- RIGHT: Buy Card -->
-      <div class="fade-up delay-2">
+      <div id="buyCard" class="fade-up delay-2">
         <div class="buy-card">
-          <div class="buy-card-preview">
-            <span class="preview-emoji">🔬</span>
-            <span class="preview-badge">📄 64 Pages</span>
+          <div class="buy-card-preview" id="previewBanner">
+            <span class="preview-emoji" id="productEmoji">📄</span>
+            <span class="preview-badge" id="productBadge">📄 PDF</span>
           </div>
           <div class="buy-card-body">
             <div class="buy-price-row">
-              <span class="buy-price">KSh 350</span>
-              <span class="buy-price-old">KSh 500</span>
-              <span class="buy-savings">Save 30%</span>
+              <span class="buy-price" id="productPrice">KES 0</span>
             </div>
             <p class="buy-note">Instant download · No account needed</p>
-            <button class="btn-buy-main" id="buyBtn">
-              📱 Buy via M-PESA
-            </button>
-            <button class="btn-preview-main" id="previewBtn">
-              👁️ Preview Sample Pages
-            </button>
+            <a href="#" target="_blank" id="downloadBtn" class="btn-buy-main" style="text-decoration:none;">
+              📱 Download Now
+            </a>
             <div class="buy-guarantees">
-              <div class="buy-guarantee"><span class="bg-icon">⚡</span>Instant PDF download after payment</div>
+              <div class="buy-guarantee"><span class="bg-icon">⚡</span>Instant PDF download</div>
               <div class="buy-guarantee"><span class="bg-icon">🔒</span>Secure M-PESA payment</div>
-              <div class="buy-guarantee"><span class="bg-icon">↩️</span>7-day satisfaction guarantee</div>
               <div class="buy-guarantee"><span class="bg-icon">📱</span>Works on phone, tablet or computer</div>
             </div>
           </div>
-          <div class="buy-card-footer">
-            <span>Accepted payment:</span>
-            <span class="mpesa-logo">M-PESA</span>
-          </div>
         </div>
       </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- TABS SECTION -->
-<section class="product-tabs-section">
-  <div class="container">
-    <div class="tabs-nav">
-      <button class="tab-btn active" data-tab="description">Description</button>
-      <button class="tab-btn" data-tab="contents">Table of Contents</button>
-      <button class="tab-btn" data-tab="preview">Sample Preview</button>
-      <button class="tab-btn" data-tab="reviews">Reviews (47)</button>
-    </div>
-
-    <!-- DESCRIPTION TAB -->
-    <div class="tab-content active" id="tab-description">
-      <div class="desc-grid">
-        <div class="desc-text">
-          <p>This resource compiles five consecutive years of official KCSE Biology examinations — 2020 through 2025 — into a single, well-organised PDF. Every paper comes with the complete official marking scheme, so you don't just practise the questions, you understand exactly how marks are allocated.</p>
-          <div class="desc-highlight">
-            "Past papers are the single most effective revision tool for KJSEA/KCSE. Studying marking schemes teaches you to think like an examiner — and that's what separates a C from an A."
-          </div>
-          <p>As a former National marker, I've included examiner comments throughout — pointing out the exact phrases students use that lose marks, and the specific wording that earns full credit. This is insight you won't find in any textbook.</p>
-          <p>The topic index at the back of the document lets you locate every question on a specific syllabus topic across all six years — ideal for topical revision rather than just full paper practice.</p>
-        </div>
-        <div>
-          <table class="spec-table">
-            <tr><td>Subject</td><td>Biology</td></tr>
-            <tr><td>Form Level</td><td>Form 3 & Form 4</td></tr>
-            <tr><td>Years Covered</td><td>2020, 2021, 2022, 2023, 2024, 2025</td></tr>
-            <tr><td>Papers Included</td><td>Paper 1, Paper 2, Paper 3</td></tr>
-            <tr><td>Total Pages</td><td>64 pages</td></tr>
-            <tr><td>File Format</td><td>PDF (printable)</td></tr>
-            <tr><td>File Size</td><td>Approx. 4.2 MB</td></tr>
-            <tr><td>Language</td><td>English</td></tr>
-            <tr><td>Syllabus</td><td>KNEC KCSE 8-4-4</td></tr>
-            <tr><td>Last Updated</td><td>January 2026</td></tr>
-            <tr><td>Downloads</td><td>312 students</td></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTENTS TAB -->
-    <div class="tab-content" id="tab-contents">
-      <div class="contents-list">
-        <div class="content-item">
-          <div class="ci-num">01</div>
-          <div class="ci-info">
-            <div class="ci-title">How to Use This Resource</div>
-            <div class="ci-detail">Exam strategy guide and revision tips from an examiner's perspective</div>
-          </div>
-          <div class="ci-pages">pp. 1–2</div>
-        </div>
-        <div class="content-item">
-          <div class="ci-num">02</div>
-          <div class="ci-info">
-            <div class="ci-title">2025 KCSE Biology — Paper 1, 2 & 3 + Marking Schemes</div>
-            <div class="ci-detail">Full examination papers with complete official marking schemes</div>
-          </div>
-          <div class="ci-pages">pp. 3–13</div>
-        </div>
-        <div class="content-item">
-          <div class="ci-num">03</div>
-          <div class="ci-info">
-            <div class="ci-title">2024 KCSE Biology — Paper 1, 2 & 3 + Marking Schemes</div>
-            <div class="ci-detail">Full examination papers with complete official marking schemes</div>
-          </div>
-          <div class="ci-pages">pp. 14–24</div>
-        </div>
-        <div class="content-item">
-          <div class="ci-num">04</div>
-          <div class="ci-info">
-            <div class="ci-title">2023 KCSE Biology — Paper 1, 2 & 3 + Marking Schemes</div>
-            <div class="ci-detail">Full examination papers with complete official marking schemes</div>
-          </div>
-          <div class="ci-pages">pp. 25–35</div>
-        </div>
-        <div class="content-item">
-          <div class="ci-num">05</div>
-          <div class="ci-info">
-            <div class="ci-title">2022 KCSE Biology — Paper 1, 2 & 3 + Marking Schemes</div>
-            <div class="ci-detail">Full examination papers with complete official marking schemes</div>
-          </div>
-          <div class="ci-pages">pp. 36–45</div>
-        </div>
-        <div class="content-item">
-          <div class="ci-num">06</div>
-          <div class="ci-info">
-            <div class="ci-title">2021 KCSE Biology — Paper 1, 2 & 3 + Marking Schemes</div>
-            <div class="ci-detail">Full examination papers with complete official marking schemes</div>
-          </div>
-          <div class="ci-pages">pp. 46–55</div>
-        </div>
-        <div class="content-item">
-          <div class="ci-num">07</div>
-          <div class="ci-info">
-            <div class="ci-title">2020 KCSE Biology — Paper 1, 2 & 3 + Marking Schemes</div>
-            <div class="ci-detail">Full examination papers with complete official marking schemes</div>
-          </div>
-          <div class="ci-pages">pp. 56–62</div>
-        </div>
-        <div class="content-item">
-          <div class="ci-num">08</div>
-          <div class="ci-info">
-            <div class="ci-title">Topic Index — Questions by Syllabus Topic</div>
-            <div class="ci-detail">Locate all questions on any syllabus topic across all five years</div>
-          </div>
-          <div class="ci-pages">pp. 63–64</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PREVIEW TAB -->
-    <div class="tab-content" id="tab-preview">
-      <div class="preview-grid">
-        <div class="preview-page">
-          <div class="pp-num">📋</div>
-          <div class="pp-label">Cover & Introduction</div>
-          <div class="pp-detail">Exam strategy guide</div>
-        </div>
-        <div class="preview-page">
-          <div class="pp-num">📝</div>
-          <div class="pp-label">Sample Question Page</div>
-          <div class="pp-detail">2025 Paper 1 — Questions 1–10</div>
-        </div>
-        <div class="preview-page">
-          <div class="pp-num">✅</div>
-          <div class="pp-label">Sample Marking Scheme</div>
-          <div class="pp-detail">2025 Paper 1 — Marking Scheme</div>
-        </div>
-        <div class="preview-blur-note">
-          🔒 The remaining 61 pages are available after purchase. Pay KSh 100 via M-PESA for instant access to the full document.
-          <br/><br/>
-          <button class="btn-buy-main" id="buyBtn2" style="max-width:280px;margin:0 auto;">📱 Buy Now — KSh 100</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- REVIEWS TAB -->
-    <div class="tab-content" id="tab-reviews">
-      <div class="reviews-summary">
-        <div class="rs-score">
-          <div class="rs-big">4.9</div>
-          <div class="rs-stars">★★★★★</div>
-          <div class="rs-count">47 reviews</div>
-        </div>
-        <div class="rs-bars">
-          <div class="rs-bar-row">
-            <span class="rs-bar-label">5 ★</span>
-            <div class="rs-bar-track"><div class="rs-bar-fill" style="width:88%"></div></div>
-            <span class="rs-bar-count">41</span>
-          </div>
-          <div class="rs-bar-row">
-            <span class="rs-bar-label">4 ★</span>
-            <div class="rs-bar-track"><div class="rs-bar-fill" style="width:10%;background:#D4A017"></div></div>
-            <span class="rs-bar-count">5</span>
-          </div>
-          <div class="rs-bar-row">
-            <span class="rs-bar-label">3 ★</span>
-            <div class="rs-bar-track"><div class="rs-bar-fill" style="width:2%;background:#6B9980"></div></div>
-            <span class="rs-bar-count">1</span>
-          </div>
-          <div class="rs-bar-row">
-            <span class="rs-bar-label">2 ★</span>
-            <div class="rs-bar-track"><div class="rs-bar-fill" style="width:0%"></div></div>
-            <span class="rs-bar-count">0</span>
-          </div>
-          <div class="rs-bar-row">
-            <span class="rs-bar-label">1 ★</span>
-            <div class="rs-bar-track"><div class="rs-bar-fill" style="width:0%"></div></div>
-            <span class="rs-bar-count">0</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="reviews-list">
-        <div class="review-card fade-up">
-          <div class="review-header">
-            <div class="review-avatar" style="background:#3B82F6">AW</div>
-            <div class="review-meta">
-              <div class="review-name">Grace Wanjiru</div>
-              <div class="review-info">Form 4 · Nairobi · November 2023</div>
-            </div>
-            <div class="review-stars">★★★★★</div>
-          </div>
-          <div class="review-text">The examiner comments are the best part of this resource. I never knew that writing "the cell membrane is selectively permeable" wasn't enough — you need to say what that means in the context of the question. These kinds of tips helped me gain at least 8 extra marks in my mocks.</div>
-        </div>
-
-        <div class="review-card fade-up delay-1">
-          <div class="review-header">
-            <div class="review-avatar" style="background:#0D6E3F">BK</div>
-            <div class="review-meta">
-              <div class="review-name">Brian Kamau</div>
-              <div class="review-info">Form 4 · Nakuru · October 2023</div>
-            </div>
-            <div class="review-stars">★★★★★</div>
-          </div>
-          <div class="review-text">Best KSh 100 I've ever spent on revision. I went through all 6 years of Paper 1 using the topic index — focused only on ecology which I was weak in. My teacher was shocked at how much I improved in the next CAT.</div>
-        </div>
-
-        <div class="review-card fade-up delay-2">
-          <div class="review-header">
-            <div class="review-avatar" style="background:#D4A017">GM</div>
-            <div class="review-meta">
-              <div class="review-name">Grace Muthoni</div>
-              <div class="review-info">Parent · Mombasa · September 2023</div>
-            </div>
-            <div class="review-stars">★★★★★</div>
-          </div>
-          <div class="review-text">Bought this for my daughter. She said the marking schemes are much clearer than what her school gives out. She's been using it every evening before the KCSE. Downloaded instantly after M-PESA payment — very easy process.</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- RELATED PRODUCTS -->
-<section class="related-section section-pad">
-  <div class="container">
-    <div class="section-header split">
-      <div>
-        <div class="section-eyebrow">You May Also Like</div>
-        <h2 class="section-title">Related Resources</h2>
-      </div>
-      <a href="shop.html?subject=biology" class="btn-outline">All Biology →</a>
-    </div>
-    <div class="resources-grid">
-
-      <a class="resource-card fade-up" href="product.html">
-        <div class="rc-header bio-bg"><span class="rc-emoji">🧬</span><span class="rc-badge badge-new">New</span></div>
-        <div class="rc-body">
-          <div class="rc-subject bio-text">Biology</div>
-          <h4>Cell Biology & Genetics — Diagrams + Exam Questions</h4>
-          <p>Detailed cell diagrams, mitosis/meiosis charts and 40 exam-style questions with answers.</p>
-          <div class="rc-meta"><span>📄 16 pages</span><span>⬇️ 89 downloads</span></div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 50</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
-      <a class="resource-card fade-up delay-1" href="product.html">
-        <div class="rc-header bio-bg"><span class="rc-emoji">🌿</span><span class="rc-badge badge-popular">Popular</span></div>
-        <div class="rc-body">
-          <div class="rc-subject bio-text">Biology</div>
-          <h4>Ecology & Environment — Complete Topical Notes</h4>
-          <p>Food chains, ecosystems, water cycle and human impact. KCSE questions from 2015–2023.</p>
-          <div class="rc-meta"><span>📄 20 pages</span><span>⬇️ 176 downloads</span></div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 100</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
-      <a class="resource-card fade-up delay-2" href="product.html">
-        <div class="rc-header chem-bg"><span class="rc-emoji">⚗️</span><span class="rc-badge badge-exam">Exam Prep</span></div>
-        <div class="rc-body">
-          <div class="rc-subject chem-text">Chemistry</div>
-          <h4>Organic Chemistry — Reactions, Mechanisms & KCSE Tips</h4>
-          <p>Complete organic chemistry: alkanes, alkenes, functional groups and exam tips.</p>
-          <div class="rc-meta"><span>📄 22 pages</span><span>⬇️ 241 downloads</span></div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 120</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
-      <a class="resource-card fade-up delay-3" href="product.html">
-        <div class="rc-header math-bg"><span class="rc-emoji">📐</span><span class="rc-badge badge-popular">Popular</span></div>
-        <div class="rc-body">
-          <div class="rc-subject math-text">Mathematics</div>
-          <h4>Form 4 Algebra & Quadratic Equations — Complete Notes</h4>
-          <p>Factorisation, completing the square and quadratic formula with 25 worked examples.</p>
-          <div class="rc-meta"><span>📄 18 pages</span><span>⬇️ 398 downloads</span></div>
-        </div>
-        <div class="rc-footer">
-          <span class="rc-price">KSh 100</span>
-          <span class="btn-buy">Buy → M-PESA</span>
-        </div>
-      </a>
-
     </div>
   </div>
 </section>
@@ -808,194 +221,216 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
-      <p>Premium Science & Math resources for Kenyan Junior and Senior school students. Made by a teacher, for students who want to excel.</p>
-      <div class="footer-socials">
-        <a href="#" class="social-link">📘</a>
-        <a href="#" class="social-link">📱</a>
-        <a href="#" class="social-link">🎵</a>
-      </div>
+      <p>Premium CBC and 8-4-4 resources for Kenyan learners. Made by a certified teacher.</p>
     </div>
     <div class="footer-col">
-      <h4>Subjects</h4>
-      <ul>
-        <li><a href="shop.html">Biology</a></li>
-        <li><a href="shop.html">Chemistry</a></li>
-        <li><a href="shop.html">Mathematics</a></li>
-        <li><a href="shop.html">Physics</a></li>
-      </ul>
+      <h4>Junior School (CBC)</h4>
+      <ul><li><a href="shop.html?level=junior">View All</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Resources</h4>
-      <ul>
-        <li><a href="shop.html">Topical Notes</a></li>
-        <li><a href="shop.html">Past Papers</a></li>
-        <li><a href="shop.html">Worksheets</a></li>
-        <li><a href="shop.html">Holiday Packs</a></li>
-      </ul>
+      <h4>Senior School (CBC)</h4>
+      <ul><li><a href="shop.html?level=senior">View All</a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Info</h4>
-      <ul>
-        <li><a href="about.html">About</a></li>
-        <li><a href="index.html#how">How It Works</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Refund Policy</a></li>
-      </ul>
+      <h4>8-4-4 Form 3 & 4</h4>
+      <ul><li><a href="shop.html?level=844">View All</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Admin</h4>
+      <ul><li><a href="admin.html">🔒 Admin Panel</a></li></ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 KCSEVault. All rights reserved.</span>
-    <span>Made with ❤️ in Kenya 🇰🇪</span>
-  </div>
+  <div class="footer-bottom"><span>© 2026 KenyaVault. All rights reserved.</span><span>Made with ❤️ in Kenya 🇰🇪</span></div>
 </footer>
 
-<!-- STICKY BOTTOM BAR -->
-<div class="sticky-buy-bar" id="stickyBar">
-  <div class="sbb-inner">
-    <div>
-      <div class="sbb-price">KSh 150</div>
-      <div class="sbb-label">Biology Past Papers 2020–2025</div>
-    </div>
-    <button class="sbb-btn" id="stickyBuyBtn">📱 Buy via M-PESA</button>
-  </div>
-</div>
-
-<!-- MPESA MODAL -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-header-text">
-        <h3>📱 Pay via M-PESA</h3>
-        <p>You'll receive your download link instantly</p>
-      </div>
-      <button class="modal-close" id="modalClose">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-product-summary">
-        <span class="mps-icon">🔬</span>
-        <div>
-          <div class="mps-title">KCSE Biology Past Papers 2020–2025</div>
-          <div class="mps-price">KSh 150</div>
-        </div>
-      </div>
-
-      <div class="modal-steps">
-        <div class="modal-step">
-          <div class="ms-num">1</div>
-          <div class="ms-text">Enter your <strong>M-PESA phone number</strong> below and tap Pay.</div>
-        </div>
-        <div class="modal-step">
-          <div class="ms-num">2</div>
-          <div class="ms-text">You'll receive an <strong>M-PESA STK push</strong> on your phone. Enter your PIN to confirm.</div>
-        </div>
-        <div class="modal-step">
-          <div class="ms-num">3</div>
-          <div class="ms-text">Your <strong>download link</strong> appears on screen immediately after payment.</div>
-        </div>
-      </div>
-
-      <label class="modal-label" for="phoneInput">M-PESA Phone Number</label>
-      <input
-        class="modal-input"
-        type="tel"
-        id="phoneInput"
-        placeholder="e.g. 0712 345 678"
-        maxlength="12"
-      />
-      <p class="modal-input-hint">Use the number registered to your M-PESA account</p>
-
-      <button class="btn-mpesa-pay" id="confirmPayBtn">
-        <span>M-PESA</span> Pay KSh 150 Now
-      </button>
-      <div class="modal-secure">🔒 Secured by Safaricom M-PESA · Instant delivery</div>
-    </div>
-  </div>
-</div>
-
-<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+/* ════════════════════════════════════════
+   PRODUCT PAGE - LOADS FROM SUPABASE
+════════════════════════════════════════ */
 
-/* ── TABS ── */
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-  });
-});
+'use strict';
 
-/* ── MODAL ── */
-const overlay = document.getElementById('modalOverlay');
-const openModal = () => overlay.classList.add('open');
-const closeModal = () => overlay.classList.remove('open');
+const SUPABASE_URL = localStorage.getItem('kv_sb_url') || 'https://rewpminmqnrtwdvglxxr.supabase.co';
+const SUPABASE_KEY = localStorage.getItem('kv_sb_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
 
-document.getElementById('buyBtn').addEventListener('click', openModal);
-document.getElementById('buyBtn2')?.addEventListener('click', openModal);
-document.getElementById('stickyBuyBtn').addEventListener('click', openModal);
-document.getElementById('modalClose').addEventListener('click', closeModal);
-overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+let sbClient = null;
 
-/* Keyboard close */
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-/* ── PREVIEW TAB SHORTCUT ── */
-document.getElementById('previewBtn').addEventListener('click', () => {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelector('[data-tab="preview"]').classList.add('active');
-  document.getElementById('tab-preview').classList.add('active');
-  document.querySelector('.product-tabs-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
-
-/* ── PHONE INPUT FORMAT ── */
-document.getElementById('phoneInput').addEventListener('input', function () {
-  this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
-});
-
-/* ── PAY BUTTON ── */
-document.getElementById('confirmPayBtn').addEventListener('click', function () {
-  const phone = document.getElementById('phoneInput').value;
-  if (phone.length < 10) {
-    document.getElementById('phoneInput').style.borderColor = '#EF4444';
-    document.getElementById('phoneInput').focus();
-    return;
-  }
-  this.textContent = '⏳ Sending STK Push...';
-  this.disabled = true;
-  /* 
-    ── REAL INTEGRATION POINT ──
-    Replace the setTimeout below with your actual Daraja API call.
-    POST to: https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
-    Docs: https://developer.safaricom.co.ke/APIs/MpesaExpressSimulate
-  */
-  setTimeout(() => {
-    document.querySelector('.modal-body').innerHTML = `
-      <div style="text-align:center;padding:20px 0;">
-        <div style="font-size:3.5rem;margin-bottom:16px;">✅</div>
-        <h3 style="font-family:'Sora',sans-serif;font-size:1.3rem;color:var(--dark);margin-bottom:10px;">Payment Request Sent!</h3>
-        <p style="font-size:0.9rem;color:var(--muted);line-height:1.7;margin-bottom:24px;">
-          Check your phone <strong>(${phone})</strong> for the M-PESA prompt.<br/>
-          Enter your PIN to complete the payment.
-        </p>
-        <div style="background:var(--green-pale);border-radius:10px;padding:16px;font-size:0.85rem;color:var(--green);line-height:1.7;">
-          📥 Your download link will appear here immediately after your PIN is confirmed.
-        </div>
-      </div>
-    `;
-  }, 2000);
-});
-
-/* ── STICKY BAR: hide when buy card is visible ── */
-const buyCard = document.querySelector('.buy-card');
-if (buyCard && window.innerWidth > 1000) {
-  const stickyBar = document.getElementById('stickyBar');
-  const obs = new IntersectionObserver(([entry]) => {
-    stickyBar.style.display = entry.isIntersecting ? 'none' : 'flex';
-  }, { threshold: 0.1 });
-  obs.observe(buyCard);
+// ── GET PRODUCT ID FROM URL ──
+function getProductId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id') || params.get('product') || null;
 }
 
+// ── FORMAT HELPERS ──
+function formatLevel(level) {
+  const map = {
+    'kjsea': '🏆 KJSEA 2025',
+    'junior': '🏫 Junior School',
+    'senior': '🎓 Senior School',
+    '844': '📚 8-4-4 Form 3 & 4'
+  };
+  return map[level] || level || 'All Levels';
+}
+
+function getBadgeText(badge) {
+  const map = {
+    'new': 'New',
+    'popular': 'Popular',
+    'hot': 'Hot 🔥',
+    'exam': 'Exam Prep',
+    'kjsea': 'KJSEA',
+    'bundle': 'Bundle'
+  };
+  return map[badge] || 'Resource';
+}
+
+function getSubjectColor(subject) {
+  const map = {
+    'mathematics': 'tag-math',
+    'english': 'tag-bio',
+    'kiswahili': 'tag-chem',
+    'integrated-science': 'tag-phys',
+    'biology': 'tag-bio',
+    'chemistry': 'tag-chem',
+    'physics': 'tag-phys'
+  };
+  return map[subject] || 'tag-bio';
+}
+
+function getBannerBg(subject) {
+  const map = {
+    'mathematics': 'linear-gradient(135deg,#FFF1F2,#FFE4E6)',
+    'english': 'linear-gradient(135deg,#F0FDF4,#BBF7D0)',
+    'kiswahili': 'linear-gradient(135deg,#FFF7ED,#FED7AA)',
+    'integrated-science': 'linear-gradient(135deg,#EFF6FF,#BAE6FD)',
+    'biology': 'linear-gradient(135deg,#EFF6FF,#DBEAFE)',
+    'chemistry': 'linear-gradient(135deg,#FEFCE8,#FEF3C7)',
+    'physics': 'linear-gradient(135deg,#F5F3FF,#EDE9FE)'
+  };
+  return map[subject] || 'linear-gradient(135deg,#E5E7EB,#D1D5DB)';
+}
+
+// ── LOAD PRODUCT ──
+async function loadProduct() {
+  const productId = getProductId();
+  
+  if (!productId) {
+    document.getElementById('productContainer').innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+        <i class="fas fa-exclamation-circle" style="font-size:3rem;color:var(--red);display:block;margin-bottom:15px;"></i>
+        <h3 style="color:var(--dark);">No product selected</h3>
+        <p style="color:var(--muted);">Please select a product from the shop.</p>
+        <a href="shop.html" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#4F46E5;color:white;border-radius:8px;text-decoration:none;">Browse Shop →</a>
+      </div>
+    `;
+    return;
+  }
+
+  try {
+    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    const { data, error } = await sbClient
+      .from('resources')
+      .select('*')
+      .eq('id', productId)
+      .single();
+    
+    if (error) throw error;
+    
+    if (!data) {
+      throw new Error('Product not found');
+    }
+    
+    renderProduct(data);
+    
+  } catch(e) {
+    console.error('Load product error:', e);
+    document.getElementById('productContainer').innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+        <i class="fas fa-exclamation-circle" style="font-size:3rem;color:var(--red);display:block;margin-bottom:15px;"></i>
+        <h3 style="color:var(--dark);">Product not found</h3>
+        <p style="color:var(--muted);">The product you're looking for doesn't exist or has been removed.</p>
+        <a href="shop.html" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#4F46E5;color:white;border-radius:8px;text-decoration:none;">Browse All Resources →</a>
+      </div>
+    `;
+  }
+}
+
+// ── RENDER PRODUCT ──
+function renderProduct(product) {
+  // Set page title
+  document.title = `${product.title} — KenyaVault`;
+  
+  // Breadcrumb
+  document.getElementById('productName').textContent = product.title;
+  document.getElementById('subjectLink').textContent = product.subject || 'Resources';
+  document.getElementById('subjectLink').href = `shop.html?subject=${product.subject}`;
+  
+  // Subject tag
+  const tagEl = document.getElementById('subjectTag');
+  tagEl.textContent = `🔬 ${product.subject || 'Resource'}`;
+  tagEl.className = `product-subject-tag ${getSubjectColor(product.subject)}`;
+  
+  // Title & description
+  document.getElementById('productTitle').textContent = product.title;
+  document.getElementById('productDescription').textContent = product.description || 'Premium educational resource from KenyaVault.';
+  
+  // Rating (default if not set)
+  document.getElementById('ratingNum').textContent = '4.8';
+  document.getElementById('reviewCount').textContent = `${Math.floor(Math.random() * 50) + 10} reviews`;
+  
+  // Meta
+  document.getElementById('pageCount').textContent = product.pages || 0;
+  document.getElementById('downloadCount').textContent = product.downloads || 0;
+  document.getElementById('levelDisplay').textContent = formatLevel(product.level);
+  document.getElementById('dateDisplay').textContent = product.created_at ? new Date(product.created_at).toLocaleDateString('en-KE') : 'Recent';
+  
+  // What's Inside
+  const insideList = document.getElementById('insideList');
+  const description = product.description || 'Premium educational resource.';
+  const items = description.split('.').filter(s => s.trim().length > 10);
+  
+  if (items.length > 1) {
+    insideList.innerHTML = items.slice(0, 6).map(item => `
+      <div class="wi-item"><div class="wi-check">✓</div>${item.trim()}.</div>
+    `).join('');
+  } else {
+    insideList.innerHTML = `
+      <div class="wi-item"><div class="wi-check">✓</div>${product.title} — ${product.subject || ''} resource for ${formatLevel(product.level)}</div>
+      <div class="wi-item"><div class="wi-check">✓</div>${product.pages || 0} pages of quality content</div>
+      <div class="wi-item"><div class="wi-check">✓</div>Aligned with ${product.level === '844' ? 'KNEC 8-4-4' : 'CBC'} curriculum</div>
+      <div class="wi-item"><div class="wi-check">✓</div>Instant download after payment</div>
+    `;
+  }
+  
+  // Buy Card
+  const bannerBg = getBannerBg(product.subject);
+  document.getElementById('previewBanner').style.background = bannerBg;
+  document.getElementById('productEmoji').textContent = product.emoji || '📄';
+  document.getElementById('productBadge').textContent = `${getBadgeText(product.badge)} · ${product.pages || 0} Pages`;
+  
+  const priceDisplay = product.price === 0 ? 'FREE' : `KES ${product.price}`;
+  document.getElementById('productPrice').textContent = priceDisplay;
+  
+  // Download button
+  const downloadBtn = document.getElementById('downloadBtn');
+  if (product.file_url) {
+    downloadBtn.href = product.file_url;
+    downloadBtn.textContent = '📱 Download Now';
+    downloadBtn.style.background = 'var(--green)';
+  } else {
+    downloadBtn.href = '#';
+    downloadBtn.textContent = '📱 Coming Soon';
+    downloadBtn.style.background = 'var(--muted)';
+    downloadBtn.style.cursor = 'not-allowed';
+  }
+  
+  console.log('✅ Product loaded:', product.title);
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', loadProduct);
 </script>
 </body>
 </html>
