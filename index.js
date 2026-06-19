@@ -296,3 +296,41 @@ export default {
     return new Response('Page not found', { status: 404 });
   }
 };
+// index.js - KenyaVault Worker with Static Assets Support
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    // Define routes to your HTML files
+    const routes = {
+      '/': 'index.html',
+      '/index.html': 'index.html',
+      '/shop.html': 'shop.html',
+      '/classes.html': 'classes.html',
+      '/about.html': 'about.html',
+      '/contact.html': 'contact.html',
+      '/confirmation.html': 'confirmation.html',
+      '/product.html': 'product.html',
+      '/admin.html': 'admin.html',
+      '/styles.css': 'styles.css',
+      '/script.js': 'script.js',
+    };
+
+    // Check if it's a known route
+    if (routes[path]) {
+      // Fetch the file from your assets (you'll need to bind them)
+      try {
+        const file = await env.ASSETS.fetch(new URL('/' + routes[path], request.url));
+        return file;
+      } catch {
+        // If file not found, return 404
+        return new Response('Page not found', { status: 404 });
+      }
+    }
+
+    // Default: serve index.html
+    return env.ASSETS.fetch(request);
+  }
+};
