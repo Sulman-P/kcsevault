@@ -107,7 +107,6 @@
 .modal-close:hover { background: rgba(255,255,255,0.2); }
 .modal-body { padding: 24px; }
 
-/* Payment Details */
 .payment-details {
   background: var(--surface); border-radius: 12px;
   padding: 20px; margin-bottom: 20px;
@@ -245,48 +244,18 @@
   </div>
 </section>
 
-<!-- Payment Modal -->
+<!-- PAYMENT MODAL -->
 <div class="modal-overlay" id="paymentModal">
   <div class="modal">
     <div class="modal-header">
       <div>
-        <h3>📱 Pay with M-PESA</h3>
-        <p id="modalProductTitle">Complete your purchase</p>
+        <h3>📱 Book This Class</h3>
+        <p id="modalClassTitle">Complete your booking</p>
       </div>
       <button class="modal-close" id="modalClose">✕</button>
     </div>
     <div class="modal-body">
 
-      <!-- Product Details -->
-      <div class="payment-details">
-        <div class="pd-row"><span class="pd-label">Item</span><span class="pd-value" id="pdTitle">—</span></div>
-        <div class="pd-row"><span class="pd-label">Amount</span><span class="pd-value highlight" id="pdPrice">KES 0</span></div>
-      </div>
-
-      <!-- Phone Input -->
-      <div class="form-group">
-        <label class="modal-label">M-PESA Phone Number</label>
-        <input class="modal-input" type="tel" id="mpesaPhone" 
-               placeholder="0712 345 678" maxlength="12"/>
-        <p class="modal-hint">Enter the number registered to your M-PESA account</p>
-      </div>
-
-      <!-- Actions -->
-      <div class="payment-actions">
-        <button class="btn-mpesa" id="payNowBtn">
-          💳 Pay KSh <span id="payAmount">0</span> Now
-        </button>
-        <div class="modal-note">
-          🔒 You'll receive an M-PESA prompt on your phone.<br/>
-          Enter your PIN to complete the payment.
-          </div>
-         </div>
-
-        </div>
-       </div>
-      </div>
-
-      <!-- Class Details -->
       <div class="payment-details">
         <div class="pd-row"><span class="pd-label">Class</span><span class="pd-value" id="pdClass">—</span></div>
         <div class="pd-row"><span class="pd-label">Tutor</span><span class="pd-value" id="pdTutor">—</span></div>
@@ -294,7 +263,6 @@
         <div class="pd-row"><span class="pd-label">Amount</span><span class="pd-value highlight" id="pdAmount">KES 0</span></div>
       </div>
 
-      <!-- Payment Instructions -->
       <div class="payment-instructions">
         <h4>📱 Pay via POCHI LA BIASHARA</h4>
         <ol>
@@ -307,7 +275,6 @@
         </ol>
       </div>
 
-      <!-- Actions -->
       <div class="payment-actions">
         <a href="#" id="whatsappConfirmBtn" target="_blank" class="btn-whatsapp-send">
           📱 Confirm & Send Payment Details
@@ -346,16 +313,17 @@
   <div class="footer-bottom"><span>© 2026 KenyaVault. All rights reserved.</span><span>Made with ❤️ in Kenya 🇰🇪</span></div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 /* ════════════════════════════════════════
    CLASSES PAGE - LOADS FROM SUPABASE
+   FIXED VERSION
 ════════════════════════════════════════ */
 
 'use strict';
 
-const SUPABASE_URL = localStorage.getItem('kv_sb_url') || 'https://rewpminmqnrtwdvglxxr.supabase.co';
-const SUPABASE_KEY = localStorage.getItem('kv_sb_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
+// ── SUPABASE CONFIG ──
+const SUPABASE_URL = 'https://rewpminmqnrtwdvglxxr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
 
 let sbClient = null;
 let currentClass = null;
@@ -370,84 +338,50 @@ function showToast(msg, type = 'success') {
   setTimeout(() => t.classList.remove('show'), 3800);
 }
 
-// In your classes.html or shop.html
-
-async function initiatePayment(phoneNumber) {
-  const amount = currentClass?.price || currentProduct?.price || 0;
-  const resourceId = currentClass?.id || currentProduct?.id;
-  const title = currentClass?.title || currentProduct?.title;
-
+// ── INIT ──
+async function init() {
+  console.log('📚 Classes page initializing...');
+  
   try {
-    const response = await fetch('/api/payment/initiate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        phoneNumber: phoneNumber,
-        amount: amount,
-        resourceId: resourceId,
-        resourceTitle: title
-      })
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      showToast('📱 Check your phone for M-PESA prompt', 'success');
-      
-      // Start polling for status
-      pollPaymentStatus(result.checkoutId);
-      
-      // Close the modal
-      closePaymentModal();
-    } else {
-      showToast('❌ Payment initiation failed: ' + result.error, 'error');
-    }
-
-  } catch (error) {
-    console.error('Payment initiation error:', error);
-    showToast('❌ Payment service error. Please try again.', 'error');
-  }
-}
-
-async function pollPaymentStatus(checkoutId, attempts = 0) {
-  if (attempts > 30) {
-    showToast('⏰ Payment confirmation timeout. Please check your M-PESA messages.', 'warning');
-    return;
-  }
-
-  setTimeout(async () => {
-    try {
-      const response = await fetch(`/api/payment/status/${checkoutId}`);
-      const result = await response.json();
-
-      if (result.success) {
-        if (result.status === 'completed' || result.status === 'success') {
-          showToast('✅ Payment successful! Downloading resource...', 'success');
-          // Handle successful payment - deliver resource
-          if (currentClass) {
-            // Send WhatsApp message with meeting link
-            await sendMeetingLinkViaWhatsApp(currentClass, checkoutId);
-          } else if (currentProduct) {
-            // Deliver product download
-            deliverProduct(currentProduct);
-          }
-          return;
-        } else if (result.status === 'failed' || result.status === 'cancelled') {
-          showToast('❌ Payment failed or cancelled. Please try again.', 'error');
-          return;
-        }
+    await loadSupabaseLibrary();
+    
+    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true
       }
-
-      // Still pending - poll again
-      pollPaymentStatus(checkoutId, attempts + 1);
-
-    } catch (error) {
-      console.error('Status poll error:', error);
-      pollPaymentStatus(checkoutId, attempts + 1);
-    }
-  }, 3000); // Poll every 3 seconds
+    });
+    
+    console.log('✅ Supabase client initialized');
+    await loadClasses();
+    console.log('✅ Classes page fully initialized');
+  } catch(e) {
+    console.error('Init error:', e);
+  }
 }
-  // Update WhatsApp link
+
+function loadSupabaseLibrary() {
+  return new Promise((resolve, reject) => {
+    if (window.supabase) { resolve(); return; }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+// ── OPEN PAYMENT MODAL ──
+function openPaymentModal(classData) {
+  currentClass = classData;
+  
+  document.getElementById('modalClassTitle').textContent = classData.title || 'Class Booking';
+  document.getElementById('pdClass').textContent = classData.title || '—';
+  document.getElementById('pdTutor').textContent = classData.tutor || '—';
+  document.getElementById('pdDateTime').textContent = `${classData.date || ''} ${classData.time || ''}`;
+  document.getElementById('pdAmount').textContent = `KES ${classData.price || 0}`;
+  document.getElementById('instructionAmount').textContent = `KES ${classData.price || 0}`;
+  
   const waBtn = document.getElementById('whatsappConfirmBtn');
   const msg = `Hello KenyaVault,\n\nI would like to book:\n📚 ${classData.title}\n👤 ${classData.tutor}\n📅 ${classData.date || ''} ${classData.time || ''}\n💰 KES ${classData.price || 0}\n\nI have sent payment via Pochi la Biashara (0701710662 - SULMAN).\nPlease confirm and send the meeting link.`;
   waBtn.href = `https://wa.me/254768515494?text=${encodeURIComponent(msg)}`;
@@ -456,7 +390,6 @@ async function pollPaymentStatus(checkoutId, attempts = 0) {
   document.body.style.overflow = 'hidden';
 }
 
-// ── CLOSE PAYMENT MODAL ──
 function closePaymentModal() {
   document.getElementById('paymentModal').classList.remove('open');
   document.body.style.overflow = '';
@@ -468,16 +401,20 @@ async function loadClasses() {
   grid.innerHTML = `<div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Loading classes...</div>`;
   
   try {
-    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('📤 Fetching classes from Supabase...');
     
     const { data, error } = await sbClient
       .from('classes')
       .select('*')
       .order('date', { ascending: true });
     
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
     
     const classes = data || [];
+    console.log(`✅ Loaded ${classes.length} classes`);
     
     if (classes.length === 0) {
       grid.innerHTML = `
@@ -534,7 +471,7 @@ async function loadClasses() {
       <div class="empty-state">
         <i class="fas fa-exclamation-circle"></i>
         <h3>Error Loading Classes</h3>
-        <p>${e.message}</p>
+        <p>${e.message || 'Please refresh and try again.'}</p>
         <button onclick="loadClasses()" style="margin-top:10px;padding:10px 20px;background:#4F46E5;color:white;border:none;border-radius:8px;cursor:pointer;">Retry</button>
       </div>
     `;
@@ -543,9 +480,9 @@ async function loadClasses() {
 
 // ── EVENT LISTENERS ──
 document.addEventListener('DOMContentLoaded', function() {
-  loadClasses();
+  console.log('📚 DOM loaded, initializing classes...');
+  init();
   
-  // Close modal
   document.getElementById('modalClose').addEventListener('click', closePaymentModal);
   document.getElementById('paymentModal').addEventListener('click', function(e) {
     if (e.target === this) closePaymentModal();
@@ -554,31 +491,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.key === 'Escape') closePaymentModal();
   });
   
-  // M-PESA button - opens M-PESA app
   document.getElementById('mpesaPayBtn').addEventListener('click', function() {
     if (!currentClass) return;
     
-    // Try to open M-PESA app
     const amount = currentClass.price || 0;
     const phone = '0701710662';
     const account = 'SULMAN';
     
-    // This attempts to open the M-PESA app with a deep link
-    // For Android M-PESA app
     const mpesaAppLink = `mpesa://pay?type=PochiLaBiashara&business=${phone}&amount=${amount}&account=${account}`;
     const mpesaWeb = `https://www.safaricom.co.ke/mpesa/`;
     
-    // Try to open the app first
     const win = window.open(mpesaAppLink, '_blank');
     if (!win || win.closed) {
-      // If app can't be opened, open web version
       window.open(mpesaWeb, '_blank');
       showToast('💳 Please open M-PESA app and pay to 0701710662 (SULMAN)', 'info');
     } else {
       showToast('📱 M-PESA app opening...', 'success');
     }
     
-    // Also open WhatsApp with confirmation message
     setTimeout(() => {
       const msg = `Hello KenyaVault,\n\nI have paid KES ${amount} via Pochi la Biashara (0701710662 - SULMAN) for:\n📚 ${currentClass.title}\n👤 ${currentClass.tutor}\n📅 ${currentClass.date || ''} ${currentClass.time || ''}\n\nPlease send the meeting link.`;
       window.open(`https://wa.me/254768515494?text=${encodeURIComponent(msg)}`, '_blank');
