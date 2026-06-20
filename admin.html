@@ -7,11 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --green:#0D6E3F; --green-light:#12924F; --green-pale:#E8F5EE;
-  --gold:#D4A017; --gold-light:#F5C842; --gold-pale:#FDF6DC;
-  --dark:#0B1A12; --surface:#F4F8F5; --white:#FFFFFF;
-  --text:#1C2B23; --muted:#5A7265; --border:#D0E4D8;
-  --red:#EF4444; --blue:#3B82F6; --purple:#7C3AED;
+  --green:#0D6E3F;
+  --green-light:#12924F;
+  --green-pale:#E8F5EE;
+  --gold:#D4A017;
+  --gold-light:#F5C842;
+  --gold-pale:#FDF6DC;
+  --dark:#0B1A12;
+  --surface:#F4F8F5;
+  --white:#FFFFFF;
+  --text:#1C2B23;
+  --muted:#5A7265;
+  --border:#D0E4D8;
+  --red:#EF4444;
+  --blue:#3B82F6;
+  --purple:#7C3AED;
   --radius:12px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -124,7 +134,7 @@ a{text-decoration:none;color:inherit;}
   position:sticky;top:0;z-index:90;
   box-shadow:0 1px 6px rgba(0,0,0,0.05);
 }
-.topbar-title{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--dark);}
+.topbar-title{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--text);}
 .topbar-right{display:flex;align-items:center;gap:14px;}
 .topbar-status{
   display:flex;align-items:center;gap:6px;
@@ -197,6 +207,56 @@ a{text-decoration:none;color:inherit;}
 }
 .admin-card-header h3{font-size:0.88rem;font-weight:700;color:var(--dark);}
 .admin-card-body{padding:20px;}
+
+/* ── FORMS ── */
+.form-row{display:grid;gap:14px;margin-bottom:14px;}
+.form-row-2{grid-template-columns:1fr 1fr;}
+.form-row-3{grid-template-columns:1fr 1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:0.8rem;font-weight:600;color:var(--text);}
+.form-label .req{color:var(--red);}
+.form-input,.form-select,.form-textarea{
+  padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:'Inter',sans-serif;font-size:0.88rem;color:var(--text);
+  outline:none;transition:border-color 0.2s;background:var(--surface);
+  width:100%;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--green);background:var(--white);
+}
+.form-textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.form-select{cursor:pointer;}
+.form-hint{font-size:0.72rem;color:var(--muted);margin-top:3px;}
+
+/* ── FILE UPLOAD ── */
+.file-upload-area{
+  border:2px dashed var(--border);border-radius:10px;
+  padding:28px 20px;text-align:center;cursor:pointer;
+  transition:all 0.2s;background:var(--surface);
+}
+.file-upload-area:hover,.file-upload-area.dragover{
+  border-color:var(--green);background:var(--green-pale);
+}
+.fua-icon{font-size:2rem;margin-bottom:8px;}
+.fua-text{font-size:0.85rem;color:var(--muted);}
+.fua-text strong{color:var(--green);}
+.fua-sub{font-size:0.72rem;color:var(--muted);margin-top:4px;}
+
+.file-preview{
+  display:none;align-items:center;gap:12px;
+  background:var(--green-pale);border:1px solid rgba(13,110,63,0.2);
+  border-radius:8px;padding:12px 14px;margin-top:10px;
+}
+.fp-icon{font-size:1.5rem;flex-shrink:0;}
+.fp-info{flex:1;}
+.fp-name{font-size:0.85rem;font-weight:600;color:var(--dark);}
+.fp-size{font-size:0.72rem;color:var(--muted);}
+.fp-remove{color:var(--red);cursor:pointer;font-size:1.1rem;flex-shrink:0;padding:4px;}
+
+.upload-progress{margin-top:10px;display:none;}
+.up-bar-track{height:6px;background:var(--border);border-radius:99px;overflow:hidden;}
+.up-bar-fill{height:100%;background:var(--green);border-radius:99px;width:0%;transition:width 0.4s;}
+.up-text{font-size:0.75rem;color:var(--muted);margin-top:5px;}
 
 /* ── BUTTONS ── */
 .btn-primary{
@@ -399,7 +459,7 @@ a{text-decoration:none;color:inherit;}
               <table class="admin-table">
                 <thead><tr><th>Student</th><th>Resource</th><th>Amount</th><th>Status</th></tr></thead>
                 <tbody id="recentOrdersBody">
-                  <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">Loading orders...</td></tr>
+                  <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No orders yet</td></tr>
                 </tbody>
               </table>
             </div>
@@ -428,20 +488,345 @@ a{text-decoration:none;color:inherit;}
         </div>
       </div>
 
+      <!-- ── RESOURCES ── -->
+      <div class="admin-page" id="page-resources">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>📄 All Resources (<span id="resourceCount">0</span>)</h3>
+            <button class="btn-primary btn-sm" onclick="switchPage('upload')">+ Upload New</button>
+          </div>
+          <div class="admin-card-body">
+            <div class="table-toolbar">
+              <input class="table-search" id="resSearch" type="text" placeholder="Search by title..."/>
+              <select class="table-filter" id="resLevelFilter">
+                <option value="">All Levels</option>
+                <option value="kjsea">KJSEA 2025</option>
+                <option value="junior">Junior School</option>
+                <option value="senior">Senior School</option>
+                <option value="844">8-4-4</option>
+              </select>
+              <button class="btn-secondary btn-sm" onclick="loadResources()">🔄 Refresh</button>
+            </div>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Resource</th>
+                  <th>Level</th>
+                  <th>Subject</th>
+                  <th>Price</th>
+                  <th>Downloads</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="resourcesBody">
+                <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">Loading resources...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── UPLOAD PDF ── -->
+      <div class="admin-page" id="page-upload">
+        <div class="alert alert-info" id="uploadAlert">
+          ℹ️ <span id="uploadAlertText">Connect Supabase to enable real file uploads.</span>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>⬆️ Upload New Resource</h3>
+          </div>
+          <div class="admin-card-body">
+
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label class="form-label">Resource Title <span class="req">*</span></label>
+                <input class="form-input" type="text" id="resTitle"
+                  placeholder="e.g. Grade 9 Mathematics — KJSEA Final Revision Notes"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Price (KSh) <span class="req">*</span></label>
+                <input class="form-input" type="number" id="resPrice" placeholder="150" min="50"/>
+              </div>
+            </div>
+
+            <div class="form-row form-row-3">
+              <div class="form-group">
+                <label class="form-label">Curriculum Level <span class="req">*</span></label>
+                <select class="form-select" id="resLevel">
+                  <option value="">Select level...</option>
+                  <option value="kjsea">🏆 KJSEA 2025</option>
+                  <option value="junior">🏫 CBC Junior School</option>
+                  <option value="senior">🎓 CBC Senior School</option>
+                  <option value="844">📚 8-4-4 Form 3 & 4</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject <span class="req">*</span></label>
+                <select class="form-select" id="resSubject">
+                  <option value="">Select subject...</option>
+                  <option value="mathematics">Mathematics</option>
+                  <option value="english">English</option>
+                  <option value="kiswahili">Kiswahili</option>
+                  <option value="integrated-science">Integrated Science</option>
+                  <option value="social-studies">Social Studies</option>
+                  <option value="pre-technical">Pre-Technical Studies</option>
+                  <option value="agriculture">Agriculture</option>
+                  <option value="religious-education">Religious Education</option>
+                  <option value="creative-arts">Creative Arts</option>
+                  <option value="health-pe">Health & P.E.</option>
+                  <option value="biology">Biology</option>
+                  <option value="chemistry">Chemistry</option>
+                  <option value="physics">Physics</option>
+                  <option value="core-mathematics">Core Mathematics</option>
+                  <option value="geography">Geography</option>
+                  <option value="history">History & Citizenship</option>
+                  <option value="business">Business Studies</option>
+                  <option value="computer-studies">Computer Studies</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Grade / Form</label>
+                <select class="form-select" id="resGrade">
+                  <option value="">Select grade...</option>
+                  <option value="grade7">Grade 7</option>
+                  <option value="grade8">Grade 8</option>
+                  <option value="grade9">Grade 9 (KJSEA)</option>
+                  <option value="grade10">Grade 10</option>
+                  <option value="grade11">Grade 11</option>
+                  <option value="grade12">Grade 12</option>
+                  <option value="form3">Form 3</option>
+                  <option value="form4">Form 4</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row form-row-3">
+              <div class="form-group">
+                <label class="form-label">Resource Type</label>
+                <select class="form-select" id="resType">
+                  <option value="notes">📝 Topical Notes</option>
+                  <option value="pastpaper">📋 Past Paper</option>
+                  <option value="marking-scheme">✅ Marking Scheme</option>
+                  <option value="worksheet">📄 Worksheet</option>
+                  <option value="holiday-pack">🗓️ Holiday Pack</option>
+                  <option value="formula-sheet">🔢 Formula Sheet</option>
+                  <option value="bundle">📦 Bundle</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Badge Label</label>
+                <select class="form-select" id="resBadge">
+                  <option value="new">🆕 New</option>
+                  <option value="popular">⭐ Popular</option>
+                  <option value="hot">🔥 Hot</option>
+                  <option value="exam">📝 Exam Prep</option>
+                  <option value="bundle">📦 Bundle</option>
+                  <option value="kjsea">🏆 KJSEA</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cover Emoji</label>
+                <input class="form-input" type="text" id="resEmoji"
+                  placeholder="📐" maxlength="4" style="font-size:1.2rem;"/>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:14px;">
+              <label class="form-label">Description</label>
+              <textarea class="form-textarea" id="resDesc"
+                placeholder="Describe what is inside — topics covered, page count, what makes it useful for students..."></textarea>
+            </div>
+
+            <!-- FILE UPLOAD ZONE -->
+            <div class="form-group" style="margin-bottom:14px;">
+              <label class="form-label">PDF File <span class="req">*</span></label>
+              <div class="file-upload-area" id="fileDropZone">
+                <input type="file" id="pdfInput" accept=".pdf" style="display:none;"/>
+                <div class="fua-icon">📄</div>
+                <div class="fua-text"><strong>Click to choose PDF</strong> or drag and drop here</div>
+                <div class="fua-sub">PDF only · Maximum 20 MB</div>
+              </div>
+              <div class="file-preview" id="filePreview">
+                <span class="fp-icon">📄</span>
+                <div class="fp-info">
+                  <div class="fp-name" id="fpName">filename.pdf</div>
+                  <div class="fp-size" id="fpSize">0 MB</div>
+                </div>
+                <span class="fp-remove" id="fpRemove" title="Remove file">✕</span>
+              </div>
+              <div class="upload-progress" id="uploadProgress">
+                <div class="up-bar-track"><div class="up-bar-fill" id="uploadBar"></div></div>
+                <div class="up-text" id="uploadText">Uploading... 0%</div>
+              </div>
+            </div>
+
+            <!-- TOGGLES -->
+            <div style="display:flex;gap:28px;margin-bottom:22px;flex-wrap:wrap;">
+              <div class="toggle-group">
+                <div class="toggle on" id="togPublish"></div>
+                <span class="toggle-label">Publish immediately</span>
+              </div>
+              <div class="toggle-group">
+                <div class="toggle" id="togFeatured"></div>
+                <span class="toggle-label">Feature on homepage</span>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn-primary" id="uploadBtn">⬆️ Upload & Save Resource</button>
+              <button class="btn-secondary" id="clearUploadBtn">✕ Clear Form</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LIVE CLASSES ── -->
+      <div class="admin-page" id="page-classes">
+        <div class="admin-card" style="margin-bottom:20px;">
+          <div class="admin-card-header"><h3>➕ Schedule New Class</h3></div>
+          <div class="admin-card-body">
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label class="form-label">Class Title <span class="req">*</span></label>
+                <input class="form-input" id="classTitle" placeholder="e.g. Grade 9 Mathematics"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tutor Name <span class="req">*</span></label>
+                <input class="form-input" id="classTutor" placeholder="e.g. Mr. M. Kamau"/>
+              </div>
+            </div>
+            <div class="form-row form-row-3">
+              <div class="form-group">
+                <label class="form-label">Date <span class="req">*</span></label>
+                <input class="form-input" type="date" id="classDate"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Start Time <span class="req">*</span></label>
+                <input class="form-input" type="time" id="classTime"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duration</label>
+                <select class="form-select" id="classDuration">
+                  <option value="60">60 minutes</option>
+                  <option value="90">90 minutes</option>
+                  <option value="120">2 hours</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row form-row-3">
+              <div class="form-group">
+                <label class="form-label">Curriculum Level</label>
+                <select class="form-select" id="classLevel">
+                  <option value="kjsea">🏆 KJSEA 2025</option>
+                  <option value="junior">🏫 Junior School</option>
+                  <option value="senior">🎓 Senior School</option>
+                  <option value="844">📚 Form 3 & 4</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject</label>
+                <input class="form-input" id="classSubject" placeholder="e.g. Mathematics"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Price (KSh) <span class="req">*</span></label>
+                <input class="form-input" type="number" id="classPrice" placeholder="500"/>
+              </div>
+            </div>
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label class="form-label">Platform</label>
+                <select class="form-select" id="classPlatform">
+                  <option value="googlemeet">🟢 Google Meet</option>
+                  <option value="zoom">🔵 Zoom</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Max Students</label>
+                <input class="form-input" type="number" id="classMax" value="20"/>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:8px;">
+              <label class="form-label">🔗 Meeting Link <span class="req">*</span></label>
+              <input class="form-input" type="url" id="classMeetingLink"
+                placeholder="https://meet.google.com/abc-defg-hij"
+                style="font-family:monospace;font-size:0.84rem;"/>
+              <div class="form-hint">⚠️ This link is ONLY sent to students after payment confirmation.</div>
+            </div>
+            <div class="form-group" style="margin-bottom:20px;">
+              <label class="form-label">Class Description</label>
+              <textarea class="form-textarea" id="classDesc"
+                placeholder="What will this class cover?"></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn-primary" id="saveClassBtn">📅 Save Class</button>
+              <button class="btn-secondary" id="clearClassBtn">✕ Clear</button>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>📅 All Scheduled Classes</h3></div>
+          <div class="admin-card-body" style="padding:0;">
+            <table class="admin-table">
+              <thead><tr><th>Class Title</th><th>Date & Time</th><th>Tutor</th><th>Booked</th><th>Platform</th><th>Meeting Link</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="classesBody">
+                <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">Loading classes...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TUTORS ── -->
+      <div class="admin-page" id="page-tutors">
+        <div class="admin-card" style="margin-bottom:20px;">
+          <div class="admin-card-header"><h3>👩‍🏫 Add New Tutor</h3></div>
+          <div class="admin-card-body">
+            <div class="form-row form-row-2">
+              <div class="form-group"><label class="form-label">Full Name <span class="req">*</span></label><input class="form-input" id="tutorName" placeholder="e.g. Mr. M. Kamau"/></div>
+              <div class="form-group"><label class="form-label">Title / Specialisation</label><input class="form-input" id="tutorTitle" placeholder="e.g. Mathematics & Sciences · 10+ Years"/></div>
+            </div>
+            <div class="form-row form-row-3">
+              <div class="form-group"><label class="form-label">WhatsApp Number</label><input class="form-input" type="tel" id="tutorPhone" placeholder="+254 7XX XXX XXX"/></div>
+              <div class="form-group"><label class="form-label">Price per Session (KSh)</label><input class="form-input" type="number" id="tutorPrice" placeholder="800"/></div>
+              <div class="form-group"><label class="form-label">Avatar Initials</label><input class="form-input" id="tutorInitials" placeholder="MK" maxlength="3"/></div>
+            </div>
+            <div class="form-row form-row-2">
+              <div class="form-group"><label class="form-label">Subjects (comma separated)</label><input class="form-input" id="tutorSubjects" placeholder="Mathematics, Integrated Science, Chemistry"/></div>
+              <div class="form-group"><label class="form-label">Levels</label><input class="form-input" id="tutorLevels" placeholder="KJSEA, Junior School, Form 3 & 4"/></div>
+            </div>
+            <div class="form-group" style="margin-bottom:20px;">
+              <label class="form-label">Bio</label>
+              <textarea class="form-textarea" id="tutorBio" placeholder="Brief biography..."></textarea>
+            </div>
+            <div class="btn-row">
+              <button class="btn-primary" id="saveTutorBtn">👩‍🏫 Save Tutor Profile</button>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>👩‍🏫 All Tutors</h3></div>
+          <div class="admin-card-body" style="padding:0;">
+            <table class="admin-table">
+              <thead><tr><th>Name</th><th>Subjects</th><th>Levels</th><th>Price/Session</th><th>Sessions</th><th>Actions</th></tr></thead>
+              <tbody id="tutorsBody">
+                <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">Loading tutors...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- ── ORDERS ── -->
       <div class="admin-page" id="page-orders">
         <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>🛒 All Orders</h3>
-            <button class="btn-secondary btn-sm" onclick="loadOrders()">🔄 Refresh</button>
-          </div>
+          <div class="admin-card-header"><h3>🛒 All Orders</h3></div>
           <div class="admin-card-body">
             <table class="admin-table">
-              <thead>
-                <tr><th>Ref</th><th>Student</th><th>Resource</th><th>Amount</th><th>M-PESA</th><th>Date</th><th>Status</th><th>Actions</th></tr>
-              </thead>
+              <thead><tr><th>Ref</th><th>Student</th><th>Resource</th><th>Amount</th><th>M-PESA</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody id="ordersBody">
-                <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Loading orders...</td></tr>
+                <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">Loading orders...</td></tr>
               </tbody>
             </table>
           </div>
@@ -467,7 +852,7 @@ a{text-decoration:none;color:inherit;}
             </div>
             <div class="btn-row">
               <button class="btn-primary" id="saveSupabaseBtn">🔌 Save & Test Connection</button>
-              <span id="connStatus" style="font-size:0.82rem;color:var(--muted);margin-left:10px;"></span>
+              <span id="connStatus" style="font-size:0.82rem;color:var(--muted);"></span>
             </div>
           </div>
         </div>
@@ -484,7 +869,8 @@ a{text-decoration:none;color:inherit;}
 </div>
 
 <!-- Load Supabase from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+</script>
 
 <script>
 /* ════════════════════════════════════════
@@ -507,13 +893,14 @@ const SUPABASE_URL = 'https://rewpminmqnrtwdvglxxr.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
 
 // ── TOAST ──
-function showToast(msg, type = 'success') {
+function showToast(msg, type) {
+  type = type || 'success';
   const icons = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️' };
   document.getElementById('toastIcon').textContent = icons[type] || '✅';
   document.getElementById('toastMsg').textContent = msg;
   const t = document.getElementById('toast');
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3800);
+  setTimeout(function() { t.classList.remove('show'); }, 3800);
 }
 
 // ── NAVIGATION ──
@@ -524,29 +911,32 @@ const pageTitles = {
 };
 
 function switchPage(name) {
-  document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const page = document.getElementById('page-' + name);
+  document.querySelectorAll('.admin-page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+  var page = document.getElementById('page-' + name);
   if (page) page.classList.add('active');
-  const navEl = document.querySelector(`.nav-item[data-page="${name}"]`);
+  var navEl = document.querySelector('.nav-item[data-page="' + name + '"]');
   if (navEl) navEl.classList.add('active');
   document.getElementById('topbarTitle').textContent = pageTitles[name] || name;
+  if (name === 'resources') loadResources();
+  if (name === 'classes') loadClasses();
+  if (name === 'tutors') loadTutors();
   if (name === 'orders') loadOrders();
   if (name === 'dashboard') loadDashboard();
 }
 
-document.querySelectorAll('.nav-item[data-page]').forEach(item => {
-  item.addEventListener('click', () => switchPage(item.dataset.page));
+document.querySelectorAll('.nav-item[data-page]').forEach(function(item) {
+  item.addEventListener('click', function() { switchPage(this.dataset.page); });
 });
 
-// ── SECURE LOGIN HANDLER ──
+// ── LOGIN HANDLER ──
 function handleLogin() {
   console.log('🔑 Login button clicked');
   
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const btn = document.getElementById('loginBtn');
-  const errEl = document.getElementById('loginError');
+  var email = document.getElementById('loginEmail').value.trim();
+  var password = document.getElementById('loginPassword').value;
+  var btn = document.getElementById('loginBtn');
+  var errEl = document.getElementById('loginError');
   
   errEl.style.display = 'none';
   
@@ -558,8 +948,6 @@ function handleLogin() {
   
   btn.disabled = true;
   btn.textContent = '⏳ Signing in...';
-  
-  console.log('📧 Attempting login with:', email);
   
   // Initialize Supabase client
   try {
@@ -573,7 +961,9 @@ function handleLogin() {
       }
     });
     
-    sbClient.auth.signInWithPassword({ email, password }).then(({ data, error }) => {
+    sbClient.auth.signInWithPassword({ email: email, password: password }).then(function(result) {
+      var data = result.data;
+      var error = result.error;
       if (!error && data.user) {
         updateConnectionLabel(true);
         showPanel(data.user.email);
@@ -584,7 +974,7 @@ function handleLogin() {
       } else {
         console.log('Supabase login error:', error);
       }
-    }).catch(e => {
+    }).catch(function(e) {
       console.log('Supabase login error:', e);
     });
   } catch(e) {
@@ -592,7 +982,7 @@ function handleLogin() {
   }
   
   // ── CHECK LOCAL ADMIN CREDENTIALS ──
-  setTimeout(() => {
+  setTimeout(function() {
     if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
       updateConnectionLabel(false);
       showPanel(email);
@@ -615,7 +1005,7 @@ function handleLogin() {
 function handleLogout() {
   if (!confirm('Are you sure you want to logout?')) return;
   
-  const logoutBtn = document.getElementById('logoutBtn');
+  var logoutBtn = document.getElementById('logoutBtn');
   logoutBtn.textContent = '⏳ Logging out...';
   logoutBtn.disabled = true;
   
@@ -632,7 +1022,7 @@ function handleLogout() {
   document.getElementById('loginError').style.display = 'none';
   showToast('👋 Logged out successfully!', 'success');
   
-  setTimeout(() => {
+  setTimeout(function() {
     window.location.href = 'index.html';
   }, 1000);
 }
@@ -648,8 +1038,8 @@ function showPanel(email) {
 }
 
 function updateConnectionLabel(isLive) {
-  const statusLabel = document.getElementById('connectionLabel');
-  const statusDot = document.getElementById('statusDot');
+  var statusLabel = document.getElementById('connectionLabel');
+  var statusDot = document.getElementById('statusDot');
   
   if (isLive) {
     statusLabel.textContent = 'Connected';
@@ -679,24 +1069,27 @@ function loadSavedSupabaseConfig() {
   }
 }
 
-document.getElementById('saveSupabaseBtn').addEventListener('click', async () => {
-  const url = document.getElementById('sbUrl').value.trim();
-  const key = document.getElementById('sbKey').value.trim();
-  const status = document.getElementById('connStatus');
+document.getElementById('saveSupabaseBtn').addEventListener('click', async function() {
+  var url = document.getElementById('sbUrl').value.trim();
+  var key = document.getElementById('sbKey').value.trim();
+  var status = document.getElementById('connStatus');
 
   if (!url || !key) {
-    showToast('Enter both Supabase URL and anon key', 'error'); return;
+    showToast('Enter both Supabase URL and anon key', 'error');
+    return;
   }
   if (!url.startsWith('https://')) {
-    showToast('URL must start with https://', 'error'); return;
+    showToast('URL must start with https://', 'error');
+    return;
   }
 
   status.textContent = '⏳ Testing...';
   status.style.color = 'var(--muted)';
 
   try {
-    const client = window.supabase.createClient(url, key);
-    const { error } = await client.from('resources').select('id').limit(1);
+    var client = window.supabase.createClient(url, key);
+    var result = await client.from('resources').select('id').limit(1);
+    var error = result.error;
     if (error && error.code !== 'PGRST116' && error.code !== '42P01') throw error;
 
     localStorage.setItem('kv_sb_url', url);
@@ -724,49 +1117,41 @@ async function loadDashboard() {
   
   try {
     // Get resources
-    const { count: resourcesCount } = await sbClient
-      .from('resources')
-      .select('*', { count: 'exact', head: true });
+    var result1 = await sbClient.from('resources').select('*', { count: 'exact', head: true });
+    var resourcesCount = result1.count || 0;
     
     // Get orders
-    const { data: orders, error: ordersError } = await sbClient
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (ordersError) throw ordersError;
+    var result2 = await sbClient.from('orders').select('*').order('created_at', { ascending: false });
+    var orders = result2.data || [];
     
     // Get total downloads
-    const { data: resources, error: resourcesError } = await sbClient
-      .from('resources')
-      .select('downloads');
+    var result3 = await sbClient.from('resources').select('downloads');
+    var resources = result3.data || [];
     
-    if (resourcesError) throw resourcesError;
+    var totalOrders = orders.length;
+    var totalRevenue = orders.reduce(function(sum, o) { return sum + (o.amount || 0); }, 0);
+    var totalDownloads = resources.reduce(function(sum, r) { return sum + (r.downloads || 0); }, 0);
     
-    const totalOrders = orders ? orders.length : 0;
-    const totalRevenue = orders ? orders.reduce((sum, o) => sum + (o.amount || 0), 0) : 0;
-    const totalDownloads = resources ? resources.reduce((sum, r) => sum + (r.downloads || 0), 0) : 0;
-    
-    const today = new Date().toISOString().split('T')[0];
-    const todayOrders = orders ? orders.filter(o => o.created_at && o.created_at.startsWith(today)) : [];
-    const todayRevenue = todayOrders.reduce((sum, o) => sum + (o.amount || 0), 0);
-    const pendingOrders = orders ? orders.filter(o => o.status === 'pending') : [];
+    var today = new Date().toISOString().split('T')[0];
+    var todayOrders = orders.filter(function(o) { return o.created_at && o.created_at.startsWith(today); });
+    var todayRevenue = todayOrders.reduce(function(sum, o) { return sum + (o.amount || 0); }, 0);
+    var pendingOrders = orders.filter(function(o) { return o.status === 'pending'; });
     
     document.getElementById('statResources').textContent = resourcesCount || 0;
     document.getElementById('statOrders').textContent = totalOrders;
     document.getElementById('statRevenue').textContent = totalRevenue.toLocaleString();
     document.getElementById('statDownloads').textContent = totalDownloads;
     
-    document.getElementById('statResourcesChange').textContent = `📄 ${resourcesCount || 0} total`;
-    document.getElementById('statOrdersChange').textContent = `🛒 ${totalOrders} total`;
-    document.getElementById('statRevenueChange').textContent = `💰 KES ${totalRevenue.toLocaleString()}`;
-    document.getElementById('statDownloadsChange').textContent = `⬇️ ${totalDownloads} total`;
+    document.getElementById('statResourcesChange').textContent = '📄 ' + (resourcesCount || 0) + ' total';
+    document.getElementById('statOrdersChange').textContent = '🛒 ' + totalOrders + ' total';
+    document.getElementById('statRevenueChange').textContent = '💰 KES ' + totalRevenue.toLocaleString();
+    document.getElementById('statDownloadsChange').textContent = '⬇️ ' + totalDownloads + ' total';
     
     document.getElementById('todayOrders').textContent = todayOrders.length;
-    document.getElementById('todayRevenue').textContent = `KES ${todayRevenue.toLocaleString()}`;
+    document.getElementById('todayRevenue').textContent = 'KES ' + todayRevenue.toLocaleString();
     document.getElementById('pendingOrders').textContent = pendingOrders.length;
     
-    const badge = document.getElementById('pendingBadge');
+    var badge = document.getElementById('pendingBadge');
     if (badge) {
       badge.textContent = pendingOrders.length;
       badge.style.display = pendingOrders.length > 0 ? '' : 'none';
@@ -781,104 +1166,279 @@ async function loadDashboard() {
 }
 
 function loadRecentOrders(orders) {
-  const tbody = document.getElementById('recentOrdersBody');
+  var tbody = document.getElementById('recentOrdersBody');
   if (!orders || orders.length === 0) {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No orders yet</td></tr>';
     return;
   }
   
-  const recent = orders.slice(0, 5);
-  tbody.innerHTML = recent.map(o => `
-    <tr>
-      <td style="font-size:0.82rem;">${o.student_name || '—'}</td>
-      <td style="font-size:0.82rem;">${o.resource_title || '—'}</td>
-      <td style="font-weight:600;color:var(--green);">KSh ${o.amount || 0}</td>
-      <td><span class="badge ${o.status === 'completed' ? 'badge-green' : 'badge-yellow'}">${o.status || 'Pending'}</span></td>
-    </tr>
-  `).join('');
+  var recent = orders.slice(0, 5);
+  tbody.innerHTML = recent.map(function(o) {
+    return '<tr><td style="font-size:0.82rem;">' + (o.student_name || '—') + '</td><td style="font-size:0.82rem;">' + (o.resource_title || '—') + '</td><td style="font-weight:600;color:var(--green);">KSh ' + (o.amount || 0) + '</td><td><span class="badge ' + (o.status === 'completed' ? 'badge-green' : 'badge-yellow') + '">' + (o.status || 'Pending') + '</span></td></tr>';
+  }).join('');
 }
 
-// ── ORDERS ──
-async function loadOrders() {
-  const tbody = document.getElementById('ordersBody');
+// ── RESOURCES ──
+async function loadResources() {
+  var tbody = document.getElementById('resourcesBody');
   
   if (!sbClient) {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Supabase not connected</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Supabase not connected</td></tr>';
     return;
   }
   
   try {
-    const { data, error } = await sbClient
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false });
+    var result = await sbClient.from('resources').select('*').order('created_at', { ascending: false });
+    var data = result.data;
+    var error = result.error;
     
     if (error) throw error;
+    
+    document.getElementById('resourceCount').textContent = data ? data.length : 0;
+    
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">No resources yet. Upload your first PDF.</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = data.map(function(r) {
+      var levelBadge = 'grey';
+      if (r.level === 'kjsea') levelBadge = 'purple';
+      else if (r.level === 'junior') levelBadge = 'blue';
+      else if (r.level === 'senior') levelBadge = 'green';
+      else if (r.level === '844') levelBadge = 'yellow';
+      
+      return '<tr><td><div style="font-weight:600;font-size:0.85rem;">' + (r.emoji || '📄') + ' ' + r.title + '</div></td><td><span class="badge badge-' + levelBadge + '">' + (r.level || '—') + '</span></td><td style="font-size:0.82rem;">' + (r.subject || '—') + '</td><td style="font-weight:700;color:var(--green);">KSh ' + r.price + '</td><td style="text-align:center;">' + (r.downloads || 0) + '</td><td><span class="badge ' + (r.published ? 'badge-green' : 'badge-grey') + '">' + (r.published ? 'Published' : 'Draft') + '</span></td><td><div style="display:flex;gap:6px;flex-wrap:wrap;">' + (r.file_url ? '<button class="btn-info" onclick="window.open(\'' + r.file_url + '\',\'_blank\')">View PDF</button>' : '') + '<button class="btn-danger" onclick="deleteResource(\'' + r.id + '\')">Delete</button></div></td></tr>';
+    }).join('');
+    
+  } catch(e) {
+    console.error('Resources error:', e);
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--red);padding:20px;">Error loading resources</td></tr>';
+  }
+}
+
+async function deleteResource(id) {
+  if (!confirm('Delete this resource permanently?')) return;
+  try {
+    await sbClient.from('resources').delete().eq('id', id);
+    showToast('Resource deleted', 'info');
+    loadResources();
+    loadDashboard();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ── CLASSES ──
+document.getElementById('saveClassBtn').addEventListener('click', async function() {
+  var title = document.getElementById('classTitle').value.trim();
+  var tutor = document.getElementById('classTutor').value.trim();
+  var date = document.getElementById('classDate').value;
+  var time = document.getElementById('classTime').value;
+  var price = document.getElementById('classPrice').value;
+  var link = document.getElementById('classMeetingLink').value.trim();
+
+  if (!title || !tutor || !date || !time || !price) {
+    showToast('Please fill Title, Tutor, Date, Time and Price', 'error');
+    return;
+  }
+
+  var classData = {
+    id: Date.now().toString(),
+    title: title,
+    tutor: tutor,
+    date: date,
+    time: time,
+    price: parseInt(price),
+    level: document.getElementById('classLevel').value,
+    subject: document.getElementById('classSubject').value,
+    duration: parseInt(document.getElementById('classDuration').value),
+    max_students: parseInt(document.getElementById('classMax').value) || 20,
+    platform: document.getElementById('classPlatform').value,
+    meeting_link: link,
+    description: document.getElementById('classDesc').value,
+    bookings: 0,
+    status: 'upcoming',
+    created_at: new Date().toISOString()
+  };
+
+  if (sbClient) {
+    try {
+      await sbClient.from('classes').insert([classData]);
+      showToast('Class saved successfully!', 'success');
+      clearClassForm();
+      loadClasses();
+    } catch(e) {
+      showToast('Error saving class: ' + e.message, 'error');
+    }
+  } else {
+    showToast('Supabase not connected', 'error');
+  }
+});
+
+function clearClassForm() {
+  ['classTitle','classTutor','classDate','classTime','classPrice','classMeetingLink','classSubject','classDesc'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+}
+
+async function loadClasses() {
+  var tbody = document.getElementById('classesBody');
+  
+  if (!sbClient) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">Supabase not connected</td></tr>';
+    return;
+  }
+  
+  try {
+    var result = await sbClient.from('classes').select('*').order('date', { ascending: true });
+    var data = result.data || [];
+    
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">No classes yet</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = data.map(function(c) {
+      var statusBadge = c.status === 'live' ? 'red' : 'blue';
+      return '<tr><td><div style="font-weight:600;font-size:0.85rem;">' + c.title + '</div></td><td style="font-size:0.82rem;white-space:nowrap;">' + c.date + '<br/><span style="color:var(--muted);">' + c.time + '</span></td><td style="font-size:0.82rem;">' + c.tutor + '</td><td style="text-align:center;">' + (c.bookings || 0) + '/' + (c.max_students || 20) + '</td><td>' + (c.platform === 'zoom' ? '🔵 Zoom' : '🟢 Meet') + '</td><td style="max-width:160px;">' + (c.meeting_link ? '<a href="' + c.meeting_link + '" target="_blank" style="font-size:0.73rem;color:var(--green);">' + c.meeting_link.substring(0,30) + '...</a>' : '<span style="color:var(--red);font-size:0.75rem;">⚠️ No link</span>') + '</td><td><span class="badge badge-' + statusBadge + '">' + (c.status || 'upcoming') + '</span></td><td><div style="display:flex;gap:5px;"><button class="btn-danger" onclick="deleteClass(\'' + c.id + '\')">Delete</button></div></td></tr>';
+    }).join('');
+    
+  } catch(e) {
+    console.error('Classes error:', e);
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--red);padding:20px;">Error loading classes</td></tr>';
+  }
+}
+
+async function deleteClass(id) {
+  if (!confirm('Delete this class?')) return;
+  try {
+    await sbClient.from('classes').delete().eq('id', id);
+    showToast('Class deleted', 'info');
+    loadClasses();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ── TUTORS ──
+document.getElementById('saveTutorBtn').addEventListener('click', async function() {
+  var name = document.getElementById('tutorName').value.trim();
+  if (!name) { showToast('Please enter tutor name', 'error'); return; }
+
+  var tutorData = {
+    id: Date.now().toString(),
+    name: name,
+    title: document.getElementById('tutorTitle').value,
+    phone: document.getElementById('tutorPhone').value,
+    price: parseInt(document.getElementById('tutorPrice').value) || 800,
+    initials: document.getElementById('tutorInitials').value.toUpperCase(),
+    subjects: document.getElementById('tutorSubjects').value,
+    levels: document.getElementById('tutorLevels').value,
+    bio: document.getElementById('tutorBio').value,
+    rating: 4.8,
+    total_sessions: 0,
+    created_at: new Date().toISOString()
+  };
+
+  if (sbClient) {
+    try {
+      await sbClient.from('tutors').insert([tutorData]);
+      showToast('Tutor profile saved!', 'success');
+      ['tutorName','tutorTitle','tutorPhone','tutorPrice','tutorInitials','tutorSubjects','tutorLevels','tutorBio'].forEach(function(id) {
+        document.getElementById(id).value = '';
+      });
+      loadTutors();
+    } catch(e) {
+      showToast('Error: ' + e.message, 'error');
+    }
+  } else {
+    showToast('Supabase not connected', 'error');
+  }
+});
+
+async function loadTutors() {
+  var tbody = document.getElementById('tutorsBody');
+  
+  if (!sbClient) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">Supabase not connected</td></tr>';
+    return;
+  }
+  
+  try {
+    var result = await sbClient.from('tutors').select('*').order('created_at', { ascending: false });
+    var data = result.data || [];
+    
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">No tutors yet</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = data.map(function(t) {
+      return '<tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:34px;height:34px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:#fff;flex-shrink:0;">' + (t.initials || '??') + '</div><div><div style="font-weight:700;font-size:0.85rem;">' + t.name + '</div><div style="font-size:0.72rem;color:var(--muted);">' + (t.phone || '') + '</div></div></div></td><td style="font-size:0.8rem;">' + (t.subjects || '—') + '</td><td style="font-size:0.8rem;">' + (t.levels || '—') + '</td><td style="font-weight:700;color:var(--green);">KSh ' + (t.price || 0) + '/hr</td><td style="text-align:center;">' + (t.total_sessions || 0) + '</td><td><div style="display:flex;gap:6px;"><button class="btn-danger" onclick="deleteTutor(\'' + t.id + '\')">Remove</button></div></td></tr>';
+    }).join('');
+    
+  } catch(e) {
+    console.error('Tutors error:', e);
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--red);padding:20px;">Error loading tutors</td></tr>';
+  }
+}
+
+async function deleteTutor(id) {
+  if (!confirm('Remove this tutor?')) return;
+  try {
+    await sbClient.from('tutors').delete().eq('id', id);
+    showToast('Tutor removed', 'info');
+    loadTutors();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ── ORDERS ──
+async function loadOrders() {
+  var tbody = document.getElementById('ordersBody');
+  
+  if (!sbClient) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">Supabase not connected</td></tr>';
+    return;
+  }
+  
+  try {
+    var result = await sbClient.from('orders').select('*').order('created_at', { ascending: false });
+    var data = result.data || [];
     
     if (!data || data.length === 0) {
       tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">No orders yet</td></tr>';
       return;
     }
     
-    tbody.innerHTML = data.map(o => `
-      <tr>
-        <td style="font-family:monospace;font-size:0.78rem;">${o.ref || '—'}</td>
-        <td>
-          <div style="font-weight:600;font-size:0.83rem;">${o.student_name || '—'}</div>
-          <div style="font-size:0.72rem;color:var(--muted);">${o.phone || ''}</div>
-        </td>
-        <td style="font-size:0.82rem;">${o.resource_title || '—'}</td>
-        <td style="font-weight:700;color:var(--green);">KSh ${o.amount || 0}</td>
-        <td style="font-family:monospace;font-size:0.78rem;">${o.mpesa_code || '—'}</td>
-        <td style="font-size:0.78rem;">${o.created_at ? new Date(o.created_at).toLocaleDateString('en-KE') : '—'}</td>
-        <td>
-          <span class="badge ${o.status === 'completed' ? 'badge-green' : 'badge-yellow'}">
-            ${o.status || 'Pending'}
-          </span>
-        </td>
-        <td>
-          ${o.status === 'pending' ? 
-            `<button class="btn-success" onclick="confirmOrder('${o.id}')">✅ Confirm</button>` :
-            `<button class="btn-info" disabled>✅ Completed</button>`
-          }
-          <button class="btn-info" onclick="resendLink('${o.id}')">📱 Resend</button>
-        </td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = data.map(function(o) {
+      var statusBadge = o.status === 'completed' ? 'green' : 'yellow';
+      return '<tr><td style="font-family:monospace;font-size:0.78rem;">' + (o.ref || '—') + '</td><td><div style="font-weight:600;font-size:0.83rem;">' + (o.student_name || '—') + '</div><div style="font-size:0.72rem;color:var(--muted);">' + (o.phone || '') + '</div></td><td style="font-size:0.82rem;">' + (o.resource_title || '—') + '</td><td style="font-weight:700;color:var(--green);">KSh ' + (o.amount || 0) + '</td><td style="font-family:monospace;font-size:0.78rem;">' + (o.mpesa_code || '—') + '</td><td style="font-size:0.78rem;">' + (o.created_at ? new Date(o.created_at).toLocaleDateString('en-KE') : '—') + '</td><td><span class="badge badge-' + statusBadge + '">' + (o.status || 'Pending') + '</span></td><td>' + (o.status === 'pending' ? '<button class="btn-success" onclick="confirmOrder(\'' + o.id + '\')">✅ Confirm</button>' : '<button class="btn-info" disabled>✅ Completed</button>') + ' <button class="btn-info" onclick="resendLink(\'' + o.id + '\')">📱 Resend</button></td></tr>';
+    }).join('');
     
   } catch(e) {
     console.error('Orders error:', e);
-    tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:20px;">${e.message}</td></tr>`;
+    tbody.innerHTML = '<tr><td colspan="8" style="color:var(--red);padding:20px;">Error loading orders</td></tr>';
   }
 }
 
-// ── CONFIRM ORDER ──
 async function confirmOrder(orderId) {
   if (!confirm('Confirm this payment and send the download link?')) return;
   
   try {
-    // Get order details
-    const { data: order, error: getError } = await sbClient
-      .from('orders')
-      .select('*')
-      .eq('id', orderId)
-      .single();
+    var result = await sbClient.from('orders').select('*').eq('id', orderId).single();
+    var order = result.data;
     
-    if (getError) throw getError;
+    if (!order) { showToast('Order not found', 'error'); return; }
     
-    // Update order status
-    const { error: updateError } = await sbClient
-      .from('orders')
-      .update({ status: 'completed' })
-      .eq('id', orderId);
+    await sbClient.from('orders').update({ status: 'completed' }).eq('id', orderId);
     
-    if (updateError) throw updateError;
+    var msg = '✅ Payment Confirmed!\n\n📚 ' + order.resource_title + '\n🔗 https://kenyavault.co.ke\n\nThank you for your purchase from KenyaVault! 🎉';
+    window.open('https://wa.me/' + (order.phone ? order.phone.replace(/\D/g,'') : '254768515494') + '?text=' + encodeURIComponent(msg), '_blank');
     
-    // Send WhatsApp message with download link
-    const msg = `✅ Payment Confirmed!\n\n📚 ${order.resource_title}\n🔗 https://kenyavault.co.ke\n\nThank you for your purchase from KenyaVault! 🎉`;
-    window.open(`https://wa.me/${order.phone?.replace(/\D/g,'') || '254768515494'}?text=${encodeURIComponent(msg)}`, '_blank');
-    
-    showToast('✅ Order confirmed! WhatsApp opened with link', 'success');
+    showToast('✅ Order confirmed!', 'success');
     loadOrders();
     loadDashboard();
     
@@ -887,21 +1447,17 @@ async function confirmOrder(orderId) {
   }
 }
 
-// ── RESEND LINK ──
 async function resendLink(orderId) {
   if (!sbClient) { showToast('Supabase not connected', 'error'); return; }
   
   try {
-    const { data: order } = await sbClient
-      .from('orders')
-      .select('*')
-      .eq('id', orderId)
-      .single();
+    var result = await sbClient.from('orders').select('*').eq('id', orderId).single();
+    var order = result.data;
     
     if (!order) { showToast('Order not found', 'error'); return; }
     
-    const msg = `📚 Your KenyaVault download link:\n\n📖 ${order.resource_title}\n🔗 https://kenyavault.co.ke\n\nThank you! 🎉`;
-    window.open(`https://wa.me/${order.phone?.replace(/\D/g,'') || '254768515494'}?text=${encodeURIComponent(msg)}`, '_blank');
+    var msg = '📚 Your KenyaVault download link:\n\n📖 ' + order.resource_title + '\n🔗 https://kenyavault.co.ke\n\nThank you! 🎉';
+    window.open('https://wa.me/' + (order.phone ? order.phone.replace(/\D/g,'') : '254768515494') + '?text=' + encodeURIComponent(msg), '_blank');
     showToast('📱 WhatsApp opened', 'success');
     
   } catch(e) {
@@ -909,38 +1465,175 @@ async function resendLink(orderId) {
   }
 }
 
-// ── RECORD ORDER FROM FRONTEND ──
-async function recordOrder(data) {
-  try {
-    const orderData = {
-      ref: `KV-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
-      student_name: data.name || 'Customer',
-      phone: data.phone || '0712345678',
-      resource_title: data.title,
-      amount: data.price,
-      mpesa_code: data.mpesaCode || 'Pending',
-      status: 'pending',
-      created_at: new Date().toISOString()
-    };
-    
-    const { error } = await sbClient.from('orders').insert([orderData]);
-    if (error) throw error;
-    
-    console.log('✅ Order recorded:', orderData.ref);
-    return orderData;
-    
-  } catch(e) {
-    console.error('Order record error:', e);
-    return null;
+// ── TOGGLES ──
+document.querySelectorAll('.toggle').forEach(function(t) {
+  t.addEventListener('click', function() { t.classList.toggle('on'); });
+});
+
+// ── FILE UPLOAD ──
+var dropZone = document.getElementById('fileDropZone');
+var pdfInput = document.getElementById('pdfInput');
+var filePreview = document.getElementById('filePreview');
+
+if (dropZone) {
+  dropZone.addEventListener('click', function() { pdfInput.click(); });
+}
+
+if (pdfInput) {
+  pdfInput.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (file) setFile(file);
+  });
+}
+
+if (dropZone) {
+  dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('dragover'); });
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    var file = e.dataTransfer.files[0];
+    if (file) setFile(file);
+  });
+}
+
+function setFile(file) {
+  if (file.type !== 'application/pdf') {
+    showToast('Please select a PDF file only', 'error');
+    return;
   }
+  if (file.size > 20 * 1024 * 1024) {
+    showToast('File too large — maximum 20 MB', 'error');
+    return;
+  }
+  selectedFile = file;
+  document.getElementById('fpName').textContent = file.name;
+  document.getElementById('fpSize').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+  filePreview.style.display = 'flex';
+  dropZone.style.display = 'none';
+}
+
+document.getElementById('fpRemove').addEventListener('click', function() {
+  selectedFile = null;
+  filePreview.style.display = 'none';
+  dropZone.style.display = 'block';
+  pdfInput.value = '';
+});
+
+document.getElementById('uploadBtn').addEventListener('click', async function() {
+  var title = document.getElementById('resTitle').value.trim();
+  var price = document.getElementById('resPrice').value;
+  var level = document.getElementById('resLevel').value;
+  var subject = document.getElementById('resSubject').value;
+
+  if (!title || !price || !level || !subject) {
+    showToast('Please fill: Title, Price, Level and Subject', 'error');
+    return;
+  }
+  if (!selectedFile) {
+    showToast('Please select a PDF file to upload', 'error');
+    return;
+  }
+
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = '⏳ Uploading...';
+  document.getElementById('uploadProgress').style.display = 'block';
+
+  var bar = document.getElementById('uploadBar');
+  var text = document.getElementById('uploadText');
+
+  bar.style.width = '20%';
+  text.textContent = 'Uploading file... 20%';
+
+  var resourceData = {
+    title: title,
+    description: document.getElementById('resDesc').value || '',
+    price: parseInt(price),
+    level: level,
+    subject: subject,
+    grade: document.getElementById('resGrade').value || '',
+    type: document.getElementById('resType').value || 'notes',
+    badge: document.getElementById('resBadge').value || 'new',
+    emoji: document.getElementById('resEmoji').value || '📄',
+    file_size: selectedFile.size,
+    pages: 0,
+    downloads: 0,
+    published: document.getElementById('togPublish').classList.contains('on'),
+    featured: document.getElementById('togFeatured').classList.contains('on'),
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+
+  if (sbClient) {
+    try {
+      bar.style.width = '40%';
+      text.textContent = 'Uploading to storage... 40%';
+
+      var cleanFileName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      var filePath = 'resources/' + level + '/' + subject + '/' + Date.now() + '_' + cleanFileName;
+      
+      var storageResult = await sbClient.storage.from('kenyavault-pdfs').upload(filePath, selectedFile, { cacheControl: '3600', upsert: false, contentType: 'application/pdf' });
+      if (storageResult.error) throw storageResult.error;
+
+      bar.style.width = '70%';
+      text.textContent = 'Saving to database... 70%';
+
+      var urlData = sbClient.storage.from('kenyavault-pdfs').getPublicUrl(filePath);
+      resourceData.file_path = filePath;
+      resourceData.file_url = urlData.data.publicUrl;
+
+      var dbResult = await sbClient.from('resources').insert([resourceData]);
+      if (dbResult.error) throw dbResult.error;
+
+      bar.style.width = '100%';
+      text.textContent = 'Complete! ✅';
+      showToast('"' + title + '" uploaded to Supabase!', 'success');
+
+    } catch(e) {
+      console.error('Upload error:', e);
+      showToast('Upload error: ' + e.message, 'error');
+      btn.disabled = false;
+      btn.textContent = '⬆️ Upload & Save Resource';
+      return;
+    }
+  } else {
+    bar.style.width = '100%';
+    text.textContent = 'Saved (demo mode) ✅';
+    showToast('"' + title + '" saved in demo mode', 'info');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '⬆️ Upload & Save Resource';
+  clearUploadForm();
+  setTimeout(function() {
+    document.getElementById('uploadProgress').style.display = 'none';
+    bar.style.width = '0%';
+    switchPage('resources');
+  }, 1500);
+});
+
+document.getElementById('clearUploadBtn').addEventListener('click', clearUploadForm);
+
+function clearUploadForm() {
+  ['resTitle','resPrice','resDesc','resEmoji'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  ['resLevel','resSubject','resGrade','resType','resBadge'].forEach(function(id) {
+    document.getElementById(id).selectedIndex = 0;
+  });
+  selectedFile = null;
+  filePreview.style.display = 'none';
+  dropZone.style.display = 'block';
+  pdfInput.value = '';
 }
 
 // ── INIT ──
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 KenyaVault Admin Panel loaded');
   
-  const url = localStorage.getItem('kv_sb_url');
-  const key = localStorage.getItem('kv_sb_key');
+  var url = localStorage.getItem('kv_sb_url');
+  var key = localStorage.getItem('kv_sb_key');
   if (url) document.getElementById('sbUrl').value = url;
   if (key) document.getElementById('sbKey').value = key;
   
@@ -956,81 +1649,49 @@ window.addEventListener('load', () => {
       }
     });
     updateConnectionLabel(true);
+    document.getElementById('uploadAlertText').textContent = 'Supabase connected. Real PDF uploads are enabled.';
+    document.getElementById('uploadAlert').className = 'alert alert-success';
     console.log('✅ Supabase initialized');
   } catch(e) {
     console.log('Supabase init error:', e);
   }
   
+  // Load data after a short delay
+  setTimeout(function() {
+    loadDashboard();
+    loadResources();
+    loadClasses();
+    loadTutors();
+    loadOrders();
+  }, 500);
+  
   // Check for existing session
   if (sbClient) {
-    sbClient.auth.getSession().then(({ data }) => {
-      if (data.session) {
+    sbClient.auth.getSession().then(function(result) {
+      var data = result.data;
+      if (data && data.session) {
         showPanel(data.session.user.email);
       }
     });
   }
 });
-// ── LOAD DATA ON PAGE LOAD ──
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 Admin panel loading...');
-  
-  // Load Supabase
-  if (typeof supabase !== 'undefined') {
-    sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('✅ Supabase client initialized');
-    
-    // Load dashboard data
-    setTimeout(function() {
-      loadDashboard();
-      loadOrders();
-      loadResources();
-      loadClasses();
-      loadTutors();
-    }, 500);
-  } else {
-    console.error('❌ Supabase not loaded');
-  }
-});
-  async function loadResources() {
-  const tbody = document.getElementById('resourcesBody');
-  if (!tbody) return;
-  
-  try {
-    if (!sbClient) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Supabase not connected</td></tr>';
-      return;
-    }
-    
-    const { data, error } = await sbClient
-      .from('resources')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (error) throw error;
-    
-    if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">No resources yet</td></tr>';
-      return;
-    }
-    
-    // Render resources...
-    // (rest of the function)
-    
-  } catch(e) {
-    console.error('Resources error:', e);
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--red);padding:20px;">Error loading resources: ${e.message}</td></tr>`;
-  }
-}
+
 // ── MAKE FUNCTIONS GLOBAL ──
 window.handleLogin = handleLogin;
 window.handleLogout = handleLogout;
 window.switchPage = switchPage;
 window.loadDashboard = loadDashboard;
+window.loadResources = loadResources;
+window.loadClasses = loadClasses;
+window.loadTutors = loadTutors;
 window.loadOrders = loadOrders;
 window.confirmOrder = confirmOrder;
 window.resendLink = resendLink;
-window.recordOrder = recordOrder;
+window.deleteResource = deleteResource;
+window.deleteClass = deleteClass;
+window.deleteTutor = deleteTutor;
 window.showToast = showToast;
+window.clearUploadForm = clearUploadForm;
 
 console.log('✅ Admin panel loaded successfully');
 </script>
