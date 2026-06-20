@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KenyaVault Official Letterhead</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .letterhead-container {
+            background: #ffffff;
+            max-width: 900px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        /* ── LETTERHEAD STYLES ── */
+        .letterhead {
+            padding: 40px 45px 30px;
+            border-bottom: 3px solid #00A550;
+            position: relative;
+        }
+        
+        .letterhead::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00A550 0%, #D4A017 50%, #00A550 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .letterhead-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .letterhead-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .letterhead-logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #00A550, #00833D);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: 800;
+            font-family: 'Sora', sans-serif;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,165,80,0.3);
+        }
+        
+        .letterhead-name h1 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: #0B1A12;
+            letter-spacing: -0.5px;
+        }
+        
+        .letterhead-name h1 span {
+            color: #00A550;
+        }
+        
+        .letterhead-name .tagline {
+            font-size: 0.8rem;
+            color: #6B7280;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        
+        .letterhead-contact {
+            text-align: right;
+            font-size: 0.82rem;
+            color: #374151;
+            line-height: 1.6;
+        }
+        
+        .letterhead-contact .phone {
+            font-weight: 600;
+            color: #00A550;
+        }
+        
+        .letterhead-contact .email {
+            color: #00A550;
+            text-decoration: none;
+        }
+        
+        .letterhead-contact .location {
+            color: #6B7280;
+            font-size: 0.78rem;
+        }
+        
+        .letterhead-divider {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 2px solid #F3F4F6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .letterhead-motto {
+            font-size: 0.75rem;
+            color: #6B7280;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+        
+        .letterhead-motto strong {
+            color: #0B1A12;
+            font-style: normal;
+        }
+        
+        .letterhead-social {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        
+        .letterhead-social a {
+            color: #6B7280;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s;
+        }
+        
+        .letterhead-social a:hover {
+            color: #00A550;
+        }
+        
+        .letterhead-social .divider {
+            color: #D1D5DB;
+        }
+        
+        /* ── CONTENT AREA ── */
+        .letter-content {
+            padding: 40px 45px 45px;
+        }
+        
+        .letter-content .reference {
+            font-size: 0.85rem;
+            color: #6B7280;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .letter-content .reference strong {
+            color: #0B1A12;
+        }
+        
+        .letter-content .date {
+            color: #374151;
+        }
+        
+        .letter-content .recipient {
+            margin-bottom: 28px;
+            line-height: 1.8;
+        }
+        
+        .letter-content .recipient .attn {
+            font-weight: 600;
+            color: #0B1A12;
+        }
+        
+        .letter-content .subject-line {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #0B1A12;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #F3F4F6;
+        }
+        
+        .letter-content .subject-line span {
+            color: #00A550;
+        }
+        
+        .letter-content .body-text {
+            color: #1F2937;
+            line-height: 1.9;
+            font-size: 0.95rem;
+        }
+        
+        .letter-content .body-text p {
+            margin-bottom: 14px;
+        }
+        
+        .letter-content .body-text ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .letter-content .body-text ul li {
+            margin-bottom: 6px;
+        }
+        
+        .letter-content .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E7EB;
+        }
+        
+        .letter-content .signature .name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0B1A12;
+        }
+        
+        .letter-content .signature .title {
+            font-size: 0.85rem;
+            color: #6B7280;
+        }
+        
+        .letter-content .signature .stamp {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #9CA3AF;
+        }
+        
+        /* ── FOOTER ── */
+        .letter-footer {
+            padding: 16px 45px;
+            background: #F9FAFB;
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.7rem;
+            color: #9CA3AF;
+        }
+        
+        .letter-footer .footer-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .letter-footer .footer-links a {
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .letter-footer .footer-links a:hover {
+            color: #00A550;
+        }
+        
+        .letter-footer .footer-links .sep {
+            color: #D1D5DB;
+        }
+        
+        /* ── EXAM HEAD VERSION ── */
+        .exam-head-version {
+            border-bottom-color: #7C3AED;
+        }
+        
+        .exam-head-version .letterhead-name h1 span {
+            color: #7C3AED;
+        }
+        
+        .exam-head-version .letterhead-contact .phone {
+            color: #7C3AED;
+        }
+        
+        .exam-head-version .letterhead-contact .email {
+            color: #7C3AED;
+        }
+        
+        .exam-head-version::after {
+            background: linear-gradient(90deg, #7C3AED 0%, #D4A017 50%, #7C3AED 100%);
+        }
+        
+        .exam-head-version .subject-line span {
+            color: #7C3AED;
+        }
+        
+        /* ── RESPONSIVE ── */
+        @media (max-width: 700px) {
+            .letterhead {
+                padding: 24px 20px 20px;
+            }
+            
+            .letterhead-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .letterhead-contact {
+                text-align: left;
+                width: 100%;
+            }
+            
+            .letterhead-divider {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .letter-content {
+                padding: 24px 20px 30px;
+            }
+            
+            .letter-footer {
+                padding: 12px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .letterhead-name h1 {
+                font-size: 1.4rem;
+            }
+            
+            .letterhead-logo {
+                width: 56px;
+                height: 56px;
+                font-size: 24px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .letterhead-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .letterhead::after {
+                animation: none;
+            }
+        }
+        
+        /* ── DOWNLOAD BUTTON ── */
+        .download-options {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .download-btn {
+            background: #0B1A12;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn:hover {
+            background: #00A550;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,165,80,0.3);
+        }
+        
+        .download-btn.secondary {
+            background: #F3F4F6;
+            color: #0B1A12;
+        }
+        
+        .download-btn.secondary:hover {
+            background: #E5E7EB;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        
+        .download-btn .icon {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- LETTERHEAD VERSION 1: STANDARD         -->
+    <!-- ════════════════════════════════════════ -->
+    <div class="letterhead-container" id="letterheadStandard">
+        <div class="letterhead">
+            <div class="letterhead-top">
+                <div class="letterhead-brand">
+                    <div class="letterhead-logo">KV</div>
+                    <div class="letterhead-name">
+                        <h1>Kenya<span>Vault</span></h1>
+                        <div class="tagline">Premium Educational Resources</div>
+                    </div>
+                </div>
+                <div class="letterhead-contact">
+                    <div>📞 <span class="phone">+254 700 000 000</span></div>
+                    <div>✉️ <a href="mailto:info@kenyavault.co.ke" class="email">info@kenyavault.co.ke</a></div>
+                    <div class="location">📍 Nairobi, Kenya</div>
+                </div>
+            </div>
+            <div class="letterhead-divider">
+                <div class="letterhead-motto">
+                    <strong>Excellence in Education</strong> · CBC · KJSEA 2025 · 8-4-4
+                </div>
+                <div class="letterhead-social">
+                    <a href="#">🌐 kenyavault.co.ke</a>
+                    <span class="divider">|</span>
+                    <a href="#">📱 @KenyaVault</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="letter-content">
+            <div class="reference">
+                <span><strong>Ref:</strong> KV/2026/001</span>
+                <span class="date"><strong>Date:</strong> 20th June 2026</span>
+            </div>
+            
+            <div class="recipient">
+                <div><strong>The Principal</strong></div>
+                <div>Nairobi School</div>
+                <div>P.O. Box 30022-00100</div>
+                <div>Nairobi, Kenya</div>
+                <div style="margin-top:4px;"><span class="attn">ATTN:</span> Examination Officer</div>
+            </div>
+            
+            <div class="subject-line">
+                📋 <span>RE: EXAMINATION RESOURCES AND SUPPORT</span>
+            </div>
+            
+            <div class="body-text">
+                <p>Dear Sir/Madam,</p>
+                
+                <p>We are pleased to introduce KenyaVault, Kenya's premier provider of premium educational resources for CBC Junior School, KJSEA 2025, CBC Senior School, and 8-4-4 Form 3 &amp; 4 revision materials.</p>
+                
+                <p>Our comprehensive resource library includes:</p>
+                <ul>
+                    <li>Complete notes and revision materials for all CBC subjects</li>
+                    <li>KJSEA 2025 examination preparation resources</li>
+                    <li>Past papers and model examinations with marking schemes</li>
+                    <li>Interactive worksheets and practice questions</li>
+                    <li>Teacher guides and lesson plans</li>
+                </ul>
+                
+                <p>All our resources are developed by experienced Kenyan educators and are aligned with the Competency-Based Curriculum (CBC) and 8-4-4 system requirements. Teachers and students can access materials instantly through our secure platform after M-PESA payment.</p>
+                
+                <p>We would be honored to partner with your institution in providing quality educational resources to support the academic success of your students. Please find attached a sample of our examination materials for your review.</p>
+                
+                <p>We look forward to a fruitful partnership.</p>
+            </div>
+            
+            <div class="signature">
+                <div class="name">John Mwangi</div>
+                <div class="title">Director of Education, KenyaVault</div>
+                <div class="stamp">✍️ Digitally signed</div>
+            </div>
+        </div>
+        
+        <div class="letter-footer">
+            <span>© 2026 KenyaVault · All rights reserved</span>
+            <div class="footer-links">
+                <a href="#">Terms</a>
+                <span class="sep">|</span>
+                <a href="#">Privacy</a>
+                <span class="sep">|</span>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- LETTERHEAD VERSION 2: EXAM HEAD        -->
+    <!-- ════════════════════════════════════════ -->
+    <div class="letterhead-container" id="letterheadExam">
+        <div class="letterhead exam-head-version">
+            <div class="letterhead-top">
+                <div class="letterhead-brand">
+                    <div class="letterhead-logo" style="background:linear-gradient(135deg,#7C3AED,#5B21B6);">KV</div>
+                    <div class="letterhead-name">
+                        <h1>Kenya<span>Vault</span></h1>
+                        <div class="tagline">Examination Resources · KJSEA 2025</div>
+                    </div>
+                </div>
+                <div class="letterhead-contact">
+                    <div>📞 <span class="phone">+254 700 000 000</span></div>
+                    <div>✉️ <a href="mailto:exams@kenyavault.co.ke" class="email">exams@kenyavault.co.ke</a></div>
+                    <div class="location">📍 Nairobi, Kenya</div>
+                </div>
+            </div>
+            <div class="letterhead-divider">
+                <div class="letterhead-motto">
+                    <strong>Excellence in Examination Preparation</strong> · KJSEA 2025 · CBC
+                </div>
+                <div class="letterhead-social">
+                    <a href="#">🌐 kenyavault.co.ke/exams</a>
+                    <span class="divider">|</span>
+                    <a href="#">📱 @KenyaVaultExams</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="letter-content">
+            <div class="reference">
+                <span><strong>Ref:</strong> KV/EXAM/2026/045</span>
+                <span class="date"><strong>Date:</strong> 20th June 2026</span>
+            </div>
+            
+            <div class="recipient">
+                <div><strong>All Grade 9 Teachers</strong></div>
+                <div>Nairobi County</div>
+                <div>Nairobi, Kenya</div>
+            </div>
+            
+            <div class="subject-line">
+                📝 <span>KJSEA 2025: EXAMINATION PREPARATION RESOURCES</span>
+            </div>
+            
+            <div class="body-text">
+                <p>Dear Educators,</p>
+                
+                <p>As we approach the <strong>KJSEA 2025</strong> national examinations, KenyaVault is proud to present our comprehensive examination preparation resources specifically designed for Grade 9 students.</p>
+                
+                <p>Our KJSEA 2025 examination resources include:</p>
+                <ul>
+                    <li><strong>Complete Revision Notes:</strong> All CBC Grade 9 subjects comprehensively covered</li>
+                    <li><strong>Model Examination Papers:</strong> 20+ papers mimicking the actual KJSEA format</li>
+                    <li><strong>Marking Schemes:</strong> Detailed marking guides for self-assessment</li>
+                    <li><strong>Practice Questions:</strong> Over 500+ questions with answers</li>
+                    <li><strong>Teacher Guides:</strong> Lesson plans and teaching strategies</li>
+                    <li><strong>Past Papers:</strong> Historical papers for practice (where available)</li>
+                </ul>
+                
+                <p>All resources are aligned with the Kenya National Examinations Council (KNEC) guidelines and the Competency-Based Curriculum (CBC) requirements.</p>
+                
+                <p><strong>Special Offer for Schools:</strong> We offer institutional packages with discounted rates for schools purchasing resources for their entire Grade 9 cohort. Please contact our support team for more information.</p>
+                
+                <p style="margin-top:16px;padding:12px 16px;background:#F0FDF4;border-left:4px solid #16A34A;border-radius:6px;">
+                    <strong>📱 Quick Access:</strong> Visit <a href="#" style="color:#00A550;font-weight:600;">kenyavault.co.ke/kjsea</a> to access all KJSEA 2025 resources instantly.
+                </p>
+                
+                <p>We are committed to supporting educators and students in achieving excellence in the inaugural KJSEA examinations.</p>
+                
+                <p>Yours in education,</p>
+            </div>
+            
+            <div class="signature">
+                <div class="name">Dr. Grace Akinyi</div>
+                <div class="title">Head of Examination Resources, KenyaVault</div>
+                <div class="stamp">✍️ Digitally signed</div>
+            </div>
+        </div>
+        
+        <div class="letter-footer">
+            <span>© 2026 KenyaVault · Examination Division</span>
+            <div class="footer-links">
+                <a href="#">Terms</a>
+                <span class="sep">|</span>
+                <a href="#">Privacy</a>
+                <span class="sep">|</span>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════ -->
+    <!-- DOWNLOAD OPTIONS                        -->
+    <!-- ════════════════════════════════════════ -->
+    <div class="download-options">
+        <button class="download-btn" onclick="printLetterhead('letterheadStandard')">
+            <span class="icon">🖨️</span> Print Standard Letterhead
+        </button>
+        <button class="download-btn secondary" onclick="printLetterhead('letterheadExam')">
+            <span class="icon">📝</span> Print Exam Head Version
+        </button>
+        <button class="download-btn" onclick="downloadHTML()">
+            <span class="icon">📥</span> Download HTML
+        </button>
+    </div>
+
+    <script>
+        function printLetterhead(id) {
+            const element = document.getElementById(id);
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>KenyaVault Letterhead</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+                    <style>
+                        * { margin:0; padding:0; box-sizing:border-box; }
+                        body { background:white; padding:20px; font-family:'Inter',sans-serif; }
+                        .print-container { max-width:900px; margin:0 auto; }
+                        ${document.querySelector('style').innerHTML}
+                        .letterhead-container { box-shadow:none; border-radius:0; margin:0; }
+                        .download-options { display:none; }
+                        @media print { body { padding:0; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="print-container">
+                        ${element.outerHTML}
+                    </div>
+                    <script>
+                        window.onload = function() { window.print(); }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+        }
+        
+        function downloadHTML() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'kenyavault-letterhead.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+</body>
+</html>
