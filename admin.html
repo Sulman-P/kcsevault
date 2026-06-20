@@ -1309,55 +1309,104 @@ document.getElementById('uploadBtn').addEventListener('click', async () => {
   }, 1500);
 });
 
-// ── RESOURCES ──
-async function loadResources() {
-  const tbody = document.getElementById('resourcesBody');
-  let resources = [];
-
-  if (sbClient) {
-    try {
-      const { data, error } = await sbClient.from('resources').select('*').order('created_at', { ascending: false });
-      if (!error) resources = data || [];
-    } catch(e) { console.error(e); }
-  }
-
-  document.getElementById('resourceCount').textContent = resources.length;
-
-  if (!resources.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">No resources yet.</td></tr>';
+// ── LOAD DASHBOARD ──
+async function loadDashboard() {
+  console.log('📊 Loading dashboard...');
+  
+  if (!sbClient) {
+    console.warn('Supabase not connected');
     return;
   }
+  
+  try {
+    // Get resources count
+    const { count: resourcesCount } = await sbClient
+      .from('resources')
+      .select('*', { count: 'exact', head: true });
+    
+    // Get orders count and revenue
+    const { data: orders, error: ordersError } = await sbClient
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (ordersError) throw ordersError;
+    
+    // Get total downloads from resources
+    const { data: resources, error: resourcesError } = await sbClient
+      .from('resources')
+      .select('downloads');
+    
+    if (resourcesError) throw resourcesError;
+    
+    // Calculate stats
+    const totalOrders = orders ? orders.length : 0;
+    const totalRevenue = orders ? orders.reduce((sum, o) => sum + (o.amount || 0), 0) : 0;
+    const totalDownloads = resources ? resources.reduce((sum, r) => sum + (r.downloads || 0), 0) : 0;
+    
+    // Calculate today's stats
+    const today = new Date().toISOString().split('T')[0];
+    const todayOrders = orders ? orders.filter(o => o.created_at && o.created_at.startsWith(today)) : [];
+    const todayRevenue = todayOrders.reduce((sum, o) => sum + (o.amount || 0), 0);
+    const pendingOrders = orders ? orders.filter(o => o.status === 'pending') : [];
+    
+    // Update stats
+    document.getElementById('statResources').textContent = resourcesCount || 0;
+    document.getElementById('statOrders').textContent = totalOrders;
+    document.getElementById('statRevenue').textContent = totalRevenue.toLocaleString();
+    document.getElementById('statDownloads').textContent = totalDownloads;
+    
+    document.getElementById('statResourcesChange').textContent = `📄 ${resourcesCount || 0} total`;
+    document.getElementById('statOrdersChange').textContent = `🛒 ${totalOrders} total`;
+    document.getElementById('statRevenueChange').textContent = `💰 KES ${totalRevenue.toLocaleString()}`;
+    document.getElementById('statDownloadsChange').textContent = `⬇️ ${totalDownloads} total`;
+    
+    // Update payment summary
+    document.getElementById('todayOrders').textContent = todayOrders.length;
+    document.getElementById('todayRevenue').textContent = `KES ${todayRevenue.toLocaleString()}`;
+    document.getElementById('pendingOrders').textContent = pendingOrders.length;
+    
+    // Update recent orders
+    loadRecentOrders(orders);
+    
+    // Update pending badge
+    const badge = document.getElementById('pendingBadge');
+    if (badge) {
+      badge.textContent = pendingOrders.length;
+      badge.style.display = pendingOrders.length > 0 ? '' : 'none';
+    }
+    
+    console.log('✅ Dashboard loaded:', {
+      resources: resourcesCount,
+      orders: totalOrders,
+      revenue: totalRevenue,
+      downloads: totalDownloads
+    });
+    
+  } catch(e) {
+    console.error('Dashboard load error:', e);
+  }
+}
 
-  tbody.innerHTML = resources.map(r => `
+// ── LOAD RECENT ORDERS ──
+function loadRecentOrders(orders) {
+  const tbody = document.getElementById('recentOrdersBody');
+  if (!orders || orders.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No orders yet</td></tr>';
+    return;
+  }
+  
+  // Show only last 5 orders
+  const recent = orders.slice(0, 5);
+  tbody.innerHTML = recent.map(o => `
     <tr>
-      <td><div style="font-weight:600;font-size:0.85rem;">${r.emoji || '📄'} ${r.title}</div></td>
-      <td><span class="badge badge-${levelBadgeClass(r.level)}">${r.level || '—'}</span></td>
-      <td style="font-size:0.82rem;">${r.subject || '—'}</td>
-      <td style="font-weight:700;color:var(--green);">KSh ${r.price}</td>
-      <td style="text-align:center;">${r.downloads || 0}</td>
-      <td><span class="badge badge-${r.published ? 'green' : 'grey'}">${r.published ? 'Published' : 'Draft'}</span></td>
-      <td>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          ${r.file_url ? `<button class="btn-info" onclick="window.open('${r.file_url}','_blank')">View PDF</button>` : ''}
-          <button class="btn-danger" onclick="deleteResource('${r.id}')">Delete</button>
-        </div>
-      </td>
+      <td style="font-size:0.82rem;">${o.student_name || '—'}</td>
+      <td style="font-size:0.82rem;">${o.resource_title || '—'}</td>
+      <td style="font-weight:600;color:var(--green);">KSh ${o.amount || 0}</td>
+      <td><span class="badge ${o.status === 'completed' ? 'badge-green' : 'badge-yellow'}">${o.status || 'Pending'}</span></td>
     </tr>
   `).join('');
 }
-
-function levelBadgeClass(level) {
-  const map = { kjsea:'purple', junior:'blue', senior:'green', '844':'yellow' };
-  return map[level] || 'grey';
-}
-
-async function deleteResource(id) {
-  if (!confirm('Delete this resource permanently?')) return;
-  if (sbClient) await sbClient.from('resources').delete().eq('id', id);
-  showToast('Resource deleted', 'info');
-  loadResources();
-}
-
 // ── CLASSES ──
 document.getElementById('saveClassBtn').addEventListener('click', async () => {
   const title = document.getElementById('classTitle').value.trim();
@@ -1519,23 +1568,100 @@ async function deleteTutor(id) {
   loadTutors();
 }
 
-// ── ORDERS ──
+// ── LOAD ORDERS ──
 async function loadOrders() {
-  if (!sbClient) return;
-  const { data } = await sbClient.from('orders').select('*, resources(title)').order('created_at', { ascending: false });
-  if (!data?.length) return;
-  document.getElementById('ordersBody').innerHTML = data.map(o => `
-    <tr>
-      <td style="font-family:monospace;font-size:0.78rem;">${o.ref||'—'}</td>
-      <td><div style="font-weight:600;">${o.student_name||'—'}</div></td>
-      <td style="font-size:0.82rem;">${o.resources?.title||'—'}</td>
-      <td style="font-weight:700;color:var(--green);">KSh ${o.amount}</td>
-      <td style="font-family:monospace;font-size:0.78rem;">${o.mpesa_code||'—'}</td>
-      <td style="font-size:0.78rem;">${new Date(o.created_at).toLocaleDateString('en-KE')}</td>
-      <td><span class="badge badge-${o.status==='completed'?'green':'yellow'}">${o.status}</span></td>
-      <td><button class="btn-info">Resend Link</button></td>
-    </tr>
-  `).join('');
+  const tbody = document.getElementById('ordersBody');
+  
+  if (!sbClient) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Supabase not connected</td></tr>';
+    return;
+  }
+  
+  try {
+    const { data, error } = await sbClient
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">No orders yet</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = data.map(o => `
+      <tr>
+        <td style="font-family:monospace;font-size:0.78rem;">${o.ref || '—'}</td>
+        <td>
+          <div style="font-weight:600;font-size:0.83rem;">${o.student_name || '—'}</div>
+          <div style="font-size:0.72rem;color:var(--muted);">${o.phone || ''}</div>
+        </td>
+        <td style="font-size:0.82rem;">${o.resource_title || '—'}</td>
+        <td style="font-weight:700;color:var(--green);">KSh ${o.amount || 0}</td>
+        <td style="font-family:monospace;font-size:0.78rem;">${o.mpesa_code || '—'}</td>
+        <td style="font-size:0.78rem;">${o.created_at ? new Date(o.created_at).toLocaleDateString('en-KE') : '—'}</td>
+        <td>
+          <span class="badge ${o.status === 'completed' ? 'badge-green' : o.status === 'pending' ? 'badge-yellow' : 'badge-grey'}">
+            ${o.status || 'Pending'}
+          </span>
+        </td>
+        <td>
+          <button class="btn-${o.status === 'completed' ? 'info' : 'primary'}" onclick="updateOrderStatus('${o.id}')">
+            ${o.status === 'completed' ? '✅ Done' : 'Confirm'}
+          </button>
+          <button class="btn-info" onclick="resendLink('${o.id}')">📱 Resend</button>
+        </td>
+      </tr>
+    `).join('');
+    
+  } catch(e) {
+    console.error('Orders load error:', e);
+    tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:20px;">${e.message}</td></tr>`;
+  }
+}
+
+// ── UPDATE ORDER STATUS ──
+async function updateOrderStatus(orderId) {
+  if (!confirm('Mark this order as completed?')) return;
+  
+  try {
+    const { error } = await sbClient
+      .from('orders')
+      .update({ status: 'completed' })
+      .eq('id', orderId);
+    
+    if (error) throw error;
+    
+    showToast('✅ Order marked as completed', 'success');
+    loadOrders();
+    loadDashboard();
+    
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+// ── RESEND LINK ──
+async function resendLink(orderId) {
+  if (!sbClient) { showToast('Supabase not connected', 'error'); return; }
+  
+  try {
+    const { data: order } = await sbClient
+      .from('orders')
+      .select('*')
+      .eq('id', orderId)
+      .single();
+    
+    if (!order) { showToast('Order not found', 'error'); return; }
+    
+    const msg = `Hello! Your KenyaVault download link:\n\n📚 ${order.resource_title}\n🔗 https://kenyavault.co.ke\n\nThank you! 🎉`;
+    window.open(`https://wa.me/${order.phone?.replace(/\D/g,'') || '254768515494'}?text=${encodeURIComponent(msg)}`, '_blank');
+    showToast('📱 WhatsApp opened', 'success');
+    
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
 }
 
 // ── BOOKINGS ──
