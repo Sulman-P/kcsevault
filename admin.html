@@ -59,7 +59,7 @@ a{text-decoration:none;color:inherit;}
   border-radius:8px;padding:8px 12px;display:none;
 }
 .login-hint{
-  font-size:0.75rem;color:#4A7A62;margin-top:16px;
+  font-size:0.7rem;color:#4A7A62;margin-top:16px;
   border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;
 }
 .login-hint strong{color:#7AAB92;}
@@ -354,14 +354,13 @@ a{text-decoration:none;color:inherit;}
     <div class="login-logo">Kenya<span>Vault</span></div>
     <div class="login-sub">Admin Control Panel — Secure Access</div>
     <input class="login-input" type="email" id="loginEmail"
-      placeholder="Admin email address" value="admin@kenyavault.co.ke" autocomplete="email"/>
+      placeholder="Admin email address" autocomplete="email"/>
     <input class="login-input" type="password" id="loginPassword"
-      placeholder="Password" value="Admin2025!" autocomplete="current-password"/>
+      placeholder="Password" autocomplete="current-password"/>
     <button class="btn-login" id="loginBtn" onclick="handleLogin()">Sign In to Admin Panel</button>
     <div class="login-error" id="loginError"></div>
     <div class="login-hint">
-      Demo access: <strong>admin@kenyavault.co.ke</strong> / <strong>Admin2025!</strong>
-      <br/>Connect Supabase in Settings for live data.
+      🔒 Secure Admin Portal — Authorized Personnel Only
     </div>
   </div>
 </div>
@@ -949,6 +948,7 @@ a{text-decoration:none;color:inherit;}
 <script>
 /* ════════════════════════════════════════
    KENYAVAULT ADMIN — COMPLETE SCRIPT
+   SECURE CREDENTIALS - NO HINTS DISPLAYED
 ════════════════════════════════════════ */
 
 'use strict';
@@ -958,8 +958,9 @@ let sbClient = null;
 let adminUser = null;
 let selectedFile = null;
 
-const DEMO_EMAIL = 'admin@kenyavault.co.ke';
-const DEMO_PASS  = 'Admin2025!';
+// ── SECURE ADMIN CREDENTIALS (Stored only in code) ──
+const ADMIN_EMAIL = 'adminnexalearn@gmail.com';
+const ADMIN_PASS = '1@Sulman2026p';
 
 const demoStore = { resources: [], classes: [], tutors: [], orders: [], bookings: [] };
 
@@ -999,7 +1000,7 @@ document.querySelectorAll('.nav-item[data-page]').forEach(item => {
   item.addEventListener('click', () => switchPage(item.dataset.page));
 });
 
-// ── LOGIN HANDLER ──
+// ── SECURE LOGIN HANDLER ──
 function handleLogin() {
   console.log('🔑 Login button clicked');
   
@@ -1033,7 +1034,7 @@ function handleLogin() {
           persistSession: true,
           detectSessionInUrl: true,
           flowType: 'pkce',
-          redirectTo: 'https://kcsevault.odhiambosulman3.workers.dev/admin.html'
+          redirectTo: 'https://kenyavault.co.ke/admin.html'
         }
       });
       
@@ -1048,23 +1049,21 @@ function handleLogin() {
           return;
         } else {
           console.log('Supabase login error:', error);
-          // Fall through to demo
         }
       }).catch(e => {
         console.log('Supabase login error:', e);
-        // Fall through to demo
       });
     } catch(e) {
       console.warn('Supabase login error:', e);
     }
   }
   
-  // Try demo credentials (with a small delay to allow Supabase to respond first)
+  // ── TRY SECURE ADMIN CREDENTIALS ──
   setTimeout(() => {
-    if (email === DEMO_EMAIL && password === DEMO_PASS) {
+    if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
       updateConnectionLabel(false);
       showPanel(email);
-      showToast('Demo mode login successful', 'info');
+      showToast('Login successful!', 'success');
       btn.disabled = false;
       btn.textContent = 'Sign In to Admin Panel';
       return;
@@ -1072,7 +1071,7 @@ function handleLogin() {
     
     // If we get here, both failed
     if (!document.getElementById('adminPanel').classList.contains('visible')) {
-      errEl.textContent = 'Invalid credentials. Demo: admin@kenyavault.co.ke / Admin2025!';
+      errEl.textContent = '❌ Invalid credentials. Please try again.';
       errEl.style.display = 'block';
       btn.disabled = false;
       btn.textContent = 'Sign In to Admin Panel';
@@ -1134,7 +1133,7 @@ function loadSavedSupabaseConfig() {
           persistSession: true,
           detectSessionInUrl: true,
           flowType: 'pkce',
-          redirectTo: 'https://kcsevault.odhiambosulman3.workers.dev/admin.html'
+          redirectTo: 'https://kenyavault.co.ke/admin.html'
         }
       });
       updateConnectionLabel(true);
@@ -1167,7 +1166,7 @@ document.getElementById('saveSupabaseBtn').addEventListener('click', async () =>
         persistSession: true,
         detectSessionInUrl: true,
         flowType: 'pkce',
-        redirectTo: 'https://kcsevault.odhiambosulman3.workers.dev/admin.html'
+        redirectTo: 'https://kenyavault.co.ke/admin.html'
       }
     });
     
@@ -1656,6 +1655,7 @@ window.showToast = showToast;
 window.clearUploadForm = clearUploadForm;
 
 console.log('✅ Admin panel script loaded successfully!');
+console.log('🔒 Secure admin login enabled (credentials not displayed)');
 </script>
 </body>
 </html>
