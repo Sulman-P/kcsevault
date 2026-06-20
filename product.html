@@ -444,32 +444,52 @@ function renderProduct(product) {
     `;
   }
   
-  // Buy Card
-  const bannerBg = getBannerBg(product.subject);
-  document.getElementById('previewBanner').style.background = bannerBg;
-  document.getElementById('productEmoji').textContent = product.emoji || '📄';
-  document.getElementById('productBadge').textContent = `${getBadgeText(product.badge)} · ${product.pages || 0} Pages`;
+  // ── TRACK PAYMENT ──
+function trackPayment(productId, productTitle, price) {
+  const paymentData = {
+    type: 'product',
+    id: productId,
+    title: productTitle,
+    price: price,
+    timestamp: Date.now(),
+    status: 'pending'
+  };
+  sessionStorage.setItem('pendingPayment', JSON.stringify(paymentData));
+  console.log('📤 Payment initiated for:', productTitle);
+}
+
+// ── CONFIRM PAYMENT VIA WHATSAPP ──
+function sendPaymentConfirmation(data) {
+  const msg = `Hello KenyaVault,\n\nI have completed payment for:\n📚 ${data.title}\n💰 KES ${data.price}\n\nPlease confirm and send my download link.`;
+  window.open(`https://wa.me/254768515494?text=${encodeURIComponent(msg)}`, '_blank');
   
-  const priceDisplay = product.price === 0 ? 'FREE' : `KES ${product.price}`;
-  document.getElementById('productPrice').textContent = priceDisplay;
-  
-  // Payment button - always use Megapay link
-  const paymentBtn = document.getElementById('paymentBtn');
-  if (product.price === 0) {
-    // Free product - direct download
-    paymentBtn.href = product.file_url || '#';
-    paymentBtn.textContent = '📱 Download Now';
-    paymentBtn.className = 'btn-buy-main free';
-    paymentBtn.target = '_blank';
-  } else {
-    // Paid product - Megapay link
-    paymentBtn.href = 'https://megapay.co.ke/tags/S1Zzyjs';
-    paymentBtn.textContent = '💳 Pay via M-PESA';
-    paymentBtn.className = 'btn-buy-main megapay';
-    paymentBtn.target = '_blank';
+  // Also record the order in Supabase (if connected)
+  if (sbClient) {
+    recordOrder(data);
   }
   
-  console.log('✅ Product loaded:', product.title);
+  showToast('📱 WhatsApp opened - send confirmation message', 'success');
+}
+
+// ── RECORD ORDER IN DATABASE ──
+async function recordOrder(data) {
+  try {
+    const orderData = {
+      ref: `KV-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      student_name: 'Customer',
+      phone: data.phone || 'Unknown',
+      resource_title: data.title,
+      amount: data.price,
+      mpesa_code: data.mpesaCode || 'Pending',
+      status: 'pending',
+      created_at: new Date().toISOString()
+    };
+    
+    const { error } = await sbClient.from('orders').insert([orderData]);
+    if (error) console.error('Order save error:', error);
+  } catch(e) {
+    console.error('Error recording order:', e);
+  }
 }
 
 // ── INIT ──
