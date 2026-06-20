@@ -117,28 +117,17 @@ a{text-decoration:none;color:inherit;}
   display:flex;flex-direction:column;min-height:100vh;
 }
 
-/* ── TOPBAR ── */
-.admin-topbar{
-  background:var(--white);border-bottom:1px solid var(--border);
-  padding:0 28px;height:60px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:90;
-  box-shadow:0 1px 6px rgba(0,0,0,0.05);
-}
-.topbar-title{font-family:'Sora',sans-serif;font-weight:700;font-size:1rem;color:var(--text);}
-.topbar-right{display:flex;align-items:center;gap:14px;}
-.topbar-status{
-  display:flex;align-items:center;gap:6px;
-  font-size:0.77rem;color:var(--muted);
-}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;animation:statusPulse 2s infinite;}
-@keyframes statusPulse{0%,100%{opacity:1}50%{opacity:0.5}}
-.btn-logout{
-  padding:7px 16px;border-radius:7px;border:1.5px solid var(--border);
-  background:var(--white);font-family:'Sora',sans-serif;font-weight:600;
-  font-size:0.78rem;color:var(--muted);cursor:pointer;transition:all 0.2s;
-}
-.btn-logout:hover{border-color:var(--red);color:var(--red);background:#FFF5F5;}
+<!-- ── TOPBAR ── -->
+<div class="admin-topbar">
+  <div class="topbar-title" id="topbarTitle">Dashboard</div>
+  <div class="topbar-right">
+    <div class="topbar-status" id="connectionStatus">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="connectionLabel">Connected</span>
+    </div>
+    <button class="btn-logout" id="logoutBtn" onclick="handleLogout()">Sign Out</button>
+  </div>
+</div>
 
 /* ── CONTENT ── */
 .admin-content{padding:28px;flex:1;}
