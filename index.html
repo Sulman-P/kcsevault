@@ -6,7 +6,7 @@
 <title>Kenya Vault — Kenya's #1 Resource Centre</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="styles.css"/>
+<link rel="stylesheet" href="styles.css?v=2"/>
 <style>
 /* ── TERMS & CONDITIONS MODAL ── */
 .terms-modal-overlay {
@@ -844,11 +844,11 @@
 </div>
 
 <!-- ════════════ SCRIPTS ════════════ -->
-<script src="script.js"></script>
+<script src="script.js?v=2"></script>
 <script>
 /* ════════════════════════════════════════
-   TERMS & CONDITIONS - COMPLETE SCRIPT
-════════════════════════════════════════ */
+   TERMS & CONDITIONS - MAIN SCRIPT
+   ════════════════════════════════════════ */
 
 (function() {
   'use strict';
@@ -857,43 +857,50 @@
   
   // ── CHECK IF TERMS ALREADY ACCEPTED ──
   let termsAccepted = localStorage.getItem('kv_terms_accepted') === 'true';
-  console.log('Terms accepted:', termsAccepted);
+  console.log('Terms accepted status:', termsAccepted);
   
   // ── DOM ELEMENTS ──
   const termsModal = document.getElementById('termsModal');
   const acceptCheckbox = document.getElementById('acceptTermsCheckbox');
   const acceptBtn = document.getElementById('acceptTermsBtn');
   
-  if (!termsModal) {
-    console.error('❌ Terms modal not found!');
-    return;
-  }
-  
-  console.log('✅ Terms modal found');
-  
-  // ── ENABLE ACCEPT BUTTON ──
-  if (acceptCheckbox && acceptBtn) {
-    acceptCheckbox.addEventListener('change', function() {
-      acceptBtn.disabled = !this.checked;
-    });
+  // ── SHOW TOAST FUNCTION ──
+  function showToast(msg, type) {
+    type = type || 'success';
+    const toast = document.getElementById('toastNotification');
+    const iconMap = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️' };
+    if (toast) {
+      document.getElementById('toastIcon').textContent = iconMap[type] || '✅';
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 3800);
+    }
   }
   
   // ── OPEN TERMS MODAL ──
   window.showTermsModal = function() {
-    console.log('📋 Showing terms modal');
+    console.log('📋 Opening terms modal...');
+    console.log('termsAccepted:', termsAccepted);
+    console.log('termsModal:', !!termsModal);
+    
     if (!termsAccepted && termsModal) {
       termsModal.classList.add('open');
       document.body.style.overflow = 'hidden';
       if (acceptCheckbox) {
         acceptCheckbox.checked = false;
-        acceptBtn.disabled = true;
+        if (acceptBtn) acceptBtn.disabled = true;
       }
+      console.log('✅ Terms modal opened');
+    } else {
+      console.log('⚠️ Terms already accepted or modal not found');
     }
   };
   
   // ── ACCEPT TERMS ──
   window.acceptTerms = function() {
-    console.log('✅ Accepting terms');
+    console.log('✅ Accepting terms...');
     if (!acceptCheckbox || !acceptCheckbox.checked) {
       showToast('Please accept the Terms & Conditions to continue.', 'warning');
       return;
@@ -907,6 +914,7 @@
     }
     showToast('✅ Thank you for accepting our Terms & Conditions', 'success');
     
+    // Check for pending destination
     const pendingDestination = localStorage.getItem('kv_intended_destination');
     if (pendingDestination) {
       localStorage.removeItem('kv_intended_destination');
@@ -935,43 +943,43 @@
     }
   };
   
-  // ── SHOW TOAST ──
-  function showToast(msg, type = 'success') {
-    const toast = document.getElementById('toastNotification');
-    const iconMap = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️' };
-    if (toast) {
-      document.getElementById('toastIcon').textContent = iconMap[type] || '✅';
-      document.getElementById('toastMsg').textContent = msg;
-      toast.classList.add('show');
-      setTimeout(function() {
-        toast.classList.remove('show');
-      }, 3800);
-    }
+  // ── ENABLE ACCEPT BUTTON ──
+  if (acceptCheckbox && acceptBtn) {
+    acceptCheckbox.addEventListener('change', function() {
+      acceptBtn.disabled = !this.checked;
+    });
   }
   
   // ── SHOW TERMS ON PAGE LOAD ──
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM loaded, checking terms...');
-    
+  function initializeTerms() {
+    console.log('📄 Initializing terms...');
     // Always show terms if not accepted
     if (!termsAccepted) {
-      console.log('📋 Showing terms modal on load');
+      console.log('📋 Terms not accepted, showing modal...');
       setTimeout(function() {
         window.showTermsModal();
       }, 500);
+    } else {
+      console.log('✅ Terms already accepted, skipping modal');
     }
-    
-    // Also show when user tries to access restricted links
-    var restrictedLinks = document.querySelectorAll('a[href="shop.html"], a[href="classes.html"], a[href="admin.html"]');
-    restrictedLinks.forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        if (!termsAccepted) {
-          e.preventDefault();
-          localStorage.setItem('kv_intended_destination', this.href);
-          window.showTermsModal();
-        }
-      });
-    });
+  }
+  
+  // ── RUN ON DOM READY ──
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeTerms);
+  } else {
+    initializeTerms();
+  }
+  
+  // ── ALSO RUN AFTER PAGE LOADS COMPLETELY ──
+  window.addEventListener('load', function() {
+    // If modal is not open and terms not accepted, try again
+    if (!termsAccepted && termsModal && !termsModal.classList.contains('open')) {
+      console.log('🔄 Retrying terms modal on load...');
+      setTimeout(function() {
+        window.showTermsModal();
+      }, 1000);
+    }
   });
   
   // ── CLOSE MODAL ON OVERLAY CLICK ──
@@ -1010,21 +1018,14 @@
   }
   
   console.log('✅ Terms & Conditions loaded successfully');
-})();
-
-// ── FIX SHOP RESOURCES LOADING ──
-// Ensure Supabase is loaded and resources display
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('🛒 Checking shop resources...');
   
-  // If we're on shop page, resources should load automatically
-  // The shop.html has its own init function
-  if (window.location.pathname.includes('shop.html')) {
-    console.log('📚 On shop page, waiting for resources...');
-    // The shop page will handle loading
-  }
-});
+  // ── GLOBAL FUNCTIONS FOR HTML ONCLICK ──
+  window.showTermsModal = window.showTermsModal;
+  window.acceptTerms = window.acceptTerms;
+  window.declineTerms = window.declineTerms;
+  window.closeTermsModal = window.closeTermsModal;
+  
+})();
 </script>
-<script src="script.js?v=2"></script>
 </body>
 </html>
