@@ -1056,11 +1056,20 @@ function openPaymentModal(productJson) {
     return;
   }
   
-  // Check if terms are accepted
+  // 🔥 NEW: Check if terms are accepted
   var termsAccepted = localStorage.getItem('kv_terms_accepted') === 'true';
   if (!termsAccepted) {
     showToast('⚠️ Please accept Terms & Conditions first.', 'warning');
-    if (window.showTermsModal) window.showTermsModal();
+    // Show the terms modal or redirect
+    if (typeof showTermsModal === 'function') {
+      showTermsModal();
+    } else {
+      // If no modal function, redirect to terms page
+      if (confirm('You must accept our Terms & Conditions before making a purchase. Would you like to read them now?')) {
+        window.location.href = 'terms.html';
+      }
+    }
+    // Store the product so we can resume after terms acceptance
     sessionStorage.setItem('pendingProduct', JSON.stringify(product));
     return;
   }
