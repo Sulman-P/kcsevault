@@ -1,1061 +1,886 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Kenya Vault — Kenya's #1 Resource Centre</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="styles.css?v=2"/>
-<style>
-/* ── TERMS & CONDITIONS MODAL ── */
-.terms-modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(4px);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.terms-modal-overlay.open {
-  display: flex;
-}
-.terms-modal {
-  background: #FFFFFF;
-  border-radius: 20px;
-  max-width: 750px;
-  width: 95%;
-  max-height: 90vh;
-  overflow: hidden;
-  animation: termsModalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: 0 32px 80px rgba(0,0,0,0.35);
-}
-@keyframes termsModalIn {
-  from { opacity: 0; transform: scale(0.88) translateY(20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-.terms-modal-header {
-  padding: 18px 24px;
-  border-bottom: 1px solid #D0E4D8;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #0B1A12;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.terms-modal-header h3 {
-  color: #FFFFFF;
-  font-family: 'Sora', sans-serif;
-  font-size: 1.1rem;
-}
-.terms-modal-close {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.12);
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.2s;
-  border: none;
-  flex-shrink: 0;
-}
-.terms-modal-close:hover {
-  background: rgba(255,255,255,0.2);
-}
-.terms-modal-body {
-  padding: 24px;
-  max-height: 60vh;
-  overflow-y: auto;
-}
-.terms-content h4 {
-  color: #0D6E3F;
-  margin-top: 20px;
-  margin-bottom: 8px;
-  font-family: 'Sora', sans-serif;
-  font-size: 0.95rem;
-}
-.terms-content p {
-  font-size: 0.88rem;
-  color: #1C2B23;
-  line-height: 1.7;
-  margin-bottom: 8px;
-}
-.terms-content ul {
-  margin: 8px 0 16px 20px;
-  list-style: none;
-}
-.terms-content ul li {
-  margin-bottom: 4px;
-  padding-left: 8px;
-  font-size: 0.85rem;
-  color: #3D5247;
-}
-.terms-content ul li::before {
-  content: "• ";
-  color: #D4A017;
-}
-.terms-disclaimer-box {
-  background: #FEF3C7;
-  border-left: 4px solid #D97706;
-  padding: 16px 20px;
-  border-radius: 8px;
-  margin: 20px 0;
-}
-.terms-disclaimer-box h4 {
-  color: #92400E;
-  margin-bottom: 10px;
-  font-family: 'Sora', sans-serif;
-}
-.terms-disclaimer-box p {
-  font-size: 0.85rem;
-  color: #78350F;
-  margin-bottom: 6px;
-  line-height: 1.6;
-}
-.terms-actions {
-  padding: 16px 24px;
-  border-top: 1px solid #D0E4D8;
-  background: #F4F8F5;
-}
-.terms-checkbox {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.terms-checkbox input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
-  accent-color: #0D6E3F;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.terms-checkbox label {
-  font-size: 0.88rem;
-  color: #1C2B23;
-  cursor: pointer;
-  line-height: 1.5;
-}
-.terms-actions .btn-row {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.btn-accept {
-  background: #0D6E3F;
-  color: white;
-  padding: 12px 28px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  font-family: 'Sora', sans-serif;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  flex: 1;
-}
-.btn-accept:hover {
-  background: #12924F;
-}
-.btn-accept:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.btn-decline {
-  background: transparent;
-  color: #EF4444;
-  padding: 12px 28px;
-  border: 2px solid #EF4444;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  font-family: 'Sora', sans-serif;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  flex: 1;
-}
-.btn-decline:hover {
-  background: #EF4444;
-  color: white;
-}
-.toast-notification {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 99999;
-  background: #0B1A12;
-  color: #fff;
-  padding: 13px 20px;
-  border-radius: 12px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.86rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  transform: translateY(80px);
-  opacity: 0;
-  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events: none;
-  min-width: 220px;
-  max-width: 360px;
-}
-.toast-notification.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KenyaVault — CBC, KJSEA 2025 & 8-4-4 Resources</title>
+    <meta name="description" content="Premium CBC Junior School, KJSEA 2025, Senior School and Form 3-4 revision resources. Preview before you buy! Download instantly via M-PESA." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        /* ── HOMEPAGE SPECIFIC STYLES ── */
+        .hero {
+            background: var(--dark);
+            background-image: radial-gradient(ellipse 60% 70% at 80% 40%, rgba(13,110,63,0.3), transparent 65%), 
+                              radial-gradient(ellipse 40% 50% at 10% 70%, rgba(212,160,23,0.1), transparent 60%);
+            padding: 120px 0 80px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(13,110,63,0.05), transparent 70%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero h1 em { font-style: normal; color: var(--gold-light); }
+        .hero p {
+            font-size: 1.05rem;
+            color: #8FBAA6;
+            max-width: 560px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .btn-primary {
+            background: var(--green);
+            color: var(--white);
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.92rem;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary:hover {
+            background: var(--green-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(13,110,63,0.4);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.92rem;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-stats .stat {
+            display: flex;
+            flex-direction: column;
+        }
+        .hero-stats .stat-number {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--gold-light);
+        }
+        .hero-stats .stat-label {
+            font-size: 0.82rem;
+            color: #6B9980;
+        }
+
+        /* ── TRUST BADGES ── */
+        .trust-badges {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.06);
+            padding: 6px 14px;
+            border-radius: 99px;
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.75rem;
+            color: #8FBAA6;
+        }
+        .trust-badge .icon {
+            font-size: 1rem;
+        }
+        .trust-badge .label {
+            font-weight: 500;
+        }
+        
+        /* ── FEATURES SECTION ── */
+        .features {
+            padding: 80px 0;
+            background: var(--surface);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        .feature-card {
+            background: var(--white);
+            padding: 28px 20px;
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--green);
+        }
+        .feature-card .icon {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .feature-card h4 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+        .feature-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ── NEW: PRICING SHOWCASE ── */
+        .pricing-showcase {
+            padding: 60px 0 40px;
+            background: var(--white);
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        .pricing-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            text-align: center;
+            border: 2px solid var(--border);
+            transition: var(--transition);
+        }
+        .pricing-card:hover {
+            border-color: var(--green);
+            transform: translateY(-3px);
+        }
+        .pricing-card.featured {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(212,160,23,0.05), rgba(212,160,23,0.02));
+        }
+        .pricing-card .price {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--green);
+        }
+        .pricing-card .price .currency {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .pricing-card .price .original {
+            text-decoration: line-through;
+            color: #9CA3AF;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+        .pricing-card .name {
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin: 8px 0 4px;
+        }
+        .pricing-card .desc {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+        .pricing-card .badge-savings {
+            display: inline-block;
+            background: #FEE2E2;
+            color: #DC2626;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 99px;
+            margin-top: 6px;
+        }
+
+        /* ── NEW: KICD ALIGNMENT BANNER ── */
+        .kicd-banner {
+            background: linear-gradient(135deg, #F0FDF4, #DCFFE4);
+            padding: 20px 0;
+            border-top: 2px solid #BBF7D0;
+            border-bottom: 2px solid #BBF7D0;
+        }
+        .kicd-banner-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .kicd-banner-inner .left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .kicd-banner-inner .left .icon {
+            font-size: 2rem;
+        }
+        .kicd-banner-inner .left .text {
+            font-size: 0.85rem;
+            color: #15803D;
+        }
+        .kicd-banner-inner .left .text strong {
+            color: #0B1A12;
+        }
+        .kicd-banner-inner .badge-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .kicd-banner-inner .badge-group .badge {
+            background: rgba(255,255,255,0.7);
+            padding: 4px 14px;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #15803D;
+            border: 1px solid #86EFAC;
+        }
+
+        /* ── NEW: PREVIEW FEATURE BANNER ── */
+        .preview-banner {
+            background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+            padding: 16px 0;
+        }
+        .preview-banner-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+        .preview-banner-inner .text {
+            font-size: 0.9rem;
+            color: #1E40AF;
+        }
+        .preview-banner-inner .text strong {
+            color: #0B1A12;
+        }
+        .preview-banner-inner .preview-demo {
+            background: white;
+            padding: 6px 18px;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #2563EB;
+            border: 1px solid #93C5FD;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ── CATEGORY SECTION ── */
+        .categories {
+            padding: 80px 0;
+            background: var(--white);
+        }
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        .category-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            border: 1.5px solid var(--border);
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        .category-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green), var(--gold-light));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .category-card:hover::after {
+            opacity: 1;
+        }
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--green);
+        }
+        .category-card .cat-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+        .category-card h4 { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1rem; color: var(--dark); }
+        .category-card p { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+        .category-card .badge { 
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            padding: 3px 10px; border-radius: 99px; display: inline-block; margin-top: 8px;
+        }
+        .badge-green { background: rgba(13,110,63,0.12); color: var(--green); }
+        .badge-purple { background: rgba(124,58,237,0.12); color: #7C3AED; }
+        .badge-gold { background: rgba(212,160,23,0.12); color: #92400E; }
+        .badge-blue { background: rgba(37,99,235,0.12); color: #2563EB; }
+
+        /* ── NEW: TESTIMONIALS ── */
+        .testimonials {
+            padding: 60px 0;
+            background: var(--surface);
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        .testimonial-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1.5px solid var(--border);
+        }
+        .testimonial-card .stars {
+            color: #FCD34D;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+        .testimonial-card .quote {
+            font-size: 0.88rem;
+            color: var(--text);
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .testimonial-card .author .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green), var(--green-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .testimonial-card .author .info .name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--dark);
+        }
+        .testimonial-card .author .info .role {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero { padding: 100px 0 60px; min-height: auto; }
+            .hero-stats { gap: 24px; }
+            .hero-stats .stat-number { font-size: 1.4rem; }
+            .kicd-banner-inner { flex-direction: column; text-align: center; }
+            .trust-badges { justify-content: center; }
+            .preview-banner-inner { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- ════════════ PRELOADER ════════════ -->
-<div class="preloader" id="preloader">
-  <div class="preloader-inner">
-    <div class="preloader-logo">Kenya<span>Vault</span></div>
-    <div class="preloader-bar"><div class="preloader-fill"></div></div>
-    <div class="preloader-sub">Your Complete Learning Resource Hub</div>
-  </div>
-</div>
-
-<!-- ════════════ TERMS & CONDITIONS MODAL ════════════ -->
-<div id="termsModal" class="terms-modal-overlay">
-  <div class="terms-modal">
-    <div class="terms-modal-header">
-      <h3>📋 Terms & Conditions</h3>
-      <button class="terms-modal-close" onclick="closeTermsModal()">✕</button>
-    </div>
-    <div class="terms-modal-body">
-      <div class="terms-content">
-
-        <h4>1. Acceptance of Terms</h4>
-        <p>By accessing and using KenyaVault (<strong>kenyavault.co.ke</strong>), you agree to be bound by these Terms & Conditions. If you do not agree, please do not use our services.</p>
-
-        <h4>2. Services Provided</h4>
-        <p>KenyaVault provides educational resources including:</p>
-        <ul>
-          <li>📚 Digital notes and study materials</li>
-          <li>📝 Past examination papers</li>
-          <li>📖 Worksheets and revision materials</li>
-          <li>🎥 Educational videos and tutorials</li>
-          <li>📅 Live online classes</li>
-        </ul>
-
-        <h4>3. Payment Terms</h4>
-        <p>All payments are processed via M-PESA through Megapay.</p>
-        <ul>
-          <li>💳 Payments are non-refundable once the resource is delivered</li>
-          <li>📱 You will receive a download link via WhatsApp after payment confirmation</li>
-          <li>🔒 We do not store your M-PESA PIN or sensitive payment information</li>
-        </ul>
-
-        <h4>4. Intellectual Property</h4>
-        <p>All content on KenyaVault is the intellectual property of KenyaVault.</p>
-        <ul>
-          <li>📄 Resources are for personal educational use only</li>
-          <li>🚫 You may not redistribute, resell, or reproduce any content</li>
-          <li>📝 Unauthorized distribution may result in legal action</li>
-        </ul>
-
-        <h4>5. User Conduct</h4>
-        <p>You agree to use our services responsibly:</p>
-        <ul>
-          <li>✅ Use resources only for personal study</li>
-          <li>❌ Do not share login credentials</li>
-          <li>❌ Do not attempt to hack or disrupt our services</li>
-        </ul>
-
-        <h4>6. Disclaimer of Warranties</h4>
-        <p>Our resources are provided "as is" without any warranties.</p>
-        <ul>
-          <li>📚 We do not guarantee specific academic outcomes</li>
-          <li>🔍 While we strive for accuracy, errors may occur</li>
-        </ul>
-
-        <h4>7. Limitation of Liability</h4>
-        <p>To the fullest extent permitted by law, KenyaVault shall not be liable for:</p>
-        <ul>
-          <li>📉 Any indirect, incidental, or consequential damages</li>
-          <li>🎓 Academic outcomes or exam results</li>
-          <li>⏱️ Temporary service interruptions</li>
-        </ul>
-
-        <h4>8. Privacy Policy</h4>
-        <p>We handle your data as follows:</p>
-        <ul>
-          <li>🔒 We collect only necessary information</li>
-          <li>📧 We may send service-related emails</li>
-          <li>🛡️ We do not sell your personal information</li>
-          <li>📱 Your phone number is used only for payment and WhatsApp communication</li>
-        </ul>
-
-        <h4>9. Governing Law</h4>
-        <p>These Terms are governed by the laws of the Republic of Kenya.</p>
-
-        <h4>10. Contact Information</h4>
-        <ul>
-          <li>📧 Email: adminnexalearn@gmail.com</li>
-          <li>📱 WhatsApp: +254 768 515 494</li>
-          <li>🌐 Website: kenyavault.co.ke</li>
-        </ul>
-
-        <div class="terms-disclaimer-box">
-          <h4>⚠️ IMPORTANT DISCLAIMER</h4>
-          <p><strong>Educational Purpose Only:</strong> KenyaVault resources are supplementary educational materials. They are not a substitute for formal classroom instruction, qualified teaching, or official school curricula.</p>
-          <p><strong>No Guarantee:</strong> We do not guarantee that using our resources will result in specific grades, exam scores, or academic success. Individual results vary based on effort, understanding, and other factors.</p>
-          <p><strong>Accuracy:</strong> While we strive for accuracy, we do not warrant that all content is error-free. Users should verify critical information with official sources.</p>
-          <p><strong>Payment Processing:</strong> Payments are processed by Megapay. We are not responsible for any issues arising from the payment gateway.</p>
-          <p><strong>Technical Issues:</strong> We do not guarantee uninterrupted access or flawless performance of our website or resources.</p>
-        </div>
-
-      </div>
-    </div>
-    <div class="terms-actions">
-      <div class="terms-checkbox">
-        <input type="checkbox" id="acceptTermsCheckbox">
-        <label for="acceptTermsCheckbox">I have read, understood, and agree to the Terms & Conditions and Disclaimer</label>
-      </div>
-      <div class="btn-row">
-        <button class="btn-accept" id="acceptTermsBtn" disabled>✅ Accept & Continue</button>
-        <button class="btn-decline" onclick="declineTerms()">❌ Decline</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ NAVBAR ════════════ -->
-<nav class="navbar" id="navbar">
-  <div class="nav-container">
-    <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li class="nav-dropdown">
-        <a href="#">Curriculum ▾</a>
-        <div class="dropdown-menu">
-          <div class="dropdown-col">
-            <div class="dropdown-heading">CBC</div>
-            <a href="shop.html?level=junior">Junior School (Gr 7–9)</a>
-            <a href="shop.html?level=senior">Senior School (Gr 10–12)</a>
-          </div>
-          <div class="dropdown-col">
-            <div class="dropdown-heading">8-4-4</div>
-            <a href="shop.html?level=844">Form 3 & 4 (Until 2028)</a>
-          </div>
-        </div>
-      </li>
-      <li><a href="shop.html">Shop</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="classes.html">Live Classes</a></li>
-    </ul>
-    <div class="nav-actions">
-      <a href="shop.html" class="btn-nav-cta">Browse Shop →</a>
-      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</nav>
-
-<!-- ════════════ MOBILE MENU ════════════ -->
-<div class="mobile-menu" id="mobileMenu">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li class="mobile-section-label">CBC Curriculum</li>
-    <li><a href="shop.html?level=junior">🏫 Junior School (Grade 7–9)</a></li>
-    <li><a href="shop.html?level=senior">🎓 Senior School (Grade 10–12)</a></li>
-    <li class="mobile-section-label">8-4-4 System</li>
-    <li><a href="shop.html?level=844">📚 Form 3 & 4</a></li>
-    <li><a href="shop.html">All Resources</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="shop.html" class="mobile-cta">Browse Shop →</a></li>
-  </ul>
-</div>
-
-<!-- ════════════ HERO SECTION ════════════ -->
-<section class="hero">
-  <div class="hero-bg-shapes">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-  </div>
-  <div class="hero-content">
-    <div class="hero-text">
-      <div class="hero-eyebrow"><span class="eyebrow-dot"></span>CBC & 8-4-4 Resources · Kenya</div>
-      <h1>Learn Smarter.<br/><em>Excel Boldly.</em></h1>
-      <p class="hero-sub">Premium notes, past papers & worksheets for Junior School (CBC), Senior School (CBC) and Form 3–4 (8-4-4). Crafted by a certified Kenyan teacher. Pay via M-PESA, download instantly.</p>
-      <div class="hero-actions">
-        <a href="shop.html" class="btn-primary">
-          <span>Browse All Resources</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#curriculum" class="btn-ghost">Explore Curriculum</a>
-      </div>
-      <div class="hero-trust">
-        <div class="trust-avatars">
-          <div class="avatar av1">AW</div>
-          <div class="avatar av2">JM</div>
-          <div class="avatar av3">FK</div>
-          <div class="avatar av4">+</div>
-        </div>
-        <p>Trusted by <strong>2,400+</strong> students & parents across Kenya</p>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-card-stack">
-        <div class="hero-curriculum-badge hcb-cbc">
-          <span class="hcb-label">NEW</span>
-          <span class="hcb-name">CBC Curriculum</span>
-          <span class="hcb-sub">Junior & Senior School</span>
-        </div>
-        <div class="hero-subject-card hsc-bio">
-          <div class="hsc-icon">🔬</div>
-          <div class="hsc-info"><div class="hsc-name">Integrated Science</div><div class="hsc-count">Junior School · Grade 7–9</div></div>
-          <div class="hsc-price">From KSh 80</div>
-        </div>
-        <div class="hero-subject-card hsc-chem">
-          <div class="hsc-icon">📐</div>
-          <div class="hsc-info"><div class="hsc-name">Mathematics</div><div class="hsc-count">CBC & 8-4-4</div></div>
-          <div class="hsc-price">From KSh 80</div>
-        </div>
-        <div class="hero-subject-card hsc-math">
-          <div class="hsc-icon">🌍</div>
-          <div class="hsc-info"><div class="hsc-name">Social Studies</div><div class="hsc-count">Junior School · Grade 7–9</div></div>
-          <div class="hsc-price">From KSh 80</div>
-        </div>
-        <div class="hero-subject-card hsc-phys">
-          <div class="hsc-icon">📚</div>
-          <div class="hsc-info"><div class="hsc-name">Form 3 & 4 Notes</div><div class="hsc-count">8-4-4 · Until 2028</div></div>
-          <div class="hsc-price">From KSh 80</div>
-        </div>
-        <div class="hero-floating-badge badge-mpesa"><span>📱</span> M-PESA Accepted</div>
-        <div class="hero-floating-badge badge-instant"><span>⚡</span> Instant Download</div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-stats-bar">
-    <div class="stat-item"><div class="stat-num" data-count="400">0</div><div class="stat-label">Resources Available</div></div>
-    <div class="stat-divider"></div>
-    <div class="stat-item"><div class="stat-num" data-count="2400">0</div><div class="stat-label">Happy Students</div></div>
-    <div class="stat-divider"></div>
-    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Curriculum Levels</div></div>
-    <div class="stat-divider"></div>
-    <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">Subjects Covered</div></div>
-  </div>
-</section>
-
-<!-- ════════════ TRUST BAR ════════════ -->
-<div class="trust-bar">
-  <div class="trust-bar-inner">
-    <div class="trust-item"><span>✅</span> Instant download</div>
-    <div class="trust-sep">•</div>
-    <div class="trust-item"><span>📱</span> Pay via M-PESA</div>
-    <div class="trust-sep">•</div>
-    <div class="trust-item"><span>👩‍🏫</span> Certified teacher</div>
-    <div class="trust-sep">•</div>
-    <div class="trust-item"><span>📄</span> CBC & KNEC aligned</div>
-    <div class="trust-sep">•</div>
-    <div class="trust-item"><span>🔒</span> Secure checkout</div>
-    <div class="trust-sep">•</div>
-    <div class="trust-item"><span>🇰🇪</span> Made in Kenya</div>
-  </div>
-</div>
-
-<!-- ════════════ CBC TRANSITION BANNER ════════════ -->
-<div class="transition-banner">
-  <div class="container">
-    <div class="tb-inner">
-      <div class="tb-icon">🔄</div>
-      <div class="tb-text">
-        <strong>Kenya is transitioning to CBC.</strong> We cover all three levels — Junior School (CBC), Senior School (CBC), and Form 3 & 4 (8-4-4 until 2028). One platform, every student.
-      </div>
-      <a href="#curriculum" class="tb-link">Explore Curriculum →</a>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ CURRICULUM LEVELS ════════════ -->
-<section class="curriculum section-pad" id="curriculum">
-  <div class="container">
-    <div class="section-header centered">
-      <div class="section-eyebrow">Choose Your Level</div>
-      <h2 class="section-title">What Are You Studying?</h2>
-      <p class="section-sub">Resources for every stage of Kenya's education system — CBC Junior School, CBC Senior School, and the existing 8-4-4 system.</p>
-    </div>
-    <div class="curriculum-grid">
-      <a class="curriculum-card cc-junior" href="shop.html?level=junior">
-        <div class="cc-header">
-          <div class="cc-badge">CBC · NEW</div>
-          <div class="cc-emoji">🏫</div>
-          <div class="cc-glow"></div>
-        </div>
-        <div class="cc-body">
-          <div class="cc-level">Junior School</div>
-          <h3>Grade 7 – 9</h3>
-          <p>Comprehensive resources for all CBC Junior School Learning Areas — aligned to the new competency-based curriculum.</p>
-          <div class="cc-subjects-preview">
-            <span>📐 Mathematics</span>
-            <span>🔬 Integrated Science</span>
-            <span>🌍 Social Studies</span>
-            <span>🌿 Agriculture</span>
-            <span>💻 Pre-Technical</span>
-            <span>+5 more</span>
-          </div>
-        </div>
-        <div class="cc-footer">
-          <span class="cc-count">10 Learning Areas</span>
-          <span class="cc-arrow">Explore →</span>
-        </div>
-      </a>
-
-      <a class="curriculum-card cc-senior" href="shop.html?level=senior">
-        <div class="cc-header">
-          <div class="cc-badge">CBC · COMING</div>
-          <div class="cc-emoji">🎓</div>
-          <div class="cc-glow"></div>
-        </div>
-        <div class="cc-body">
-          <div class="cc-level">Senior School</div>
-          <h3>Grade 10 – 12</h3>
-          <p>Early resources for CBC Senior School subjects — get ahead before your classmates as the curriculum rolls out.</p>
-          <div class="cc-subjects-preview">
-            <span>🔬 Biology</span>
-            <span>⚗️ Chemistry</span>
-            <span>⚡ Physics</span>
-            <span>📐 Mathematics</span>
-            <span>💻 Computer Studies</span>
-            <span>+10 more</span>
-          </div>
-        </div>
-        <div class="cc-footer">
-          <span class="cc-count">15+ Subjects</span>
-          <span class="cc-arrow">Explore →</span>
-        </div>
-      </a>
-
-      <a class="curriculum-card cc-844" href="shop.html?level=844">
-        <div class="cc-header">
-          <div class="cc-badge">8-4-4 · UNTIL 2028</div>
-          <div class="cc-emoji">📚</div>
-          <div class="cc-glow"></div>
-        </div>
-        <div class="cc-body">
-          <div class="cc-level">8-4-4 System</div>
-          <h3>Form 3 & Form 4</h3>
-          <p>Full KCSE resources for the final cohorts sitting the 8-4-4 examinations through 2027. Past papers, notes, marking schemes.</p>
-          <div class="cc-subjects-preview">
-            <span>🔬 Biology</span>
-            <span>⚗️ Chemistry</span>
-            <span>📐 Mathematics</span>
-            <span>⚡ Physics</span>
-            <span>📝 Past Papers</span>
-            <span>+more</span>
-          </div>
-        </div>
-        <div class="cc-footer">
-          <span class="cc-count">4 Core Subjects</span>
-          <span class="cc-arrow">Explore →</span>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ JUNIOR SCHOOL SUBJECTS ════════════ -->
-<section class="subjects-section section-pad" id="junior">
-  <div class="container">
-    <div class="section-header split">
-      <div>
-        <div class="section-eyebrow">CBC · Junior School</div>
-        <h2 class="section-title">Grade 7–9 Learning Areas</h2>
-        <p class="section-sub">All CBC Junior School learning areas covered. Notes, worksheets and assessments aligned to the competency-based curriculum.</p>
-      </div>
-      <a href="shop.html?level=junior" class="btn-outline">All Junior Resources →</a>
-    </div>
-    <div class="subjects-grid-5">
-      <a class="subject-card sc-math" href="shop.html?level=junior&subject=mathematics">
-        <div class="sc-banner"><div class="sc-icon-wrap">📐</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Mathematics</h3><p>Numbers, algebra, geometry and statistics for Grade 7–9 CBC curriculum.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-eng" href="shop.html?level=junior&subject=english">
-        <div class="sc-banner"><div class="sc-icon-wrap">📖</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>English</h3><p>Comprehension, grammar, composition and oral skills for Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-kisw" href="shop.html?level=junior&subject=kiswahili">
-        <div class="sc-banner"><div class="sc-icon-wrap">🗣️</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Kiswahili</h3><p>Lugha, fasihi, uandishi na ujumbe wa mawasiliano kwa Shule ya Sekondari.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-sci" href="shop.html?level=junior&subject=integrated-science">
-        <div class="sc-banner"><div class="sc-icon-wrap">🔬</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Integrated Science</h3><p>Biology, Chemistry and Physics concepts blended for CBC Junior School learners.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-tech" href="shop.html?level=junior&subject=pre-technical">
-        <div class="sc-banner"><div class="sc-icon-wrap">🔧</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Pre-Technical Studies</h3><p>Technical drawing, woodwork basics, metalwork and design for Grade 7–9.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-soc" href="shop.html?level=junior&subject=social-studies">
-        <div class="sc-banner"><div class="sc-icon-wrap">🌍</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Social Studies</h3><p>History, geography and citizenship education for CBC Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-re" href="shop.html?level=junior&subject=religious-education">
-        <div class="sc-banner"><div class="sc-icon-wrap">✝️</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Religious Education</h3><p>CRE and IRE notes, activities and assessments for Junior School learners.</p><div class="sc-tags"><span>CRE</span><span>IRE</span><span>Grade 7–9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-art" href="shop.html?level=junior&subject=creative-arts">
-        <div class="sc-banner"><div class="sc-icon-wrap">🎨</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Creative Arts</h3><p>Visual arts, music, dance and drama integrated for CBC Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-agri" href="shop.html?level=junior&subject=agriculture">
-        <div class="sc-banner"><div class="sc-icon-wrap">🌿</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Agriculture</h3><p>Crop production, animal husbandry and farm management for Junior School.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-
-      <a class="subject-card sc-pe" href="shop.html?level=junior&subject=health-pe">
-        <div class="sc-banner"><div class="sc-icon-wrap">⚽</div><div class="sc-glow"></div></div>
-        <div class="sc-body"><h3>Life Education Books </h3><p>Financial Literacy, Coding and Social Life books for Junior School learners.</p><div class="sc-tags"><span>Grade 7</span><span>Grade 8</span><span>Grade 9</span></div></div>
-        <div class="sc-footer"><span class="sc-count">General Life and Growth</span><span class="sc-price">From KSh 80</span></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ SENIOR SCHOOL SUBJECTS ════════════ -->
-<section class="subjects-section section-pad bg-surface" id="senior">
-  <div class="container">
-    <div class="section-header split">
-      <div>
-        <div class="section-eyebrow">CBC · Senior School</div>
-        <h2 class="section-title">Grade 10–12 Subjects</h2>
-        <p class="section-sub">Early resources for CBC Senior School. Get ahead now — these students will sit their first national exams from 2028 onwards.</p>
-      </div>
-      <a href="shop.html?level=senior" class="btn-outline">All Senior Resources →</a>
-    </div>
-    <div class="senior-pathway-tabs">
-      <button class="pathway-tab active" data-pathway="social science">🔬 Social Sciences Pathway</button>
-      <button class="pathway-tab" data-pathway="arts">📖 Arts & Sports Sciences</button>
-      <button class="pathway-tab" data-pathway="science">🔧 STEM Pathway</button>
-    </div>
-    <div class="pathway-content active" id="pathway-sciences">
-      <div class="subjects-grid-5">
-        <a class="subject-card sc-bio" href="shop.html?level=senior&subject=biology"><div class="sc-banner"><div class="sc-icon-wrap">🔬</div></div><div class="sc-body"><h3>Biology</h3><p>Senior School CBC Biology — cells, genetics, ecology and human health.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-chem" href="shop.html?level=senior&subject=chemistry"><div class="sc-banner"><div class="sc-icon-wrap">⚗️</div></div><div class="sc-body"><h3>Chemistry</h3><p>Organic, inorganic and physical chemistry for CBC Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-phys" href="shop.html?level=senior&subject=physics"><div class="sc-banner"><div class="sc-icon-wrap">⚡</div></div><div class="sc-body"><h3>Physics</h3><p>Mechanics, electricity, waves and modern physics for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-math" href="shop.html?level=senior&subject=core-mathematics"><div class="sc-banner"><div class="sc-icon-wrap">📐</div></div><div class="sc-body"><h3>Core Mathematics</h3><p>Advanced mathematics for sciences pathway students in Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-comp" href="shop.html?level=senior&subject=computer-studies"><div class="sc-banner"><div class="sc-icon-wrap">💻</div></div><div class="sc-body"><h3>Computer Studies</h3><p>Programming, databases, networking and ICT for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-      </div>
-    </div>
-    <div class="pathway-content" id="pathway-arts">
-      <div class="subjects-grid-5">
-        <a class="subject-card sc-eng" href="shop.html?level=senior&subject=literature"><div class="sc-banner"><div class="sc-icon-wrap">📖</div></div><div class="sc-body"><h3>Literature in English</h3><p>Prose, poetry, drama and oral literature for CBC Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-kisw" href="shop.html?level=senior&subject=kiswahili"><div class="sc-banner"><div class="sc-icon-wrap">🗣️</div></div><div class="sc-body"><h3>Kiswahili</h3><p>Fasihi, lugha na mawasiliano kwa Shule ya Sekondari ya Juu CBC.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-hist" href="shop.html?level=senior&subject=history"><div class="sc-banner"><div class="sc-icon-wrap">🏛️</div></div><div class="sc-body"><h3>History & Citizenship</h3><p>Kenya, Africa and world history with citizenship education for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-geo" href="shop.html?level=senior&subject=geography"><div class="sc-banner"><div class="sc-icon-wrap">🗺️</div></div><div class="sc-body"><h3>Geography</h3><p>Physical, human and environmental geography for CBC Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-bus" href="shop.html?level=senior&subject=business"><div class="sc-banner"><div class="sc-icon-wrap">📊</div></div><div class="sc-body"><h3>Business Studies</h3><p>Entrepreneurship, commerce, accounting basics and business management.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-      </div>
-    </div>
-    <div class="pathway-content" id="pathway-technical">
-      <div class="subjects-grid-5">
-        <a class="subject-card sc-agri" href="shop.html?level=senior&subject=agriculture"><div class="sc-banner"><div class="sc-icon-wrap">🌿</div></div><div class="sc-body"><h3>Agriculture</h3><p>Crop science, livestock, soil management and agribusiness for Senior School.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-home" href="shop.html?level=senior&subject=home-science"><div class="sc-banner"><div class="sc-icon-wrap">🏠</div></div><div class="sc-body"><h3>Home Science</h3><p>Nutrition, clothing, household management and consumer education.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-math" href="shop.html?level=senior&subject=essential-mathematics"><div class="sc-banner"><div class="sc-icon-wrap">🔢</div></div><div class="sc-body"><h3>Essential Mathematics</h3><p>Practical mathematics for technical and applied pathway Senior School students.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-comp" href="shop.html?level=senior&subject=computer-studies"><div class="sc-banner"><div class="sc-icon-wrap">💻</div></div><div class="sc-body"><h3>Computer Studies</h3><p>ICT, programming and digital literacy for the technical pathway.</p><div class="sc-tags"><span>Gr 10</span><span>Gr 11</span><span>Gr 12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-        <a class="subject-card sc-re" href="shop.html?level=senior&subject=religious-education"><div class="sc-banner"><div class="sc-icon-wrap">✝️</div></div><div class="sc-body"><h3>Religious Education</h3><p>CRE and IRE for CBC Senior School — values, ethics and faith studies.</p><div class="sc-tags"><span>CRE</span><span>IRE</span><span>Gr 10–12</span></div></div><div class="sc-footer"><span class="sc-count">CBC aligned</span><span class="sc-price">From KSh 80</span></div></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ 8-4-4 SECTION ════════════ -->
-<section class="subjects-section section-pad" id="form34">
-  <div class="container">
-    <div class="section-header split">
-      <div>
-        <div class="section-eyebrow">8-4-4 System · Until 2028</div>
-        <h2 class="section-title">Form 3 & Form 4</h2>
-        <p class="section-sub">Full past papers, topical notes and marking schemes for the last students sitting the 8-4-4 national examinations currently in form 3, and the current Form fours.</p>
-      </div>
-      <a href="shop.html?level=844" class="btn-outline">All 8-4-4 Resources →</a>
-    </div>
-    <div class="subjects-grid">
-      <a class="subject-card sc-bio" href="shop.html?level=844&subject=biology"><div class="sc-banner"><div class="sc-icon-wrap">🔬</div><div class="sc-glow"></div></div><div class="sc-body"><h3>Biology</h3><p>KCSE Biology past papers 2018–2024, topical notes and marking schemes.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">48 resources</span><span class="sc-price">From KSh 80</span></div></a>
-      <a class="subject-card sc-chem" href="shop.html?level=844&subject=chemistry"><div class="sc-banner"><div class="sc-icon-wrap">⚗️</div></div><div class="sc-body"><h3>Chemistry</h3><p>Organic chemistry, practicals and KCSE past papers with full marking schemes.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">52 resources</span><span class="sc-price">From KSh 80</span></div></a>
-      <a class="subject-card sc-math" href="shop.html?level=844&subject=mathematics"><div class="sc-banner"><div class="sc-icon-wrap">📐</div></div><div class="sc-body"><h3>Mathematics</h3><p>Algebra, statistics, trigonometry and KCSE past papers with worked solutions.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">61 resources</span><span class="sc-price">From KSh 80</span></div></a>
-      <a class="subject-card sc-phys" href="shop.html?level=844&subject=physics"><div class="sc-banner"><div class="sc-icon-wrap">⚡</div></div><div class="sc-body"><h3>Physics</h3><p>Mechanics, electricity, waves and KCSE Physics past papers with marking schemes.</p><div class="sc-tags"><span>Form 3</span><span>Form 4</span><span>Past Papers</span></div></div><div class="sc-footer"><span class="sc-count">45 resources</span><span class="sc-price">From KSh 80</span></div></a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ HOW IT WORKS ════════════ -->
-<section class="how section-pad" id="how">
-  <div class="container">
-    <div class="section-header centered">
-      <div class="section-eyebrow">Simple Process</div>
-      <h2 class="section-title">Get Your Notes in 3 Minutes</h2>
-      <p class="section-sub">No account needed. No waiting. Pay via M-PESA and download instantly.</p>
-    </div>
-    <div class="steps-grid">
-      <div class="step-card"><div class="step-num">01</div><div class="step-icon">🔍</div><h4>Pick Your Resource</h4><p>Browse by curriculum level, subject or grade. Preview before you pay.</p></div>
-      <div class="steps-arrow">→</div>
-      <div class="step-card"><div class="step-num">02</div><div class="step-icon">📱</div><h4>Pay via M-PESA</h4><p>Enter your M-PESA number and confirm payment. From KSh 80.</p></div>
-      <div class="steps-arrow">→</div>
-      <div class="step-card"><div class="step-num">03</div><div class="step-icon">⬇️</div><h4>Download Instantly</h4><p>Your PDF is ready immediately. Print or study on your phone.</p></div>
-      <div class="steps-arrow">→</div>
-      <div class="step-card"><div class="step-num">04</div><div class="step-icon">🎯</div><h4>Excel in School</h4><p>CBC-aligned and KNEC-verified content built for Kenyan learners.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ TESTIMONIALS ════════════ -->
-<section class="testimonials section-pad bg-white">
-  <div class="container">
-    <div class="section-header centered">
-      <div class="section-eyebrow">Student Reviews</div>
-      <h2 class="section-title">What Students & Parents Say</h2>
-    </div>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="testi-badge">🏫 Junior School</div>
-        <div class="testi-stars">★★★★★</div>
-        <p>"The Integrated Science notes for Grade 8 are excellent. My son finally understands the CBC approach — practical, relatable examples throughout."</p>
-        <div class="testi-author"><div class="testi-avatar" style="background:#3B82F6">PM</div><div><div class="testi-name">Peter Mwangi</div><div class="testi-role">Parent · Grade 8 student · Nairobi</div></div></div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-badge">📚 Form 4 · 8-4-4</div>
-        <div class="testi-stars">★★★★★</div>
-        <p>"The Chemistry notes are so clear — I finally understood organic reactions after struggling for months. Got a B+ in my mock exams!"</p>
-        <div class="testi-author"><div class="testi-avatar" style="background:#0D6E3F">AW</div><div><div class="testi-name">Amina Wanjiru</div><div class="testi-role">Form 4 · Nairobi</div></div></div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-badge">🎓 Senior School</div>
-        <div class="testi-stars">★★★★★</div>
-        <p>"Getting CBC Senior School resources this early is a huge advantage. The Geography notes for Grade 10 are thorough and well organised."</p>
-        <div class="testi-author"><div class="testi-avatar" style="background:#D4A017">FK</div><div><div class="testi-name">Faith Kipchoge</div><div class="testi-role">Grade 10 · Eldoret</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ CTA SECTION ════════════ -->
-<section class="cta-section">
-  <div class="cta-inner">
-    <div class="cta-text">
-      <div class="cta-eyebrow">📱 M-PESA accepted · Instant access · CBC & 8-4-4</div>
-      <h2>Your learning journey starts today.</h2>
-      <p>Junior School, Senior School or Form 3 & 4 — we have resources for every Kenyan student.</p>
-    </div>
-    <div class="cta-actions">
-      <a href="shop.html" class="btn-primary btn-large">Browse All Resources →</a>
-      <div class="cta-note">No account needed · Download in seconds</div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-    <div class="footer-top">
-        <div class="footer-brand">
+    <!-- ════════════ NAVBAR ════════════ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
             <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
-            <p>Premium CBC and 8-4-4 resources for Kenyan learners. Made by a certified teacher.</p>
-            <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
-                <a href="https://www.tsc.go.ke" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
-                    <span style="font-size:1rem;">🏛️</span> TSC
-                </a>
-                <a href="https://www.knec.ac.ke" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
-                    <span style="font-size:1rem;">📋</span> KNEC
-                </a>
-                <a href="https://education.go.ke/" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
-                    <span style="font-size:1rem;">🏫</span> MoE
-                </a>
-              <a href="https://selection.education.go.ke/" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
-                    <span style="font-size:1rem;">🏫</span> School Selection
-              </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li class="nav-dropdown">
+                    <a href="#">Curriculum ▾</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-col">
+                            <div class="dropdown-heading">CBC</div>
+                            <a href="shop.html?level=kjsea">🏆 KJSEA 2025 (Grade 9)</a>
+                            <a href="shop.html?level=junior">🏫 Junior School (Gr 7–9)</a>
+                            <a href="shop.html?level=senior">🎓 Senior School (Gr 10–12)</a>
+                        </div>
+                        <div class="dropdown-col">
+                            <div class="dropdown-heading">8-4-4</div>
+                            <a href="shop.html?level=844">📚 Form 3 & 4 (Until 2028)</a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="shop.html?level=kjsea" class="btn-nav-cta" style="background:#7C3AED;">🏆 KJSEA 2025</a>
+                <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
             </div>
         </div>
-        <div class="footer-col">
-            <h4>Junior School (CBC)</h4>
-            <ul>
-                <li><a href="shop.html?level=junior&subject=mathematics">Mathematics</a></li>
-                <li><a href="shop.html?level=junior&subject=integrated-science">Integrated Science</a></li>
-                <li><a href="shop.html?level=junior&subject=english">English</a></li>
-                <li><a href="shop.html?level=junior">View All →</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Senior School (CBC)</h4>
-            <ul>
-                <li><a href="shop.html?level=senior&subject=biology">Biology</a></li>
-                <li><a href="shop.html?level=senior&subject=chemistry">Chemistry</a></li>
-                <li><a href="shop.html?level=senior&subject=core-mathematics">Core Mathematics</a></li>
-                <li><a href="shop.html?level=senior">View All →</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>8-4-4 Form 3 &amp; 4</h4>
-            <ul>
-                <li><a href="shop.html?level=844&subject=biology">Biology</a></li>
-                <li><a href="shop.html?level=844&subject=chemistry">Chemistry</a></li>
-                <li><a href="shop.html?level=844&subject=mathematics">Mathematics</a></li>
-                <li><a href="shop.html?level=844&subject=physics">Physics</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-    <h4>Quick Links</h4>
-    <ul>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="terms.html">📋 Terms &amp; Conditions</a></li>
-        <li><a href="privacy.html">🔒 Privacy Policy</a></li>
-        <li><a href="admin.html">🔑 Admin</a></li>
-        <li><a href="mailto:adminnexalearn@gmail.com">📧 Contact Support</a></li>
-    </ul>
-</div>
-    
-    <!-- ════════════════ IMPORTANT LINKS SECTION ════════════════ -->
-    <div style="max-width:1240px;margin:0 auto;padding:16px 5% 8px;border-top:1px solid rgba(255,255,255,0.08);">
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
-            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
-                <span style="color:var(--gold-light);font-size:0.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">🔗 Important Links:</span>
-                <a href="https://www.tsc.go.ke" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
-                    <span style="font-size:1rem;">🏛️</span> Teachers Service Commission
-                </a>
-                <span style="color:rgba(255,255,255,0.2);">|</span>
-                <a href="https://www.knec.ac.ke" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
-                    <span style="font-size:1rem;">📋</span> KNEC
-                </a>
-                <span style="color:rgba(255,255,255,0.2);">|</span>
-                <a href="https://selection.education.go.ke/" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
-                    <span style="font-size:1rem;">🎯</span> Grade 10 School Selection
-                </a>
-                <span style="color:rgba(255,255,255,0.2);">|</span>
-                <a href="https://www.education.go.ke" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
-                    <span style="font-size:1rem;">🏫</span> Ministry of Education
-                </a>
+    </nav>
+
+    <!-- ════════════ HERO SECTION ════════════ -->
+    <section class="hero">
+        <div class="container" style="max-width:1240px;margin:0 auto;padding:0 5%;">
+            <div class="hero-eyebrow" style="display:inline-flex;align-items:center;gap:10px;background:rgba(212,160,23,0.12);border:1px solid rgba(212,160,23,0.3);color:var(--gold-light);font-size:0.78rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:7px 16px;border-radius:99px;margin-bottom:24px;position:relative;z-index:1;">
+                <span style="width:7px;height:7px;border-radius:50%;background:var(--gold-light);animation:pulse 2s infinite;"></span>
+                🇰🇪 Kenya's #1 Educational Resource Hub
             </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-                <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;">🔒 Secure</span>
-                <span style="width:6px;height:6px;border-radius:50%;background:#16A34A;display:inline-block;"></span>
-                <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;">🇰🇪 Kenya</span>
+            <h1>Your <em>Success</em> Starts Here</h1>
+            <p>Get premium CBC Junior School, KJSEA 2025, Senior School, and 8-4-4 revision resources. <strong>Preview before you buy</strong> — only pay for what you need!</p>
+            <div class="hero-buttons">
+                <a href="shop.html" class="btn-primary">🛒 Start Shopping</a>
+                <a href="shop.html?level=kjsea" class="btn-secondary">🏆 KJSEA 2025 Resources</a>
+            </div>
+
+            <!-- ── TRUST BADGES ── -->
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <span class="icon">👁️</span>
+                    <span class="label">Preview Before Buy</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="icon">✅</span>
+                    <span class="label">KICD Aligned</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="icon">💳</span>
+                    <span class="label">M-PESA Payment</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="icon">⚡</span>
+                    <span class="label">Instant Download</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="icon">📱</span>
+                    <span class="label">WhatsApp Delivery</span>
+                </div>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Resources Available</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Students Helped</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Preview Before Pay</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">4.9⭐</span>
+                    <span class="stat-label">Teacher Rating</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════ KICD ALIGNMENT BANNER ════════════ -->
+    <div class="kicd-banner">
+        <div class="kicd-banner-inner">
+            <div class="left">
+                <span class="icon">📋</span>
+                <div class="text">
+                    <strong>KICD Curriculum Aligned</strong> — All resources follow the Kenya Institute of Curriculum Development (KICD) designs and the Competency-Based Curriculum (CBC) framework.
+                </div>
+            </div>
+            <div class="badge-group">
+                <span class="badge">✅ KICD Approved</span>
+                <span class="badge">📖 CBC Compliant</span>
+                <span class="badge">👩‍🏫 Teacher Reviewed</span>
             </div>
         </div>
     </div>
-    
-    <div class="footer-bottom">
-        <span>© 2026 KenyaVault. All rights reserved.</span>
-        <span>Made with ❤️ in Kenya 🇰🇪</span>
+
+    <!-- ════════════ PREVIEW FEATURE BANNER ════════════ -->
+    <div class="preview-banner">
+        <div class="preview-banner-inner">
+            <div class="text">
+                👁️ <strong>New!</strong> Preview every document before you buy — see the quality and content before you pay!
+            </div>
+            <span class="preview-demo">
+                🔍 2-Page Preview Available
+            </span>
+        </div>
     </div>
-</footer>
 
-<!-- ════════════ TOAST NOTIFICATION ════════════ -->
-<div class="toast-notification" id="toastNotification">
-  <span id="toastIcon">✅</span>
-  <span id="toastMsg">Saved successfully</span>
-</div>
+    <!-- ════════════ FEATURES SECTION ════════════ -->
+    <section class="features">
+        <h2 class="section-title">Why KenyaVault?</h2>
+        <p class="section-subtitle">Trusted by teachers and students across Kenya</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="icon">👁️</span>
+                <h4>Preview Before Pay</h4>
+                <p>See 2 pages of every document before you buy. Know exactly what you're getting!</p>
+            </div>
+            <div class="feature-card">
+                <span class="icon">📱</span>
+                <h4>M-PESA Payment</h4>
+                <p>Pay instantly using M-PESA via Megapay. Secure and convenient.</p>
+            </div>
+            <div class="feature-card">
+                <span class="icon">⚡</span>
+                <h4>Instant Download</h4>
+                <p>Get your resources immediately after payment. No waiting.</p>
+            </div>
+            <div class="feature-card">
+                <span class="icon">📋</span>
+                <h4>KICD Aligned</h4>
+                <p>All resources follow KICD curriculum designs and CBC framework.</p>
+            </div>
+            <div class="feature-card">
+                <span class="icon">📚</span>
+                <h4>Comprehensive Content</h4>
+                <p>CBC Junior School, KJSEA 2025, Senior School, and 8-4-4.</p>
+            </div>
+            <div class="feature-card">
+                <span class="icon">🏆</span>
+                <h4>Teacher-Certified</h4>
+                <p>All resources created and reviewed by experienced Kenyan teachers.</p>
+            </div>
+        </div>
+    </section>
 
-<!-- ════════════ SCRIPTS ════════════ -->
-<script src="script.js?v=2"></script>
-<script>
-/* ════════════════════════════════════════
-   TERMS & CONDITIONS - MAIN SCRIPT
-   ════════════════════════════════════════ */
+    <!-- ════════════ PRICING SHOWCASE ════════════ -->
+    <section class="pricing-showcase">
+        <h2 class="section-title">Affordable Pricing</h2>
+        <p class="section-subtitle">Quality resources at fair prices — starting from just KSh 30!</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="price">
+                    <span class="currency">KSh</span> 30
+                </div>
+                <div class="name">Single Paper</div>
+                <div class="desc">One assessment paper or worksheet</div>
+            </div>
+            <div class="pricing-card featured">
+                <div class="price">
+                    <span class="currency">KSh</span> 120
+                    <span class="original">KSh 200</span>
+                </div>
+                <div class="name">Subject Bundle</div>
+                <div class="desc">5+ papers per subject</div>
+                <span class="badge-savings">💡 Save 40%</span>
+            </div>
+            <div class="pricing-card">
+                <div class="price">
+                    <span class="currency">KSh</span> 80
+                    <span class="original">KSh 120</span>
+                </div>
+                <div class="name">Termly Set</div>
+                <div class="desc">Complete term assessments</div>
+                <span class="badge-savings">💡 Save 33%</span>
+            </div>
+            <div class="pricing-card featured">
+                <div class="price">
+                    <span class="currency">KSh</span> 250
+                    <span class="original">KSh 400</span>
+                </div>
+                <div class="name">KJSEA 2025 Package</div>
+                <div class="desc">Full exam preparation bundle</div>
+                <span class="badge-savings">🏆 Best Value</span>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:20px;font-size:0.82rem;color:var(--muted);">
+            💡 <strong>Free resources available</strong> — Start with free samples before you buy!
+        </div>
+    </section>
 
-(function() {
-  'use strict';
-  
-  console.log('🔐 T&C Script loading...');
-  
-  // ── CHECK IF TERMS ALREADY ACCEPTED ──
-  let termsAccepted = localStorage.getItem('kv_terms_accepted') === 'true';
-  console.log('Terms accepted status:', termsAccepted);
-  
-  // ── DOM ELEMENTS ──
-  const termsModal = document.getElementById('termsModal');
-  const acceptCheckbox = document.getElementById('acceptTermsCheckbox');
-  const acceptBtn = document.getElementById('acceptTermsBtn');
-  
-  // ── SHOW TOAST FUNCTION ──
-  function showToast(msg, type) {
-    type = type || 'success';
-    const toast = document.getElementById('toastNotification');
-    const iconMap = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️' };
-    if (toast) {
-      document.getElementById('toastIcon').textContent = iconMap[type] || '✅';
-      document.getElementById('toastMsg').textContent = msg;
-      toast.classList.add('show');
-      setTimeout(function() {
-        toast.classList.remove('show');
-      }, 3800);
-    }
-  }
-  
-  // ── OPEN TERMS MODAL ──
-  window.showTermsModal = function() {
-    console.log('📋 Opening terms modal...');
-    console.log('termsAccepted:', termsAccepted);
-    console.log('termsModal:', !!termsModal);
-    
-    if (!termsAccepted && termsModal) {
-      termsModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      if (acceptCheckbox) {
-        acceptCheckbox.checked = false;
-        if (acceptBtn) acceptBtn.disabled = true;
-      }
-      console.log('✅ Terms modal opened');
-    } else {
-      console.log('⚠️ Terms already accepted or modal not found');
-    }
-  };
-  
-  // ── ACCEPT TERMS ──
-  window.acceptTerms = function() {
-    console.log('✅ Accepting terms...');
-    if (!acceptCheckbox || !acceptCheckbox.checked) {
-      showToast('Please accept the Terms & Conditions to continue.', 'warning');
-      return;
-    }
-    
-    termsAccepted = true;
-    localStorage.setItem('kv_terms_accepted', 'true');
-    if (termsModal) {
-      termsModal.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    showToast('✅ Thank you for accepting our Terms & Conditions', 'success');
-    
-    // Check for pending destination
-    const pendingDestination = localStorage.getItem('kv_intended_destination');
-    if (pendingDestination) {
-      localStorage.removeItem('kv_intended_destination');
-      window.location.href = pendingDestination;
-    }
-  };
-  
-  // ── DECLINE TERMS ──
-  window.declineTerms = function() {
-    if (confirm('You must accept the Terms & Conditions to use KenyaVault. Would you like to leave?')) {
-      window.location.href = 'https://google.com';
-    }
-  };
-  
-  // ── CLOSE TERMS MODAL ──
-  window.closeTermsModal = function() {
-    if (!termsAccepted) {
-      if (confirm('You must accept the Terms & Conditions to continue. Do you want to leave?')) {
-        window.location.href = 'https://google.com';
-      }
-    } else {
-      if (termsModal) {
-        termsModal.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-  };
-  
-  // ── ENABLE ACCEPT BUTTON ──
-  if (acceptCheckbox && acceptBtn) {
-    acceptCheckbox.addEventListener('change', function() {
-      acceptBtn.disabled = !this.checked;
-    });
-  }
-  
-  // ── SHOW TERMS ON PAGE LOAD ──
-  function initializeTerms() {
-    console.log('📄 Initializing terms...');
-    // Always show terms if not accepted
-    if (!termsAccepted) {
-      console.log('📋 Terms not accepted, showing modal...');
-      setTimeout(function() {
-        window.showTermsModal();
-      }, 500);
-    } else {
-      console.log('✅ Terms already accepted, skipping modal');
-    }
-  }
-  
-  // ── RUN ON DOM READY ──
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeTerms);
-  } else {
-    initializeTerms();
-  }
-  
-  // ── ALSO RUN AFTER PAGE LOADS COMPLETELY ──
-  window.addEventListener('load', function() {
-    // If modal is not open and terms not accepted, try again
-    if (!termsAccepted && termsModal && !termsModal.classList.contains('open')) {
-      console.log('🔄 Retrying terms modal on load...');
-      setTimeout(function() {
-        window.showTermsModal();
-      }, 1000);
-    }
-  });
-  
-  // ── CLOSE MODAL ON OVERLAY CLICK ──
-  if (termsModal) {
-    termsModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        if (!termsAccepted) {
-          if (confirm('You must accept the Terms & Conditions to continue. Do you want to leave?')) {
-            window.location.href = 'https://google.com';
-          }
-        } else {
-          this.classList.remove('open');
-          document.body.style.overflow = '';
-        }
-      }
-    });
-  }
-  
-  // ── KEYBOARD ESCAPE ──
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && termsModal && termsModal.classList.contains('open')) {
-      if (!termsAccepted) {
-        if (confirm('You must accept the Terms & Conditions to continue. Do you want to leave?')) {
-          window.location.href = 'https://google.com';
-        }
-      } else {
-        termsModal.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-  });
-  
-  // ── ACCEPT BUTTON CLICK ──
-  if (acceptBtn) {
-    acceptBtn.addEventListener('click', window.acceptTerms);
-  }
-  
-  console.log('✅ Terms & Conditions loaded successfully');
-  
-  // ── GLOBAL FUNCTIONS FOR HTML ONCLICK ──
-  window.showTermsModal = window.showTermsModal;
-  window.acceptTerms = window.acceptTerms;
-  window.declineTerms = window.declineTerms;
-  window.closeTermsModal = window.closeTermsModal;
-  
-})();
-</script>
+    <!-- ════════════ CATEGORIES SECTION ════════════ -->
+    <section class="categories">
+        <h2 class="section-title">Browse by Curriculum</h2>
+        <p class="section-subtitle">Find the right resources for your level — with previews available!</p>
+        <div class="categories-grid">
+            <a href="shop.html?level=kjsea" class="category-card">
+                <span class="cat-icon">🏆</span>
+                <h4>KJSEA 2025</h4>
+                <p>Grade 9 exam preparation resources</p>
+                <span class="badge badge-purple">🔥 Hot</span>
+                <span style="display:block;font-size:0.7rem;color:var(--muted);margin-top:4px;">👁️ Preview Available</span>
+            </a>
+            <a href="shop.html?level=junior" class="category-card">
+                <span class="cat-icon">🏫</span>
+                <h4>Junior School</h4>
+                <p>CBC Grade 7, 8 &amp; 9 resources</p>
+                <span class="badge badge-green">CBC</span>
+                <span style="display:block;font-size:0.7rem;color:var(--muted);margin-top:4px;">👁️ Preview Available</span>
+            </a>
+            <a href="shop.html?level=senior" class="category-card">
+                <span class="cat-icon">🎓</span>
+                <h4>Senior School</h4>
+                <p>CBC Grade 10, 11 &amp; 12 resources</p>
+                <span class="badge badge-green">CBC</span>
+                <span style="display:block;font-size:0.7rem;color:var(--muted);margin-top:4px;">👁️ Preview Available</span>
+            </a>
+            <a href="shop.html?level=844" class="category-card">
+                <span class="cat-icon">📚</span>
+                <h4>8-4-4 Form 3 &amp; 4</h4>
+                <p>Revision materials for the 8-4-4 system</p>
+                <span class="badge badge-gold">8-4-4</span>
+                <span style="display:block;font-size:0.7rem;color:var(--muted);margin-top:4px;">👁️ Preview Available</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ════════════ TESTIMONIALS ════════════ -->
+    <section class="testimonials">
+        <h2 class="section-title">What Our Users Say</h2>
+        <p class="section-subtitle">Trusted by teachers, students, and parents across Kenya</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="quote">"The preview feature is excellent! I can see exactly what I'm buying before I pay. The resources are aligned with KICD and very affordable."</div>
+                <div class="author">
+                    <div class="avatar">JM</div>
+                    <div class="info">
+                        <div class="name">Jane Mwangi</div>
+                        <div class="role">Teacher, Nairobi School</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="quote">"KSh 30 for a paper is very fair. I bought the KJSEA bundle and it's comprehensive. The WhatsApp delivery is super convenient!"</div>
+                <div class="author">
+                    <div class="avatar">PK</div>
+                    <div class="info">
+                        <div class="name">Peter Kiprop</div>
+                        <div class="role">Parent, Eldoret</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="quote">"Finally a platform that shows previews! I used to waste money on resources I already had. KenyaVault solves this problem."</div>
+                <div class="author">
+                    <div class="avatar">SO</div>
+                    <div class="info">
+                        <div class="name">Sarah Ochieng</div>
+                        <div class="role">Student, Grade 9</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════ CALL TO ACTION ════════════ -->
+    <section style="padding:60px 0;background:var(--dark);text-align:center;">
+        <div style="max-width:1240px;margin:0 auto;padding:0 5%;">
+            <h2 style="font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(1.4rem,2.5vw,2rem);color:var(--white);margin-bottom:12px;">
+                Ready to <em style="color:var(--gold-light);font-style:normal;">Start Learning</em>?
+            </h2>
+            <p style="color:#8FBAA6;font-size:0.95rem;margin-bottom:24px;max-width:560px;margin-left:auto;margin-right:auto;">
+                Preview documents, pay via M-PESA, and download instantly. Join thousands of happy learners today!
+            </p>
+            <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+                <a href="shop.html" class="btn-primary">🛒 Browse Resources</a>
+                <a href="shop.html?level=kjsea" class="btn-secondary" style="background:rgba(124,58,237,0.2);border-color:rgba(124,58,237,0.3);">🏆 KJSEA 2025</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════ FOOTER ════════════ -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
+                <p>Premium CBC and 8-4-4 resources for Kenyan learners. Made by a certified teacher.</p>
+                <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
+                    <a href="https://www.tsc.go.ke" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                        <span style="font-size:1rem;">🏛️</span> TSC
+                    </a>
+                    <a href="https://www.knec.ac.ke" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                        <span style="font-size:1rem;">📋</span> KNEC
+                    </a>
+                    <a href="https://www.education.go.ke" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                        <span style="font-size:1rem;">🏫</span> MoE
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Junior School (CBC)</h4>
+                <ul>
+                    <li><a href="shop.html?level=junior&subject=mathematics">Mathematics</a></li>
+                    <li><a href="shop.html?level=junior&subject=integrated-science">Integrated Science</a></li>
+                    <li><a href="shop.html?level=junior&subject=english">English</a></li>
+                    <li><a href="shop.html?level=junior">View All →</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Senior School (CBC)</h4>
+                <ul>
+                    <li><a href="shop.html?level=senior&subject=biology">Biology</a></li>
+                    <li><a href="shop.html?level=senior&subject=chemistry">Chemistry</a></li>
+                    <li><a href="shop.html?level=senior&subject=core-mathematics">Core Mathematics</a></li>
+                    <li><a href="shop.html?level=senior">View All →</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>8-4-4 Form 3 &amp; 4</h4>
+                <ul>
+                    <li><a href="shop.html?level=844&subject=biology">Biology</a></li>
+                    <li><a href="shop.html?level=844&subject=chemistry">Chemistry</a></li>
+                    <li><a href="shop.html?level=844&subject=mathematics">Mathematics</a></li>
+                    <li><a href="shop.html?level=844&subject=physics">Physics</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="terms.html">📋 Terms &amp; Conditions</a></li>
+                    <li><a href="privacy.html">🔒 Privacy Policy</a></li>
+                    <li><a href="admin.html">🔑 Admin</a></li>
+                    <li><a href="mailto:support@kenyavault.co.ke">📧 Contact Support</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- ════════════════ IMPORTANT LINKS SECTION ════════════════ -->
+        <div style="max-width:1240px;margin:0 auto;padding:16px 5% 8px;border-top:1px solid rgba(255,255,255,0.08);">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+                    <span style="color:var(--gold-light);font-size:0.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">🔗 Important Links:</span>
+                    <a href="https://www.tsc.go.ke" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
+                        <span style="font-size:1rem;">🏛️</span> Teachers Service Commission
+                    </a>
+                    <span style="color:rgba(255,255,255,0.2);">|</span>
+                    <a href="https://www.knec.ac.ke" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
+                        <span style="font-size:1rem;">📋</span> KNEC
+                    </a>
+                    <span style="color:rgba(255,255,255,0.2);">|</span>
+                    <a href="https://www.education.go.ke/index.php/grade-10-selection" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
+                        <span style="font-size:1rem;">🎯</span> Grade 10 School Selection
+                    </a>
+                    <span style="color:rgba(255,255,255,0.2);">|</span>
+                    <a href="https://www.education.go.ke" target="_blank" style="color:#8FBAA6;font-size:0.82rem;text-decoration:none;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;">
+                        <span style="font-size:1rem;">🏫</span> Ministry of Education
+                    </a>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;">🔒 Secure</span>
+                    <span style="width:6px;height:6px;border-radius:50%;background:#16A34A;display:inline-block;"></span>
+                    <span style="color:rgba(255,255,255,0.3);font-size:0.7rem;">🇰🇪 Kenya</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <span>© 2026 KenyaVault. All rights reserved.</span>
+            <span>Made with ❤️ in Kenya 🇰🇪</span>
+        </div>
+    </footer>
+
+    <script>
+        // ── HAMBURGER MENU ──
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
