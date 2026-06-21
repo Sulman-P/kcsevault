@@ -733,6 +733,7 @@
         </div>
       </li>
       <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-actions">
       <a href="shop.html?level=kjsea" class="btn-nav-cta" style="background:#7C3AED;">🏆 KJSEA 2026</a>
@@ -747,7 +748,7 @@
     <div class="shop-hero-inner">
       <div class="hero-eyebrow" style="display:inline-flex;align-items:center;gap:10px;background:rgba(212,160,23,0.12);border:1px solid rgba(212,160,23,0.3);color:var(--gold-light);font-size:0.78rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:7px 16px;border-radius:99px;margin-bottom:24px;">
         <span style="width:7px;height:7px;border-radius:50%;background:var(--gold-light);animation:pulse 2s infinite;"></span>
-        CBC · KJSEA 2025 · 8-4-4
+        CBC · KJSEA 2026 · 8-4-4
       </div>
       <h1>The <em>Complete</em> Shop</h1>
       <p>Notes, past papers, worksheets & bundles for CBC Junior School, KJSEA 2026, CBC Senior School and 8-4-4 Form 3 & 4. <strong>Preview before you buy!</strong> Pay via M-PESA, download instantly.</p>
@@ -898,23 +899,24 @@
         This resource has been reviewed and aligned with the Kenya Institute of Curriculum Development (KICD) curriculum designs. All content follows the Competency-Based Curriculum (CBC) framework.</p>
       </div>
 
-      <!-- ── MPESA CODE INPUT ── -->
+      <!-- ── PHONE INPUT ── -->
       <div class="phone-input-group">
         <label>📱 Your WhatsApp Number <span class="required">*</span></label>
         <input type="tel" id="customerPhone" placeholder="0712 345 678" maxlength="12" autocomplete="tel"/>
         <div class="phone-hint">⚠️ We'll send your download link to this WhatsApp number</div>
       </div>
 
-     <!-- ── MPESA CODE INPUT ── -->
+      <!-- ── MPESA CODE INPUT ── -->
       <div class="phone-input-group">
-         <label>📝 M-PESA Transaction Code <span class="required">*</span></label>
-         <input type="text" id="mpesaCode" placeholder="e.g., QWERTY123" maxlength="20" style="text-transform:uppercase;"/>
-         <div class="phone-hint">Enter the M-PESA confirmation code you received via SMS</div>
-     </div>
+        <label>📝 M-PESA Transaction Code <span class="required">*</span></label>
+        <input type="text" id="mpesaCode" placeholder="e.g., QWERTY123" maxlength="20" style="text-transform:uppercase;"/>
+        <div class="phone-hint">Enter the M-PESA confirmation code you received via SMS</div>
+      </div>
+
       <div class="payment-instructions">
         <h4>📱 How to Complete Payment</h4>
         <ol>
-          <li>Enter your WhatsApp number above</li>
+          <li>Enter your WhatsApp number and M-PESA code above</li>
           <li>Click the "Pay with M-PESA" button below</li>
           <li>Enter your phone number on the Megapay page</li>
           <li>Complete payment on your phone</li>
@@ -1034,7 +1036,7 @@
 <script>
 /* ════════════════════════════════════════
    SHOP PAGE - COMPLETE WITH COVER IMAGES,
-   PREVIEW, AND PHONE COLLECTION
+   PREVIEW, PHONE COLLECTION & MPESA CODE
 ════════════════════════════════════════ */
 
 'use strict';
@@ -1132,19 +1134,17 @@ function updateCounts() {
   var junior = allResources.filter(function(r) { return r.level === 'junior'; }).length;
   var senior = allResources.filter(function(r) { return r.level === 'senior'; }).length;
   var eight44 = allResources.filter(function(r) { return r.level === '844'; }).length;
-  var selfgrowth = allResources.filter(function(r) {return r.level=== 'selfgrowth';}).length;
   
   document.getElementById('kjseaCount').textContent = kjsea;
   document.getElementById('juniorCount').textContent = junior;
   document.getElementById('seniorCount').textContent = senior;
   document.getElementById('eight44Count').textContent = eight44;
-  document.getElementById('selfgrowth').textContent = selfgrowth;
   document.getElementById('totalCount').textContent = allResources.length;
 }
 
 // ── GET LEVEL DISPLAY ──
 function getLevelDisplay(level) {
-  var map = { kjsea:'🏆 KJSEA 2026', junior:'🏫 Junior School', senior:'🎓 Senior School', '844':'📚 8-4-4', selfgrowth: 'Selfgrowth'};
+  var map = { kjsea:'🏆 KJSEA 2026', junior:'🏫 Junior School', senior:'🎓 Senior School', '844':'📚 8-4-4' };
   return map[level] || level || 'All Levels';
 }
 
@@ -1354,10 +1354,15 @@ function openPaymentModal(productId) {
     '. All content follows the Competency-Based Curriculum (CBC) framework.</p>';
   document.getElementById('kicdDisclosure').innerHTML = kicdHTML;
   
-  // Clear previous phone number
+  // Clear previous phone number and M-PESA code
   var phoneInput = document.getElementById('customerPhone');
   phoneInput.value = '';
   phoneInput.className = '';
+  
+  var mpesaInput = document.getElementById('mpesaCode');
+  mpesaInput.value = '';
+  mpesaInput.className = '';
+  
   setTimeout(function() { phoneInput.focus(); }, 300);
   
   // Set up pay button
@@ -1378,7 +1383,7 @@ function closePaymentModal() {
   currentProduct = null;
 }
 
-// ── PROCESS PAYMENT WITH PHONE ──
+// ── PROCESS PAYMENT WITH PHONE AND MPESA CODE ──
 function processPaymentWithPhone() {
   var phoneInput = document.getElementById('customerPhone');
   var phone = phoneInput.value.trim();
@@ -1395,6 +1400,14 @@ function processPaymentWithPhone() {
   // Validate M-PESA code
   if (!mpesaCode) {
     showToast('⚠️ Please enter your M-PESA transaction code', 'warning');
+    document.getElementById('mpesaCode').className = 'error';
+    document.getElementById('mpesaCode').focus();
+    return;
+  }
+  
+  // Validate M-PESA code format (alphanumeric, at least 5 characters)
+  if (!/^[A-Z0-9]{5,20}$/.test(mpesaCode)) {
+    showToast('⚠️ Please enter a valid M-PESA transaction code (e.g., QWERTY123)', 'warning');
     document.getElementById('mpesaCode').className = 'error';
     document.getElementById('mpesaCode').focus();
     return;
@@ -1631,6 +1644,11 @@ function setupEventListeners() {
       e.preventDefault();
       processPaymentWithPhone();
     }
+  });
+  
+  // M-PESA code input - auto uppercase
+  document.getElementById('mpesaCode').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
   });
 }
 
