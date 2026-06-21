@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Product — KenyaVault | CBC, KJSEA 2025 & 8-4-4 Resources</title>
-<meta name="description" content="View and purchase educational resources from KenyaVault. CBC Junior School, KJSEA 2025, Senior School and Form 3-4 revision materials."/>
+<title>Product — KenyaVault | CBC, KJSEA 2026 & 8-4-4 Resources</title>
+<meta name="description" content="View and purchase educational resources from KenyaVault. CBC Junior School, KJSEA 2026, Senior School and Form 3-4 revision materials."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
@@ -230,7 +230,7 @@
         <div class="dropdown-menu">
           <div class="dropdown-col">
             <div class="dropdown-heading">CBC</div>
-            <a href="shop.html?level=kjsea">🏆 KJSEA 2025 (Grade 9)</a>
+            <a href="shop.html?level=kjsea">🏆 KJSEA 2026 (Grade 9)</a>
             <a href="shop.html?level=junior">🏫 Junior School (Gr 7–9)</a>
             <a href="shop.html?level=senior">🎓 Senior School (Gr 10–12)</a>
           </div>
@@ -243,7 +243,7 @@
       <li><a href="about.html">About</a></li>
     </ul>
     <div class="nav-actions">
-      <a href="shop.html?level=kjsea" class="btn-nav-cta" style="background:#7C3AED;">🏆 KJSEA 2025</a>
+      <a href="shop.html?level=kjsea" class="btn-nav-cta" style="background:#7C3AED;">🏆 KJSEA 2026</a>
       <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -393,7 +393,7 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
-      <p>Premium CBC and 8-4-4 resources for Kenyan learners. Made by a certified teacher.</p>
+      <p>Premium CBC and 8-4-4 resources for Kenyan learners. Made by  certified teachers.</p>
     </div>
     <div class="footer-col">
       <h4>Junior School (CBC)</h4>
@@ -420,8 +420,15 @@
         <li><a href="shop.html?level=844&subject=chemistry">Chemistry</a></li>
         <li><a href="shop.html?level=844&subject=mathematics">Mathematics</a></li>
         <li><a href="shop.html?level=844&subject=physics">Physics</a></li>
+        <li><a href="shop.html?level=844">View All →</a></li>
       </ul>
     </div>
+    <div class="footer col">
+          <h4>Self Growth</h4>
+          <ul>
+            <li><a href="shop.html?level=SelfGrowth">Financial Literacy</a></li>
+            <li><a href="shop.html?level=SelfGrowth">Self Education</a></li>
+          </ul>
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul>
@@ -555,7 +562,7 @@ function renderProduct(product) {
 }
 
 function getLevelDisplay(level) {
-  var map = { kjsea:'🏆 KJSEA 2025', junior:'🏫 Junior School', senior:'🎓 Senior School', '844':'📚 8-4-4' };
+  var map = { kjsea:'🏆 KJSEA 2026', junior:'🏫 Junior School', senior:'🎓 Senior School', '844':'📚 8-4-4' };
   return map[level] || level || 'All Levels';
 }
 
