@@ -898,21 +898,19 @@
         This resource has been reviewed and aligned with the Kenya Institute of Curriculum Development (KICD) curriculum designs. All content follows the Competency-Based Curriculum (CBC) framework.</p>
       </div>
 
-      <!-- ── PHONE INPUT ── -->
+      <!-- ── MPESA CODE INPUT ── -->
       <div class="phone-input-group">
         <label>📱 Your WhatsApp Number <span class="required">*</span></label>
-        <input 
-          type="tel" 
-          id="customerPhone" 
-          placeholder="0712 345 678" 
-          maxlength="12"
-          autocomplete="tel"
-        />
-        <div class="phone-hint">
-          ⚠️ We'll send your download link to this WhatsApp number
-        </div>
+        <input type="tel" id="customerPhone" placeholder="0712 345 678" maxlength="12" autocomplete="tel"/>
+        <div class="phone-hint">⚠️ We'll send your download link to this WhatsApp number</div>
       </div>
 
+     <!-- ── MPESA CODE INPUT ── -->
+      <div class="phone-input-group">
+         <label>📝 M-PESA Transaction Code <span class="required">*</span></label>
+         <input type="text" id="mpesaCode" placeholder="e.g., QWERTY123" maxlength="20" style="text-transform:uppercase;"/>
+         <div class="phone-hint">Enter the M-PESA confirmation code you received via SMS</div>
+     </div>
       <div class="payment-instructions">
         <h4>📱 How to Complete Payment</h4>
         <ol>
@@ -1384,7 +1382,9 @@ function closePaymentModal() {
 function processPaymentWithPhone() {
   var phoneInput = document.getElementById('customerPhone');
   var phone = phoneInput.value.trim();
+  var mpesaCode = document.getElementById('mpesaCode').value.trim().toUpperCase();
   
+  // Validate phone number
   if (!phone) {
     showToast('⚠️ Please enter your WhatsApp number', 'warning');
     phoneInput.className = 'error';
@@ -1392,11 +1392,16 @@ function processPaymentWithPhone() {
     return;
   }
   
+  // Validate M-PESA code
+  if (!mpesaCode) {
+    showToast('⚠️ Please enter your M-PESA transaction code', 'warning');
+    document.getElementById('mpesaCode').className = 'error';
+    document.getElementById('mpesaCode').focus();
+    return;
+  }
+  
   var cleanPhone = phone.replace(/\s/g, '');
-  var isValid = /^2547\d{8}$/.test(cleanPhone) || 
-                /^07\d{8}$/.test(cleanPhone) || 
-                /^01\d{8}$/.test(cleanPhone) ||
-                /^7\d{8}$/.test(cleanPhone);
+  var isValid = /^2547\d{8}$/.test(cleanPhone) || /^07\d{8}$/.test(cleanPhone) || /^7\d{8}$/.test(cleanPhone);
   
   if (!isValid) {
     showToast('⚠️ Please enter a valid Kenyan phone number (e.g., 0712345678)', 'warning');
@@ -1413,14 +1418,18 @@ function processPaymentWithPhone() {
   }
   formattedPhone = formattedPhone.replace(/\s/g, '');
   
-  recordOrderWithPhone(currentProduct, formattedPhone);
+  // Record order with M-PESA code
+  recordOrderWithPhone(currentProduct, formattedPhone, mpesaCode);
+  
+  // Open Megapay in new tab
   window.open(MEGAPAY_LINK, '_blank');
+  
   closePaymentModal();
-  showToast('📤 Order recorded! Complete payment on Megapay.', 'info');
+  showToast('📤 Order recorded with M-PESA code! Complete payment on Megapay.', 'info');
 }
 
-// ── RECORD ORDER ──
-async function recordOrderWithPhone(product, phone) {
+// ── RECORD ORDER WITH PHONE AND MPESA CODE ──
+async function recordOrderWithPhone(product, phone, mpesaCode) {
   if (!sbClient) {
     showToast('⚠️ Error connecting to database. Please try again.', 'error');
     return;
@@ -1433,15 +1442,16 @@ async function recordOrderWithPhone(product, phone) {
       phone: phone,
       resource_title: product.title,
       amount: product.price,
-      mpesa_code: 'Pending',
-      status: 'pending',
+      mpesa_code: mpesaCode,
+      status: 'pending_payment',
+      payment_confirmed: false,
       created_at: new Date().toISOString()
     };
     
     var result = await sbClient.from('orders').insert([orderData]);
     if (result.error) throw result.error;
     
-    console.log('✅ Order recorded:', orderData.ref, 'Phone:', phone);
+    console.log('✅ Order recorded:', orderData.ref, 'Phone:', phone, 'MPESA:', mpesaCode);
     showToast('✅ Order recorded! Complete payment on Megapay.', 'success');
     
   } catch(e) {
