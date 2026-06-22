@@ -1508,19 +1508,7 @@ async function confirmPayment() {
   // Get phone number from session
   var phone = sessionStorage.getItem('kv_customer_phone') || 'Unknown';
   
-  // Record order with M-PESA code
-  await recordOrderWithPhone(currentProduct, phone, mpesaCode);
-  
-  // Show success and close modal
-  showToast('✅ Payment confirmed! Your download link will be sent to your WhatsApp.', 'success');
-  
-  closePaymentModal();
-  
-  // Clear session storage
-  sessionStorage.removeItem('kv_customer_phone');
-}
-
-// ── RECORD ORDER WITH PHONE AND MPESA CODE ──
+  // ── RECORD ORDER WITH PHONE AND MPESA CODE ──
 async function recordOrderWithPhone(product, phone, mpesaCode) {
   if (!sbClient) {
     showToast('⚠️ Error connecting to database. Please try again.', 'error');
@@ -1535,8 +1523,9 @@ async function recordOrderWithPhone(product, phone, mpesaCode) {
       resource_title: product.title,
       amount: product.price,
       mpesa_code: mpesaCode,
-      status: 'pending_payment',
+      status: 'pending_verification',  // ← CHANGED FROM 'pending_payment'
       payment_confirmed: false,
+      verified: false,                  // ← NEW FIELD
       created_at: new Date().toISOString()
     };
     
@@ -1545,12 +1534,14 @@ async function recordOrderWithPhone(product, phone, mpesaCode) {
     
     console.log('✅ Order recorded:', orderData.ref, 'Phone:', phone, 'MPESA Code (last 4):', mpesaCode);
     
+    // ── SHOW DIFFERENT MESSAGE ──
+    showToast('📋 Order recorded! Admin will verify your payment and send the download link.', 'info');
+    
   } catch(e) {
     console.error('Order record error:', e);
     showToast('⚠️ Error recording order. Please contact support.', 'error');
   }
 }
-
 // ── OPEN PREVIEW MODAL ──
 function openPreviewModal(productId) {
   var product = allResources.find(function(r) { return r.id === productId; });
