@@ -738,26 +738,20 @@ table tr:hover td { background: var(--surface); }
     </div>
 
     <!-- Order Filters -->
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:12px 16px;background:var(--surface);border-radius:10px;border:1px solid var(--border);">
-      <button class="order-filter active" data-filter="all" style="padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:var(--transition);">
-        All Orders (<span id="filterAllCount">0</span>)
-      </button>
-      <button class="order-filter" data-filter="pending" style="padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:var(--transition);">
-        ⏳ Pending (<span id="filterPendingCount">0</span>)
-      </button>
-      <button class="order-filter" data-filter="completed" style="padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:var(--transition);">
-        ✅ Completed (<span id="filterCompletedCount">0</span>)
-      </button>
-    </div>
-
-    <div id="ordersList">
-      <div style="text-align:center;padding:40px 20px;color:var(--muted);">
-        <span style="font-size:2rem;display:block;margin-bottom:12px;">📦</span>
-        <p>Loading orders...</p>
-      </div>
-    </div>
-  </div>
-
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:12px 16px;background:var(--surface);border-radius:10px;border:1px solid var(--border);">
+  <button class="order-filter active" data-filter="all" style="padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:var(--transition);">
+    All Orders (<span id="filterAllCount">0</span>)
+  </button>
+  <button class="order-filter" data-filter="pending" style="padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:var(--transition);">
+    ⏳ Pending (<span id="filterPendingCount">0</span>)
+  </button>
+  <button class="order-filter" data-filter="completed" style="padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:var(--transition);">
+    ✅ Completed (<span id="filterCompletedCount">0</span>)
+  </button>
+  <button class="order-filter" data-filter="rejected" style="padding:6px 16px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:var(--transition);">
+    ❌ Rejected (<span id="filterRejectedCount">0</span>)
+  </button>
+</div>
   <!-- ════════════════════════════════════════ -->
   <!-- TAB: SETTINGS                         -->
   <!-- ════════════════════════════════════════ -->
@@ -1877,19 +1871,41 @@ function exportAllData() {
   showToast('📥 Data exported successfully!', 'success');
 }
 
-// ──────────────────────────────────────────────
-// ── ORDER FILTERS ──
-// ──────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.order-filter').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.order-filter').forEach(function(b) { b.classList.remove('active'); });
-      this.classList.add('active');
-      renderOrders(this.dataset.filter);
+/// ── RENDER ORDERS WITH NEW STATUS ──
+function renderOrders(filter = 'all') {
+  currentFilter = filter;
+  const container = document.getElementById('ordersList');
+  
+  let filteredOrders = allOrders;
+  if (filter === 'pending') {
+    filteredOrders = allOrders.filter(function(o) { 
+      return o.status === 'pending_verification' || o.status === 'pending'; 
     });
-  });
-});
-
+  } else if (filter === 'completed') {
+    filteredOrders = allOrders.filter(function(o) { 
+      return o.status === 'completed' || o.status === 'verified'; 
+    });
+  } else if (filter === 'rejected') {
+    filteredOrders = allOrders.filter(function(o) { 
+      return o.status === 'rejected'; 
+    });
+  }
+  
+  // Update counts
+  const pendingCount = allOrders.filter(function(o) { 
+    return o.status === 'pending_verification' || o.status === 'pending'; 
+  }).length;
+  const completedCount = allOrders.filter(function(o) { 
+    return o.status === 'completed' || o.status === 'verified'; 
+  }).length;
+  const rejectedCount = allOrders.filter(function(o) { 
+    return o.status === 'rejected'; 
+  }).length;
+  
+  document.getElementById('filterAllCount').textContent = allOrders.length;
+  document.getElementById('filterPendingCount').textContent = pendingCount;
+  document.getElementById('filterCompletedCount').textContent = completedCount;
+}
 // ──────────────────────────────────────────────
 // ── FILE UPLOAD HANDLING ──
 // ──────────────────────────────────────────────
