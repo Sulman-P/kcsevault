@@ -82,6 +82,101 @@
 .confirm-hero h1 em { font-style: normal; color: var(--gold-light); }
 .confirm-hero p { font-size: 1rem; color: #8FBAA6; max-width: 480px; margin: 0 auto 32px; line-height: 1.75; }
 
+/* ── PENDING VERIFICATION STATUS ── */
+.pending-status {
+  background: #FEF3C7;
+  border: 2px solid #F59E0B;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 0 auto 24px;
+  max-width: 560px;
+  text-align: center;
+}
+.pending-status .icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+.pending-status h3 { 
+  font-family: 'Sora', sans-serif; 
+  font-weight: 700; 
+  font-size: 1.1rem; 
+  color: #92400E; 
+  margin-bottom: 4px;
+}
+.pending-status p { 
+  font-size: 0.9rem; 
+  color: #78350F; 
+  line-height: 1.6;
+}
+.pending-status .highlight {
+  background: rgba(255,255,255,0.5);
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* ── VERIFIED STATUS ── */
+.verified-status {
+  background: #DCFCE7;
+  border: 2px solid #16A34A;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 0 auto 24px;
+  max-width: 560px;
+  text-align: center;
+}
+.verified-status .icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+.verified-status h3 { 
+  font-family: 'Sora', sans-serif; 
+  font-weight: 700; 
+  font-size: 1.1rem; 
+  color: #15803D; 
+  margin-bottom: 4px;
+}
+.verified-status p { 
+  font-size: 0.9rem; 
+  color: #166534; 
+  line-height: 1.6;
+}
+
+/* ── REJECTED STATUS ── */
+.rejected-status {
+  background: #FEE2E2;
+  border: 2px solid #DC2626;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 0 auto 24px;
+  max-width: 560px;
+  text-align: center;
+}
+.rejected-status .icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+.rejected-status h3 { 
+  font-family: 'Sora', sans-serif; 
+  font-weight: 700; 
+  font-size: 1.1rem; 
+  color: #991B1B; 
+  margin-bottom: 4px;
+}
+.rejected-status p { 
+  font-size: 0.9rem; 
+  color: #7F1D1D; 
+  line-height: 1.6;
+}
+.rejected-status .contact-btn {
+  display: inline-block;
+  margin-top: 10px;
+  background: #DC2626;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: var(--transition);
+}
+.rejected-status .contact-btn:hover {
+  background: #B91C1C;
+  transform: translateY(-2px);
+}
+
 /* Confetti dots (CSS only) */
 .confetti-wrap {
   position: absolute; inset: 0; pointer-events: none; overflow: hidden;
@@ -154,8 +249,10 @@
 .od-value { color: var(--text); font-weight: 600; }
 .od-value.green { color: var(--green); }
 .od-value.gold { color: var(--gold); font-weight: 700; }
+.od-value.pending { color: #D97706; font-weight: 700; }
+.od-value.rejected { color: #DC2626; font-weight: 700; }
 
-/* DOWNLOAD CARD */
+/* DOWNLOAD CARD - Only visible when verified */
 .download-card {
   background: linear-gradient(135deg, #0B1A12, #1A3327);
   border: 1px solid rgba(212,160,23,0.25);
@@ -192,6 +289,72 @@
   background: rgba(212,160,23,0.12); border: 1px solid rgba(212,160,23,0.2);
   color: var(--gold-light); font-size: 0.75rem; font-weight: 600;
   padding: 5px 14px; border-radius: 99px; margin-top: 14px;
+}
+
+/* ── PENDING CARD ── */
+.pending-card {
+  background: #FFFBEB;
+  border: 2px solid #F59E0B;
+  border-radius: 18px;
+  padding: 32px;
+  text-align: center;
+}
+.pending-card .icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+.pending-card h3 {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #92400E;
+  margin-bottom: 8px;
+}
+.pending-card p {
+  color: #78350F;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0 auto 16px;
+}
+.pending-card .whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25D366;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+.pending-card .whatsapp-btn:hover {
+  background: #20B858;
+  transform: translateY(-2px);
+}
+
+/* ── REJECTED CARD ── */
+.rejected-card {
+  background: #FEF2F2;
+  border: 2px solid #DC2626;
+  border-radius: 18px;
+  padding: 32px;
+  text-align: center;
+}
+.rejected-card .icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+.rejected-card h3 {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #991B1B;
+  margin-bottom: 8px;
+}
+.rejected-card p {
+  color: #7F1D1D;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0 auto 16px;
 }
 
 /* WHAT NEXT CARD */
@@ -322,34 +485,39 @@
 </head>
 <body class="confirm-page">
 
-<!-- MINIMAL NAV -->
+<!-- ════════════ NAVBAR ════════════ -->
 <nav class="navbar" id="navbar">
   <div class="nav-container">
     <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="shop.html">Shop</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Curriculum ▾</a>
+        <div class="dropdown-menu">
+          <div class="dropdown-col">
+            <div class="dropdown-heading">CBC</div>
+            <a href="shop.html?level=kjsea">🏆 KJSEA 2025 (Grade 9)</a>
+            <a href="shop.html?level=junior">🏫 Junior School (Gr 7–9)</a>
+            <a href="shop.html?level=senior">🎓 Senior School (Gr 10–12)</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-heading">8-4-4</div>
+            <a href="shop.html?level=844">📚 Form 3 & 4 (Until 2028)</a>
+          </div>
+        </div>
+      </li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <a href="shop.html" class="btn-nav-cta">Buy More →</a>
+      <a href="shop.html?level=kjsea" class="btn-nav-cta" style="background:#7C3AED;">🏆 KJSEA 2025</a>
       <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="shop.html">Shop</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="shop.html" class="mobile-cta">Buy More →</a></li>
-  </ul>
-</div>
-
-<!-- PROGRESS BAR -->
+<!-- ════════════ PROGRESS BAR ════════════ -->
 <div class="confirm-progress">
   <div class="progress-steps">
     <div class="progress-step">
@@ -363,28 +531,32 @@
     </div>
     <div class="progress-line done"></div>
     <div class="progress-step">
-      <div class="ps-dot active">⬇</div>
-      <div class="ps-label active">Download</div>
+      <div class="ps-dot active" id="stepDot">⏳</div>
+      <div class="ps-label active" id="stepLabel">Verifying</div>
     </div>
-    <div class="progress-line pending"></div>
+    <div class="progress-line pending" id="stepLine"></div>
     <div class="progress-step">
-      <div class="ps-dot pending">4</div>
-      <div class="ps-label">Study</div>
+      <div class="ps-dot pending" id="finalDot">4</div>
+      <div class="ps-label" id="finalLabel">Download</div>
     </div>
   </div>
 </div>
 
-<!-- SUCCESS HERO -->
+<!-- ════════════ SUCCESS HERO ════════════ -->
 <div class="confirm-hero">
-  <!-- Confetti dots -->
   <div class="confetti-wrap" id="confettiWrap"></div>
 
-  <div class="confirm-checkmark">✅</div>
-  <h1>Payment <em>Confirmed!</em></h1>
-  <p>Your M-PESA payment has been received. Your download is ready below. Check your phone for the M-PESA confirmation SMS.</p>
+  <div class="confirm-checkmark" id="statusIcon">✅</div>
+  <h1 id="statusTitle">Payment <em>Confirmed!</em></h1>
+  <p id="statusMessage">Your M-PESA payment has been received. Your download is ready below.</p>
 </div>
 
-<!-- BODY CONTENT -->
+<!-- ════════════ STATUS SECTION ════════════ -->
+<div id="statusSection">
+  <!-- This will be dynamically updated based on order status -->
+</div>
+
+<!-- ════════════ BODY CONTENT ════════════ -->
 <div class="confirm-body">
 
   <!-- ORDER SUMMARY -->
@@ -395,29 +567,25 @@
     </div>
     <div class="order-card-body">
       <div class="order-product">
-        <div class="op-icon">🔬</div>
+        <div class="op-icon" id="productIcon">🔬</div>
         <div class="op-info">
-          <div class="op-title" id="orderProductTitle">KCSE Biology Past Papers 2018–2024 + Marking Schemes</div>
-          <div class="op-meta" id="orderProductMeta">Biology · Form 3–4 · 72 pages · PDF</div>
+          <div class="op-title" id="orderProductTitle">Loading product...</div>
+          <div class="op-meta" id="orderProductMeta">Loading details...</div>
         </div>
-        <div class="op-price" id="orderProductPrice">KSh 350</div>
+        <div class="op-price" id="orderProductPrice">—</div>
       </div>
       <div class="order-details">
         <div class="od-row">
           <span class="od-label">Order Reference</span>
-          <span class="od-value gold" id="orderRef">KV-2025-00847</span>
-        </div>
-        <div class="od-row">
-          <span class="od-label">M-PESA Transaction</span>
-          <span class="od-value" id="mpesaCode">QHK7892XPL</span>
+          <span class="od-value gold" id="orderRef">—</span>
         </div>
         <div class="od-row">
           <span class="od-label">Phone Number</span>
-          <span class="od-value" id="orderPhone">07** *** 678</span>
+          <span class="od-value" id="orderPhone">—</span>
         </div>
         <div class="od-row">
           <span class="od-label">Amount Paid</span>
-          <span class="od-value green" id="orderAmount">KSh 350</span>
+          <span class="od-value green" id="orderAmount">—</span>
         </div>
         <div class="od-row">
           <span class="od-label">Date & Time</span>
@@ -425,14 +593,14 @@
         </div>
         <div class="od-row">
           <span class="od-label">Status</span>
-          <span class="od-value green">✅ Payment Confirmed</span>
+          <span class="od-value" id="orderStatus">—</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- DOWNLOAD CARD -->
-  <div class="download-card">
+  <!-- ── DOWNLOAD CARD (Hidden by default, shown when verified) ── -->
+  <div class="download-card" id="downloadCard" style="display:none;">
     <h3>⬇️ Your File is Ready</h3>
     <p>Click the button below to download your PDF. The file will open in your browser — tap and hold on mobile to save it to your phone.</p>
     <a href="#" class="btn-download-main" id="downloadBtn">
@@ -445,6 +613,29 @@
     <div class="download-expiry">
       ⏱️ Download link active for <span class="timer-count" id="timerCount">23:59:47</span>
     </div>
+  </div>
+
+  <!-- ── PENDING CARD (Shown when pending verification) ── -->
+  <div class="pending-card" id="pendingCard" style="display:none;">
+    <span class="icon">⏳</span>
+    <h3>Payment Pending Verification</h3>
+    <p>Your payment is being verified by our team. You'll receive your download link via WhatsApp once confirmed. This usually takes 5-15 minutes.</p>
+    <a href="https://wa.me/254768515494" target="_blank" class="whatsapp-btn">
+      📱 Contact Support on WhatsApp
+    </a>
+    <div style="margin-top:12px;font-size:0.8rem;color:#78350F;">
+      🔍 Reference: <span id="pendingRef">—</span>
+    </div>
+  </div>
+
+  <!-- ── REJECTED CARD (Shown when rejected) ── -->
+  <div class="rejected-card" id="rejectedCard" style="display:none;">
+    <span class="icon">❌</span>
+    <h3>Payment Not Verified</h3>
+    <p>We were unable to verify your payment. Please contact our support team immediately for assistance.</p>
+    <a href="https://wa.me/254768515494" target="_blank" class="whatsapp-btn" style="background:#DC2626;">
+      📱 Contact Support
+    </a>
   </div>
 
   <!-- WHAT TO DO NEXT -->
@@ -508,17 +699,17 @@
 <div class="confirm-related">
   <h3>📚 You May Also Need</h3>
   <div class="confirm-related-grid">
-    <a class="mini-card" href="product.html">
+    <a class="mini-card" href="shop.html?level=junior&subject=integrated-science">
       <div class="mini-banner" style="background:linear-gradient(135deg,#EFF6FF,#DBEAFE)">🧬</div>
       <div class="mini-body"><h4>Cell Biology & Genetics — Grade 9 Integrated Science</h4></div>
       <div class="mini-footer"><span class="mini-price">KSh 90</span><span class="mini-buy">Buy</span></div>
     </a>
-    <a class="mini-card" href="product.html">
+    <a class="mini-card" href="shop.html?level=kjsea&subject=mathematics">
       <div class="mini-banner" style="background:linear-gradient(135deg,#FFF1F2,#FFE4E6)">📐</div>
       <div class="mini-body"><h4>Grade 9 Mathematics — KJSEA Final Revision</h4></div>
       <div class="mini-footer"><span class="mini-price">KSh 150</span><span class="mini-buy">Buy</span></div>
     </a>
-    <a class="mini-card" href="product.html">
+    <a class="mini-card" href="shop.html?level=kjsea">
       <div class="mini-banner" style="background:linear-gradient(135deg,#EDE9FE,#C4B5FD)">🏆</div>
       <div class="mini-body"><h4>KJSEA 2025 Full Bundle — All 9 Subjects</h4></div>
       <div class="mini-footer"><span class="mini-price">KSh 1,800</span><span class="mini-buy">Buy</span></div>
@@ -526,111 +717,409 @@
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ════════════ FOOTER ════════════ -->
 <footer class="footer">
-  <div class="footer-bottom" style="max-width:1240px;margin:0 auto;padding:20px 5%;">
-    <span>© 2025 KenyaVault. All rights reserved.</span>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
+      <p>Premium CBC and 8-4-4 resources for Kenyan learners. Made by certified teachers.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="terms.html">📋 Terms &amp; Conditions</a></li>
+        <li><a href="privacy.html">🔒 Privacy Policy</a></li>
+        <li><a href="contact.html">📧 Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 KenyaVault. All rights reserved.</span>
     <span>Made with ❤️ in Kenya 🇰🇪</span>
   </div>
 </footer>
 
 <script src="script.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
 
-  /* ── ORDER DATE ── */
+  // ── comfirmation js //GET ORDER DATA FROM URL ──
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderRef = urlParams.get('ref') || 'KV-2026-' + Math.floor(10000 + Math.random() * 90000);
+  const orderStatus = urlParams.get('status') || 'pending'; // pending, verified, rejected
+  const productTitle = urlParams.get('product') || 'KJSEA 2026 Revision Notes';
+  const productSubject = urlParams.get('subject') || 'All Subjects';
+  const productPrice = urlParams.get('amount') || '250';
+  const productIcon = urlParams.get('icon') || '📚';
+  const phone = urlParams.get('phone') || '07** *** 678';
+  const downloadUrl = urlParams.get('download') || '#';
+  const mpesaCode = urlParams.get('mpesa') || 'Pending';
+
+  // ── UPDATE ORDER SUMMARY ──
+  const refEl = document.getElementById('orderRef');
+  if (refEl) refEl.textContent = orderRef;
+  
+  const titleEl = document.getElementById('orderProductTitle');
+  if (titleEl) titleEl.textContent = productTitle;
+  
+  const metaEl = document.getElementById('orderProductMeta');
+  if (metaEl) metaEl.textContent = productSubject + ' · PDF · Instant Download';
+  
+  const priceEl = document.getElementById('orderProductPrice');
+  if (priceEl) priceEl.textContent = 'KSh ' + productPrice;
+  
+  const phoneEl = document.getElementById('orderPhone');
+  if (phoneEl) phoneEl.textContent = phone;
+  
+  const amountEl = document.getElementById('orderAmount');
+  if (amountEl) amountEl.textContent = 'KSh ' + productPrice;
+  
+  const iconEl = document.getElementById('productIcon');
+  if (iconEl) iconEl.textContent = productIcon;
+
+  // ── ORDER DATE ──
   const dateEl = document.getElementById('orderDate');
   if (dateEl) {
     const now = new Date();
     dateEl.textContent = now.toLocaleString('en-KE', {
-      day: '2-digit', month: 'short', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
   }
 
-  /* ── ORDER REF: random ── */
-  const refEl = document.getElementById('orderRef');
-  if (refEl) {
-    refEl.textContent = 'KV-2025-' + Math.floor(10000 + Math.random() * 90000);
+  // ── UPDATE STATUS ──
+  const statusMap = {
+    'pending': {
+      label: '⏳ Pending Verification',
+      className: 'pending',
+      icon: '⏳',
+      title: 'Payment <em>Pending</em>',
+      message: 'Your payment is being verified by our team. You will receive your download link via WhatsApp once confirmed. This usually takes 5-15 minutes.'
+    },
+    'verified': {
+      label: '✅ Verified & Confirmed',
+      className: 'green',
+      icon: '✅',
+      title: 'Payment <em>Confirmed!</em>',
+      message: 'Your payment has been verified. Your download is ready below.'
+    },
+    'rejected': {
+      label: '❌ Payment Rejected',
+      className: 'rejected',
+      icon: '❌',
+      title: 'Payment <em>Not Verified</em>',
+      message: 'We could not verify your payment. Please contact our support team immediately.'
+    }
+  };
+
+  const statusInfo = statusMap[orderStatus] || statusMap['pending'];
+  
+  const statusIconEl = document.getElementById('statusIcon');
+  if (statusIconEl) statusIconEl.textContent = statusInfo.icon;
+  
+  const statusTitleEl = document.getElementById('statusTitle');
+  if (statusTitleEl) statusTitleEl.innerHTML = statusInfo.title;
+  
+  const statusMsgEl = document.getElementById('statusMessage');
+  if (statusMsgEl) statusMsgEl.textContent = statusInfo.message;
+  
+  const orderStatusEl = document.getElementById('orderStatus');
+  if (orderStatusEl) {
+    orderStatusEl.textContent = statusInfo.label;
+    orderStatusEl.className = 'od-value ' + statusInfo.className;
   }
 
-  /* ── MPESA CODE: random ── */
-  const mpesaEl = document.getElementById('mpesaCode');
-  if (mpesaEl) {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
-    let code = '';
-    for (let i = 0; i < 10; i++) code += chars[Math.floor(Math.random() * chars.length)];
-    mpesaEl.textContent = code;
+  // ── SHOW/HIDE CARDS ──
+  const downloadCard = document.getElementById('downloadCard');
+  const pendingCard = document.getElementById('pendingCard');
+  const rejectedCard = document.getElementById('rejectedCard');
+
+  // Update progress bar
+  const stepDot = document.getElementById('stepDot');
+  const stepLabel = document.getElementById('stepLabel');
+  const stepLine = document.getElementById('stepLine');
+  const finalDot = document.getElementById('finalDot');
+  const finalLabel = document.getElementById('finalLabel');
+
+  if (orderStatus === 'verified') {
+    if (downloadCard) downloadCard.style.display = 'block';
+    if (pendingCard) pendingCard.style.display = 'none';
+    if (rejectedCard) rejectedCard.style.display = 'none';
+    
+    if (stepDot) {
+      stepDot.textContent = '✓';
+      stepDot.className = 'ps-dot done';
+    }
+    if (stepLabel) {
+      stepLabel.textContent = 'Verified';
+      stepLabel.className = 'ps-label done';
+    }
+    if (stepLine) stepLine.className = 'progress-line done';
+    if (finalDot) {
+      finalDot.textContent = '⬇';
+      finalDot.className = 'ps-dot active';
+    }
+    if (finalLabel) {
+      finalLabel.textContent = 'Download';
+      finalLabel.className = 'ps-label active';
+    }
+    
+    // Set download link
+    const downloadBtn = document.getElementById('downloadBtn');
+    if (downloadBtn) {
+      downloadBtn.href = downloadUrl;
+      
+      // ── DOWNLOAD BUTTON CLICK HANDLER ──
+      downloadBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (downloadUrl === '#' || downloadUrl === '') {
+          alert('⚠️ Download link not available. Please contact support on WhatsApp.');
+          return;
+        }
+        
+        // Track download
+        console.log('📥 Download initiated for order:', orderRef);
+        console.log('📥 Download URL:', downloadUrl);
+        
+        this.textContent = '⏳ Preparing download...';
+        this.disabled = true;
+        
+        // Simulate slight delay for tracking
+        setTimeout(function() {
+          // Open download in new tab
+          window.open(downloadUrl, '_blank');
+          
+          downloadBtn.textContent = '✅ Download Started!';
+          downloadBtn.style.background = 'var(--green)';
+          downloadBtn.style.color = 'white';
+          downloadBtn.disabled = false;
+          
+          // Show success message
+          const note = document.querySelector('.download-note');
+          if (note) {
+            note.innerHTML = '✅ Download started! Check your browser downloads folder.';
+            note.style.color = '#4ADE80';
+          }
+          
+          // Increment download count
+          incrementDownloadCount(orderRef);
+          
+        }, 1500);
+      });
+    }
+    
+  } else if (orderStatus === 'rejected') {
+    if (downloadCard) downloadCard.style.display = 'none';
+    if (pendingCard) pendingCard.style.display = 'none';
+    if (rejectedCard) rejectedCard.style.display = 'block';
+    
+    if (stepDot) {
+      stepDot.textContent = '✗';
+      stepDot.className = 'ps-dot';
+      stepDot.style.background = '#DC2626';
+      stepDot.style.color = 'white';
+    }
+    if (stepLabel) {
+      stepLabel.textContent = 'Rejected';
+      stepLabel.className = 'ps-label';
+      stepLabel.style.color = '#DC2626';
+    }
+    if (stepLine) {
+      stepLine.className = 'progress-line';
+      stepLine.style.background = '#DC2626';
+    }
+    if (finalDot) {
+      finalDot.textContent = '✗';
+      finalDot.className = 'ps-dot';
+      finalDot.style.background = '#DC2626';
+      finalDot.style.color = 'white';
+    }
+    if (finalLabel) {
+      finalLabel.textContent = 'Failed';
+      finalLabel.className = 'ps-label';
+      finalLabel.style.color = '#DC2626';
+    }
+    
+  } else { // pending
+    if (downloadCard) downloadCard.style.display = 'none';
+    if (pendingCard) pendingCard.style.display = 'block';
+    if (rejectedCard) rejectedCard.style.display = 'none';
+    
+    const pendingRef = document.getElementById('pendingRef');
+    if (pendingRef) pendingRef.textContent = orderRef;
+    
+    if (stepDot) {
+      stepDot.textContent = '⏳';
+      stepDot.className = 'ps-dot active';
+    }
+    if (stepLabel) {
+      stepLabel.textContent = 'Verifying';
+      stepLabel.className = 'ps-label active';
+    }
+    if (stepLine) stepLine.className = 'progress-line pending';
+    if (finalDot) {
+      finalDot.textContent = '4';
+      finalDot.className = 'ps-dot pending';
+    }
+    if (finalLabel) {
+      finalLabel.textContent = 'Download';
+      finalLabel.className = 'ps-label';
+    }
   }
 
-  /* ── DOWNLOAD COUNTDOWN (24hr) ── */
+  // ── DOWNLOAD COUNTDOWN (24hr) ──
   const timerEl = document.getElementById('timerCount');
   if (timerEl) {
     let total = 24 * 60 * 60 - 13; // 23:59:47
-    const tick = () => {
-      if (total <= 0) { timerEl.textContent = 'Expired'; return; }
+    const tick = function() {
+      if (total <= 0) {
+        timerEl.textContent = 'Expired';
+        return;
+      }
       const h = Math.floor(total / 3600);
       const m = Math.floor((total % 3600) / 60);
       const s = total % 60;
       timerEl.textContent =
-        String(h).padStart(2,'0') + ':' +
-        String(m).padStart(2,'0') + ':' +
-        String(s).padStart(2,'0');
+        String(h).padStart(2, '0') + ':' +
+        String(m).padStart(2, '0') + ':' +
+        String(s).padStart(2, '0');
       total--;
     };
     tick();
     setInterval(tick, 1000);
   }
 
-  /* ── COPY LINK ── */
+  // ── COPY LINK ──
   const copyBtn = document.getElementById('copyLinkBtn');
   if (copyBtn) {
-    copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText('https://kenyavault.co.ke').then(() => {
+    copyBtn.addEventListener('click', function() {
+      navigator.clipboard.writeText('https://kenyavault.co.ke').then(function() {
         copyBtn.textContent = '✅ Copied!';
-        setTimeout(() => { copyBtn.textContent = '🔗 Copy Link'; }, 2500);
+        setTimeout(function() {
+          copyBtn.textContent = '🔗 Copy Link';
+        }, 2500);
+      }).catch(function() {
+        // Fallback for older browsers
+        const input = document.createElement('input');
+        input.value = 'https://kenyavault.co.ke';
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        copyBtn.textContent = '✅ Copied!';
+        setTimeout(function() {
+          copyBtn.textContent = '🔗 Copy Link';
+        }, 2500);
       });
     });
   }
 
-  /* ── CONFETTI ── */
+  // ── CONFETTI ──
   const wrap = document.getElementById('confettiWrap');
   if (wrap) {
-    const colors = ['#0D6E3F','#D4A017','#F5C842','#3B82F6','#EC4899','#10B981'];
+    const colors = ['#0D6E3F', '#D4A017', '#F5C842', '#3B82F6', '#EC4899', '#10B981'];
     for (let i = 0; i < 40; i++) {
       const dot = document.createElement('div');
       dot.className = 'confetti-dot';
-      dot.style.cssText = `
-        left: ${Math.random() * 100}%;
-        background: ${colors[Math.floor(Math.random() * colors.length)]};
-        width: ${4 + Math.random() * 8}px;
-        height: ${4 + Math.random() * 8}px;
-        animation-duration: ${2 + Math.random() * 4}s;
-        animation-delay: ${Math.random() * 3}s;
-        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-      `;
+      dot.style.cssText =
+        'left: ' + Math.random() * 100 + '%;' +
+        'background: ' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+        'width: ' + (4 + Math.random() * 8) + 'px;' +
+        'height: ' + (4 + Math.random() * 8) + 'px;' +
+        'animation-duration: ' + (2 + Math.random() * 4) + 's;' +
+        'animation-delay: ' + (Math.random() * 3) + 's;' +
+        'border-radius: ' + (Math.random() > 0.5 ? '50%' : '2px') + ';';
       wrap.appendChild(dot);
     }
   }
 
-  /* ── DOWNLOAD BUTTON ── */
-  const dlBtn = document.getElementById('downloadBtn');
-  if (dlBtn) {
-    dlBtn.addEventListener('click', e => {
-      e.preventDefault();
-      dlBtn.textContent = '⏳ Preparing download...';
-      setTimeout(() => {
-        dlBtn.textContent = '✅ Download Started!';
-        dlBtn.style.background = 'var(--green)';
-        dlBtn.style.color = 'white';
-        
-        window.location.href = 'https://sulman29.gumroad.com/l/rxwiqx?_gl=1*xnpgve*_ga*MTgzMzkzMjE5Mi4xNzgxNjc3NTQw*_ga_6LJN6D94N6*czE3ODE2OTg2NjckbzMkZzEkdDE3ODE2OTk1NjkkajMzJGwwJGgw';
+  // ── WHATSAPP SUPPORT BUTTONS ──
+  const whatsappBtns = document.querySelectorAll('.whatsapp-btn, .ns-link[href*="wa.me"]');
+  whatsappBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      // Track support request
+      console.log('📱 Support requested for order:', orderRef);
+    });
+  });
+
+  // ── INCREMENT DOWNLOAD COUNT ──
+  function incrementDownloadCount(orderRef) {
+    // This would call your Supabase function to increment download count
+    console.log('📊 Download count incremented for order:', orderRef);
+    
+    // If you have Supabase client, uncomment and use:
+    /*
+    try {
+      await sbClient
+        .from('orders')
+        .update({ 
+          downloads: sbClient.sql`downloads + 1`,
+          downloaded_at: new Date().toISOString()
+        })
+        .eq('ref', orderRef);
+    } catch(e) {
+      console.warn('Could not update download count:', e);
+    }
+    */
+  }
+
+  // ── AUTO-REFRESH FOR PENDING STATUS ──
+  // Check if the page should auto-refresh to check for verification
+  if (orderStatus === 'pending') {
+    // Auto-refresh every 30 seconds to check if verified
+    // This is a simple implementation - in production you'd use WebSockets
+    let refreshCount = 0;
+    const maxRefreshes = 20; // 20 * 30s = 10 minutes
+    
+    const refreshInterval = setInterval(function() {
+      refreshCount++;
+      
+      // Only refresh if the page is still visible
+      if (!document.hidden) {
+        console.log('🔄 Checking for verification update...', refreshCount);
+        // In production, you would make an API call here
+        // For now, we just check if the URL has been updated
+        const currentStatus = new URLSearchParams(window.location.search).get('status');
+        if (currentStatus === 'verified') {
+          clearInterval(refreshInterval);
+          location.reload();
+        }
+      }
+      
+      if (refreshCount >= maxRefreshes) {
+        clearInterval(refreshInterval);
+        console.log('⏹️ Auto-refresh stopped after ' + maxRefreshes + ' attempts');
+      }
+    }, 30000); // 30 seconds
+  }
+
+  // ── HAMBURGER MENU ──
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
   
-      }, 1500);
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active');
     });
   }
 
-});
+  // ── CONSOLE LOG FOR DEBUGGING ──
+  console.log('📋 Order Confirmation Loaded:', {
+    ref: orderRef,
+    status: orderStatus,
+    product: productTitle,
+    amount: productPrice,
+    phone: phone,
+    downloadUrl: downloadUrl
+  });
+
+}); // End DOMContentLoaded
 </script>
 </body>
 </html>
