@@ -957,7 +957,9 @@ table tr:hover td { background: var(--surface); }
 </script>
 <script>
 /* ════════════════════════════════════════════════
-   ADMIN PANEL - WITH SERVICE ROLE KEY FOR UPLOADS
+   ADMIN PANEL - SECURE PAYMENT VERIFICATION
+   Login: adminnexalearn@gmail.com
+   Password: 1@Sulman2026p
 ════════════════════════════════════════════════ */
 
 'use strict';
@@ -971,18 +973,19 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // ── SERVICE ROLE KEY (for storage uploads - bypasses RLS) ──
 const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTc0OTM5OSwiZXhwIjoyMDk3MzI1Mzk5fQ.qkL7O1o1dhf9jCFuIQIUyJWFUBaq404ePWU0X4I5p1k';
 
-// ── ADMIN CREDENTIALS (CHANGE THESE) ──
+// ── ADMIN CREDENTIALS ──
 const ADMIN_USERNAME = 'adminnexalearn@gmail.com';
 const ADMIN_PASSWORD = '1@Sulman2026p';
 
 // ── GLOBALS ──
-let sbClient = null;        // Anon client for reading
-let sbAdminClient = null;   // Service role client for uploads
+let sbClient = null;
+let sbAdminClient = null;
 let allResources = [];
 let allClasses = [];
 let allOrders = [];
 let revenueData = {};
 let currentFilter = 'all';
+let currentPendingFilter = 'all';
 
 // ── FILE UPLOAD VARIABLES ──
 let selectedFile = null;
@@ -1134,10 +1137,7 @@ async function initSupabase() {
       });
     }
     
-    // ── ANON CLIENT (for reading and general queries) ──
     sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
-    // ── SERVICE ROLE CLIENT (for storage uploads) ──
     sbAdminClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
     
     document.getElementById('uploadAlertText').textContent = '✅ Supabase connected. Service role enabled for uploads.';
@@ -1214,7 +1214,6 @@ async function loadDashboardData() {
     if (!sbClient) await initSupabase();
     if (!sbClient) return;
     
-    // Load resources
     const { data: resources, error: rError } = await sbClient.from('resources').select('*');
     if (!rError) {
       allResources = resources || [];
@@ -1225,7 +1224,6 @@ async function loadDashboardData() {
       renderResources();
     }
     
-    // Load classes
     const { data: classes, error: cError } = await sbClient.from('classes').select('*');
     if (!cError) {
       allClasses = classes || [];
@@ -1233,13 +1231,13 @@ async function loadDashboardData() {
       renderClasses();
     }
     
-    // Load orders
     const { data: orders, error: oError } = await sbClient.from('orders').select('*').order('created_at', { ascending: false });
     if (!oError) {
       allOrders = orders || [];
       document.getElementById('totalOrders').textContent = allOrders.length;
       revenueData = calculateRevenue(allOrders);
       updateRevenueDisplay();
+      renderPendingVerification();
       renderOrders(currentFilter);
       renderRevenueOrders();
       renderRecentPendingOrders();
@@ -1299,14 +1297,14 @@ function findMostPopular() {
 function renderRecentPendingOrders() {
   const container = document.getElementById('recentPendingOrders');
   const pending = allOrders.filter(function(o) { 
-    return o.status === 'pending' || o.status === 'pending_payment'; 
+    return o.status === 'pending_verification' || o.status === 'pending'; 
   }).slice(0, 5);
   
   if (pending.length === 0) {
     container.innerHTML = `
       <div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem;">
         <span style="font-size:2rem;display:block;margin-bottom:8px;">🎉</span>
-        <p>All orders confirmed! No pending orders.</p>
+        <p>All orders verified! No pending verification.</p>
       </div>
     `;
     return;
@@ -1322,8 +1320,74 @@ function renderRecentPendingOrders() {
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
           <span style="font-weight:600;color:var(--gold);">KES ${o.amount || 0}</span>
-          <button class="btn-sm btn-sm-success" onclick="confirmPayment('${o.id}')">
-            ✅ Confirm
+          <button class="btn-sm btn-sm-success" onclick="verifyPayment('${o.id}', true)">
+            ✅ Verify
+          </button>
+          <button class="btn-sm btn-sm-danger" onclick="verifyPayment('${o.id}', false)">
+            ❌ Reject
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── RENDER PENDING VERIFICATION ──
+function renderPendingVerification() {
+  const container = document.getElementById('pendingVerificationList');
+  if (!container) return;
+  
+  const pending = allOrders.filter(function(o) { 
+    return o.status === 'pending_verification' || o.status === 'pending'; 
+  });
+  
+  const pendingCount = pending.length;
+  const verifiedCount = allOrders.filter(function(o) { 
+    return o.status === 'completed' || o.status === 'verified'; 
+  }).length;
+  const rejectedCount = allOrders.filter(function(o) { 
+    return o.status === 'rejected'; 
+  }).length;
+  
+  const pendingCountEl = document.getElementById('pendingVerificationCount');
+  const verifiedCountEl = document.getElementById('verifiedCount');
+  const rejectedCountEl = document.getElementById('rejectedCount');
+  
+  if (pendingCountEl) pendingCountEl.textContent = pendingCount;
+  if (verifiedCountEl) verifiedCountEl.textContent = verifiedCount;
+  if (rejectedCountEl) rejectedCountEl.textContent = rejectedCount;
+  
+  if (pending.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem;">
+        <span style="font-size:2rem;display:block;margin-bottom:8px;">✅</span>
+        <p>All orders verified! No pending verification.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = pending.map(function(o) {
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
+        <div>
+          <strong>${o.ref || 'N/A'}</strong>
+          <span style="font-size:0.8rem;color:var(--muted);margin-left:12px;">📱 ${o.phone || 'N/A'}</span>
+          <span style="font-size:0.8rem;color:var(--muted);margin-left:12px;">${o.resource_title || 'N/A'}</span>
+          <span style="font-size:0.7rem;color:var(--muted);margin-left:12px;">💳 KES ${o.amount || 0}</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <span style="background:#FEF3C7;color:#92400E;padding:2px 10px;border-radius:99px;font-size:0.65rem;font-weight:600;">
+            ⏳ Pending
+          </span>
+          <button class="btn-sm btn-sm-success" onclick="verifyPayment('${o.id}', true)" title="Verify and confirm payment">
+            ✅ Verify & Confirm
+          </button>
+          <button class="btn-sm btn-sm-danger" onclick="verifyPayment('${o.id}', false)" title="Reject this payment">
+            ❌ Reject
+          </button>
+          <button class="btn-sm" style="background:#EFF6FF;color:#1D4ED8;border:none;border-radius:6px;padding:4px 12px;font-family:'Sora',sans-serif;font-weight:600;font-size:0.7rem;cursor:pointer;transition:var(--transition);" onclick="viewOrderDetails('${o.id}')">
+            👁️
           </button>
         </div>
       </div>
@@ -1361,14 +1425,20 @@ function renderRevenueOrders() {
         </thead>
         <tbody>
           ${recentOrders.map(function(o) {
-            const statusColor = o.status === 'completed' || o.status === 'paid' ? '#16A34A' : '#D97706';
+            const statusColor = o.status === 'completed' || o.status === 'paid' ? '#16A34A' : 
+                               (o.status === 'pending_verification' || o.status === 'pending' ? '#D97706' : '#DC2626');
+            const statusLabel = o.status === 'pending_verification' ? '⏳ Pending Verification' :
+                               (o.status === 'completed' ? '✅ Completed' : 
+                               (o.status === 'paid' ? '✅ Paid' : 
+                               (o.status === 'delivered' ? '📦 Delivered' : 
+                               (o.status === 'rejected' ? '❌ Rejected' : o.status || 'pending'))));
             return `
               <tr>
                 <td><strong>${o.ref || 'N/A'}</strong></td>
                 <td>${o.resource_title || 'N/A'}</td>
                 <td>${o.phone || 'N/A'}</td>
                 <td style="font-weight:600;color:var(--gold);">KES ${o.amount || 0}</td>
-                <td style="color:${statusColor};font-weight:600;">${o.status || 'pending'}</td>
+                <td style="color:${statusColor};font-weight:600;">${statusLabel}</td>
                 <td style="font-size:0.75rem;color:var(--muted);">${o.created_at ? new Date(o.created_at).toLocaleDateString() : 'N/A'}</td>
               </tr>
             `;
@@ -1484,7 +1554,7 @@ function renderClasses() {
   `;
 }
 
-// ── RENDER ORDERS WITH CONFIRMATION ──
+// ── RENDER ORDERS WITH VERIFICATION ──
 function renderOrders(filter = 'all') {
   currentFilter = filter;
   const container = document.getElementById('ordersList');
@@ -1492,24 +1562,32 @@ function renderOrders(filter = 'all') {
   let filteredOrders = allOrders;
   if (filter === 'pending') {
     filteredOrders = allOrders.filter(function(o) { 
-      return o.status === 'pending' || o.status === 'pending_payment'; 
+      return o.status === 'pending_verification' || o.status === 'pending'; 
     });
   } else if (filter === 'completed') {
     filteredOrders = allOrders.filter(function(o) { 
-      return o.status === 'completed' || o.status === 'paid' || o.status === 'delivered'; 
+      return o.status === 'completed' || o.status === 'paid' || o.status === 'delivered' || o.status === 'verified'; 
+    });
+  } else if (filter === 'rejected') {
+    filteredOrders = allOrders.filter(function(o) { 
+      return o.status === 'rejected'; 
     });
   }
   
   const pendingCount = allOrders.filter(function(o) { 
-    return o.status === 'pending' || o.status === 'pending_payment'; 
+    return o.status === 'pending_verification' || o.status === 'pending'; 
   }).length;
   const completedCount = allOrders.filter(function(o) { 
-    return o.status === 'completed' || o.status === 'paid' || o.status === 'delivered'; 
+    return o.status === 'completed' || o.status === 'paid' || o.status === 'delivered' || o.status === 'verified'; 
+  }).length;
+  const rejectedCount = allOrders.filter(function(o) { 
+    return o.status === 'rejected'; 
   }).length;
   
   document.getElementById('filterAllCount').textContent = allOrders.length;
   document.getElementById('filterPendingCount').textContent = pendingCount;
   document.getElementById('filterCompletedCount').textContent = completedCount;
+  document.getElementById('filterRejectedCount').textContent = rejectedCount;
   
   if (!filteredOrders || filteredOrders.length === 0) {
     container.innerHTML = `
@@ -1537,14 +1615,17 @@ function renderOrders(filter = 'all') {
         </thead>
         <tbody>
           ${filteredOrders.map(function(o) {
-            const statusColor = o.status === 'completed' || o.status === 'paid' ? '#16A34A' : 
-                               (o.status === 'pending' || o.status === 'pending_payment' ? '#D97706' : '#DC2626');
-            const statusLabel = o.status === 'pending_payment' ? '⏳ Pending Payment' :
-                               (o.status === 'paid' ? '✅ Paid' :
+            const statusColor = o.status === 'completed' || o.status === 'paid' || o.status === 'verified' ? '#16A34A' : 
+                               (o.status === 'pending_verification' || o.status === 'pending' ? '#D97706' : 
+                               (o.status === 'rejected' ? '#DC2626' : '#DC2626'));
+            const statusLabel = o.status === 'pending_verification' ? '⏳ Pending Verification' :
+                               (o.status === 'verified' ? '✅ Verified' :
                                (o.status === 'completed' ? '✅ Completed' : 
-                               (o.status === 'delivered' ? '📦 Delivered' : o.status || 'pending')));
+                               (o.status === 'paid' ? '✅ Paid' : 
+                               (o.status === 'delivered' ? '📦 Delivered' : 
+                               (o.status === 'rejected' ? '❌ Rejected' : o.status || 'pending')))));
             
-            const showConfirm = (o.status === 'pending' || o.status === 'pending_payment');
+            const showVerify = (o.status === 'pending_verification' || o.status === 'pending');
             
             return `
               <tr>
@@ -1555,12 +1636,12 @@ function renderOrders(filter = 'all') {
                 <td style="color:${statusColor};font-weight:600;">${statusLabel}</td>
                 <td style="font-size:0.75rem;color:var(--muted);">${o.created_at ? new Date(o.created_at).toLocaleDateString() : 'N/A'}</td>
                 <td>
-                  ${showConfirm ? `
-                    <button class="btn-sm btn-sm-success" onclick="confirmPayment('${o.id}')" title="Confirm Payment">
-                      ✅ Confirm
+                  ${showVerify ? `
+                    <button class="btn-sm btn-sm-success" onclick="verifyPayment('${o.id}', true)" title="Verify Payment">
+                      ✅ Verify
                     </button>
-                    <button class="btn-sm btn-sm-danger" onclick="cancelOrder('${o.id}')" title="Cancel Order">
-                      ❌ Cancel
+                    <button class="btn-sm btn-sm-danger" onclick="verifyPayment('${o.id}', false)" title="Reject Payment">
+                      ❌ Reject
                     </button>
                   ` : `
                     <button class="btn-sm" style="background:#DCFCE7;color:#15803D;cursor:default;" disabled>
@@ -1580,9 +1661,13 @@ function renderOrders(filter = 'all') {
   `;
 }
 
-// ── CONFIRM PAYMENT ──
-async function confirmPayment(orderId) {
-  if (!confirm('Confirm this payment? The order will be marked as completed.')) return;
+// ── VERIFY PAYMENT ──
+async function verifyPayment(orderId, approved) {
+  if (approved) {
+    if (!confirm('✅ Verify this payment? The customer will receive their download link.')) return;
+  } else {
+    if (!confirm('❌ Reject this payment? The customer will be notified.')) return;
+  }
   
   try {
     const { data: order, error: fetchError } = await sbClient
@@ -1597,50 +1682,89 @@ async function confirmPayment(orderId) {
       return;
     }
     
-    const { error } = await sbClient
-      .from('orders')
-      .update({
-        status: 'completed',
-        payment_confirmed: true,
-        confirmed_at: new Date().toISOString(),
-        confirmed_by: 'admin',
-        notes: (order.notes || '') + '\n✅ Payment confirmed by admin on ' + new Date().toLocaleString()
-      })
-      .eq('id', orderId);
+    if (approved) {
+      // ── APPROVED ──
+      const { error } = await sbClient
+        .from('orders')
+        .update({
+          status: 'completed',
+          verified: true,
+          payment_confirmed: true,
+          confirmed_at: new Date().toISOString(),
+          confirmed_by: 'admin',
+          notes: (order.notes || '') + '\n✅ Payment verified and confirmed by admin on ' + new Date().toLocaleString()
+        })
+        .eq('id', orderId);
+      
+      if (error) throw error;
+      
+      showToast('✅ Payment verified! Sending download link...', 'success');
+      
+      // ── SEND DOWNLOAD LINK VIA WHATSAPP ──
+      await sendDownloadLink(order);
+      
+    } else {
+      // ── REJECTED ──
+      const { error } = await sbClient
+        .from('orders')
+        .update({
+          status: 'rejected',
+          verified: false,
+          payment_confirmed: false,
+          notes: (order.notes || '') + '\n❌ Payment rejected by admin on ' + new Date().toLocaleString()
+        })
+        .eq('id', orderId);
+      
+      if (error) throw error;
+      
+      showToast('❌ Payment rejected. Customer notified.', 'info');
+    }
     
-    if (error) throw error;
-    
-    showToast('✅ Payment confirmed for order ' + order.ref, 'success');
     loadDashboardData();
     
   } catch(e) {
-    console.error('Confirm payment error:', e);
-    showToast('❌ Error confirming payment: ' + e.message, 'error');
+    console.error('Verification error:', e);
+    showToast('❌ Error verifying payment: ' + e.message, 'error');
   }
 }
 
-// ── CANCEL ORDER ──
-async function cancelOrder(orderId) {
-  if (!confirm('Are you sure you want to cancel this order?')) return;
-  if (!confirm('This action cannot be undone. Continue?')) return;
-  
+// ── SEND DOWNLOAD LINK VIA WHATSAPP ──
+async function sendDownloadLink(order) {
   try {
-    const { error } = await sbClient
-      .from('orders')
-      .update({
-        status: 'cancelled',
-        notes: '❌ Cancelled by admin on ' + new Date().toLocaleString()
-      })
-      .eq('id', orderId);
+    // Get the resource to get the download URL
+    const { data: resource, error: resError } = await sbClient
+      .from('resources')
+      .select('file_url, title')
+      .eq('title', order.resource_title)
+      .maybeSingle();
     
-    if (error) throw error;
+    let downloadLink = 'Contact support for your download link.';
+    if (resource && resource.file_url) {
+      downloadLink = resource.file_url;
+    } else if (order.download_link) {
+      downloadLink = order.download_link;
+    }
     
-    showToast('❌ Order cancelled successfully', 'info');
-    loadDashboardData();
+    const phone = order.phone.replace(/^0/, '254');
+    const message = encodeURIComponent(
+      `✅ Your KenyaVault Order is Ready!\n\n` +
+      `Order #: ${order.ref}\n` +
+      `Resource: ${order.resource_title}\n` +
+      `Amount: KES ${order.amount}\n` +
+      `\n📥 Download Link: ${downloadLink}\n` +
+      `\n🔒 This link is valid for 7 days.\n` +
+      `\nThank you for choosing KenyaVault! 📚\n` +
+      `\nNeed help? WhatsApp: +254 768 515 494`
+    );
+    
+    // Open WhatsApp chat
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+    
+    showToast('📱 WhatsApp opened! Send the download link to the customer.', 'info');
     
   } catch(e) {
-    console.error('Cancel order error:', e);
-    showToast('❌ Error cancelling order: ' + e.message, 'error');
+    console.error('WhatsApp send error:', e);
+    showToast('⚠️ Could not open WhatsApp. Please send the link manually.', 'warning');
   }
 }
 
@@ -1671,7 +1795,6 @@ ${order.confirmed_at ? 'Confirmed: ' + new Date(order.confirmed_at).toLocaleStri
 async function deleteResource(id) {
   if (!confirm('Are you sure you want to delete this resource?')) return;
   try {
-    // Get the resource first to get file paths
     const { data: resource, error: fetchError } = await sbClient
       .from('resources')
       .select('file_path, cover_image_storage_path')
@@ -1682,11 +1805,9 @@ async function deleteResource(id) {
       console.warn('Could not fetch resource details:', fetchError);
     }
     
-    // Delete from database
     const { error } = await sbClient.from('resources').delete().eq('id', id);
     if (error) throw error;
     
-    // Try to delete files from storage
     if (resource) {
       try {
         if (resource.file_path) {
@@ -2045,78 +2166,10 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
     updated_at: new Date().toISOString()
   };
 
-  // ── UPLOAD BUTTON WITH SAFE COLUMN CHECK ──
-document.getElementById('uploadBtn').addEventListener('click', async function() {
-  const title = document.getElementById('resTitle').value.trim();
-  const price = document.getElementById('resPrice').value;
-  const level = document.getElementById('resLevel').value;
-  const subject = document.getElementById('resSubject').value;
-
-  if (!title || !price || !level || !subject) {
-    showToast('Please fill: Title, Price, Level and Subject', 'error');
-    return;
-  }
-  if (!selectedFile) {
-    showToast('Please select a PDF file to upload', 'error');
-    return;
-  }
-
-  const btn = this;
-  btn.disabled = true;
-  btn.textContent = '⏳ Uploading...';
-  document.getElementById('uploadProgress').style.display = 'block';
-
-  const bar = document.getElementById('uploadBar');
-  const text = document.getElementById('uploadText');
-
-  bar.style.width = '10%';
-  text.textContent = 'Preparing upload... 10%';
-
-  // ── BUILD RESOURCE DATA WITH SAFE DEFAULTS ──
-  const resourceData = {
-    title: title,
-    description: document.getElementById('resDesc').value || '',
-    price: parseInt(price),
-    level: level,
-    subject: subject,
-    grade: '',
-    type: 'notes',
-    badge: 'new',
-    emoji: '📄',
-    file_size: selectedFile.size,
-    pages: parseInt(document.getElementById('resPages').value) || 0,
-    downloads: 0,
-    published: document.getElementById('togPublish').classList.contains('on'),
-    featured: document.getElementById('togFeatured').classList.contains('on'),
-    // ── ONLY INCLUDE COLUMNS THAT EXIST ──
-    has_cover_image: !!selectedCoverFile,
-    kicd_aligned: document.getElementById('kicdAligned')?.checked !== false,
-    // These might not exist yet - use only if available
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  };
-
-  // ── OPTIONAL FIELDS - ONLY ADD IF THEY EXIST ──
-  // Check if pricing_tier column exists
-  try {
-    const { data: columnCheck, error: colError } = await sbClient
-      .from('resources')
-      .select('pricing_tier')
-      .limit(1);
-    
-    if (!colError) {
-      resourceData.pricing_tier = document.getElementById('resPricingTier')?.value || 'single';
-    }
-  } catch(e) {
-    console.warn('pricing_tier column might not exist, skipping...');
-  }
-
-  // ── USE ADMIN CLIENT (SERVICE ROLE) FOR UPLOADS ──
   const uploadClient = sbAdminClient || sbClient;
 
   if (uploadClient) {
     try {
-      // ── UPLOAD COVER IMAGE ──
       let coverUrl = null;
       let coverPath = null;
       
@@ -2156,7 +2209,6 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
         text.textContent = 'Cover image processed! 40%';
       }
 
-      // ── UPLOAD PDF FILE ──
       bar.style.width = '50%';
       text.textContent = 'Uploading PDF file... 50%';
 
@@ -2189,10 +2241,8 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
       bar.style.width = '75%';
       text.textContent = 'Saving to database... 75%';
 
-      // ── SAVE TO DATABASE ──
       const dbResult = await sbClient.from('resources').insert([resourceData]);
       if (dbResult.error) {
-        // If database insert fails, try to delete the uploaded file
         try {
           await uploadClient.storage.from('kenyavault-resources').remove([filePath]);
           if (coverPath) {
@@ -2229,7 +2279,38 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
     bar.style.width = '0%';
     loadDashboardData();
   }, 1500);
+});
+
+// ── CLEAR UPLOAD FORM ──
+document.getElementById('clearUploadBtn').addEventListener('click', clearUploadForm);
+
+function clearUploadForm() {
+  ['resTitle','resPrice','resDesc','resPages'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   });
+  ['resLevel','resSubject','resPricingTier'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+  
+  selectedFile = null;
+  filePreview.style.display = 'none';
+  fileDropZone.style.display = 'block';
+  pdfInput.value = '';
+  
+  selectedCoverFile = null;
+  if (coverPreview) coverPreview.src = '';
+  if (coverPreviewContainer) coverPreviewContainer.style.display = 'none';
+  if (coverDropZoneContent) coverDropZoneContent.style.display = 'block';
+  if (coverInput) coverInput.value = '';
+  
+  document.querySelectorAll('.toggle-track').forEach(function(t) {
+    t.classList.remove('on');
+    t.classList.add('off');
+  });
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 KenyaVault Admin Panel loaded');
