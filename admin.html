@@ -953,24 +953,31 @@ table tr:hover td { background: var(--surface); }
   <span id="toastMsg">Saved successfully</span>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+</script>
 <script>
 /* ════════════════════════════════════════════════
-   ADMIN PANEL - COMPLETE WITH PAYMENT CONFIRMATION
+   ADMIN PANEL - WITH SERVICE ROLE KEY FOR UPLOADS
 ════════════════════════════════════════════════ */
 
 'use strict';
 
 // ── SUPABASE CONFIG ──
 const SUPABASE_URL = 'https://rewpminmqnrtwdvglxxr.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
+
+// ── ANON KEY (for reading and general queries) ──
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
+
+// ── SERVICE ROLE KEY (for storage uploads - bypasses RLS) ──
+const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTc0OTM5OSwiZXhwIjoyMDk3MzI1Mzk5fQ.qkL7O1o1dhf9jCFuIQIUyJWFUBaq404ePWU0X4I5p1k';
 
 // ── ADMIN CREDENTIALS (CHANGE THESE) ──
-const ADMIN_USERNAME = 'adminnexalearn@gmail.com';
-const ADMIN_PASSWORD = '1@Sulman2026p';
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'KenyaVault2026!';
 
 // ── GLOBALS ──
-let sbClient = null;
+let sbClient = null;        // Anon client for reading
+let sbAdminClient = null;   // Service role client for uploads
 let allResources = [];
 let allClasses = [];
 let allOrders = [];
@@ -1114,7 +1121,7 @@ function logout() {
   showToast('🚪 Logged out successfully', 'info');
 }
 
-// ── INIT SUPABASE ──
+// ── INIT SUPABASE WITH DUAL CLIENTS ──
 async function initSupabase() {
   try {
     if (!window.supabase) {
@@ -1126,9 +1133,16 @@ async function initSupabase() {
         document.head.appendChild(script);
       });
     }
-    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    document.getElementById('uploadAlertText').textContent = '✅ Supabase connected. Real uploads are enabled.';
+    
+    // ── ANON CLIENT (for reading and general queries) ──
+    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    // ── SERVICE ROLE CLIENT (for storage uploads) ──
+    sbAdminClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+    
+    document.getElementById('uploadAlertText').textContent = '✅ Supabase connected. Service role enabled for uploads.';
     document.getElementById('uploadAlert').className = 'alert alert-success';
+    console.log('✅ Supabase clients initialized (anon + service role)');
     return true;
   } catch(e) {
     console.error('Supabase init error:', e);
@@ -1657,11 +1671,39 @@ ${order.confirmed_at ? 'Confirmed: ' + new Date(order.confirmed_at).toLocaleStri
 async function deleteResource(id) {
   if (!confirm('Are you sure you want to delete this resource?')) return;
   try {
+    // Get the resource first to get file paths
+    const { data: resource, error: fetchError } = await sbClient
+      .from('resources')
+      .select('file_path, cover_image_storage_path')
+      .eq('id', id)
+      .single();
+    
+    if (fetchError && !fetchError.message.includes('JSON object requested')) {
+      console.warn('Could not fetch resource details:', fetchError);
+    }
+    
+    // Delete from database
     const { error } = await sbClient.from('resources').delete().eq('id', id);
     if (error) throw error;
+    
+    // Try to delete files from storage
+    if (resource) {
+      try {
+        if (resource.file_path) {
+          await sbAdminClient.storage.from('kenyavault-resources').remove([resource.file_path]);
+        }
+        if (resource.cover_image_storage_path) {
+          await sbAdminClient.storage.from('kenyavault-resources').remove([resource.cover_image_storage_path]);
+        }
+      } catch(storageError) {
+        console.warn('Could not delete storage files:', storageError);
+      }
+    }
+    
     showToast('✅ Resource deleted successfully!', 'success');
     loadDashboardData();
   } catch(e) {
+    console.error('Delete error:', e);
     showToast('❌ Error deleting: ' + e.message, 'error');
   }
 }
@@ -1952,7 +1994,7 @@ function generateTemplateCover(template) {
   });
 }
 
-// ── UPLOAD BUTTON ──
+// ── UPLOAD BUTTON WITH SERVICE ROLE ──
 document.getElementById('uploadBtn').addEventListener('click', async function() {
   const title = document.getElementById('resTitle').value.trim();
   const price = document.getElementById('resPrice').value;
@@ -2003,70 +2045,102 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
     updated_at: new Date().toISOString()
   };
 
-  if (sbClient) {
-    try {
-      bar.style.width = '20%';
-      text.textContent = 'Uploading cover image... 20%';
+  // ── USE ADMIN CLIENT (SERVICE ROLE) FOR UPLOADS ──
+  const uploadClient = sbAdminClient || sbClient;
 
+  if (uploadClient) {
+    try {
+      // ── UPLOAD COVER IMAGE ──
       let coverUrl = null;
       let coverPath = null;
       
       if (selectedCoverFile) {
+        bar.style.width = '20%';
+        text.textContent = 'Uploading cover image... 20%';
+
         const coverFileName = 'cover-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6);
         const coverFileExt = selectedCoverFile.name.split('.').pop();
         const coverFilePath = 'covers/' + level + '/' + subject + '/' + coverFileName + '.' + coverFileExt;
         
-        const coverResult = await sbClient.storage
-          .from('kenyavault-resources')
-          .upload(coverFilePath, selectedCoverFile, {
-            cacheControl: '3600',
-            upsert: false,
-            contentType: selectedCoverFile.type
-          });
-        
-        if (coverResult.error) throw coverResult.error;
-        
-        const coverUrlData = sbClient.storage.from('kenyavault-resources').getPublicUrl(coverFilePath);
-        coverUrl = coverUrlData.data.publicUrl;
-        coverPath = coverFilePath;
-        
-        resourceData.cover_image_url = coverUrl;
-        resourceData.cover_image_storage_path = coverPath;
-        resourceData.has_cover_image = true;
+        try {
+          const coverResult = await uploadClient.storage
+            .from('kenyavault-resources')
+            .upload(coverFilePath, selectedCoverFile, {
+              cacheControl: '3600',
+              upsert: false,
+              contentType: selectedCoverFile.type
+            });
+          
+          if (coverResult.error) {
+            console.error('Cover upload error:', coverResult.error);
+            showToast('⚠️ Cover image upload failed, continuing with PDF...', 'warning');
+          } else {
+            const coverUrlData = uploadClient.storage.from('kenyavault-resources').getPublicUrl(coverFilePath);
+            coverUrl = coverUrlData.data.publicUrl;
+            coverPath = coverFilePath;
+            resourceData.cover_image_url = coverUrl;
+            resourceData.cover_image_storage_path = coverPath;
+            resourceData.has_cover_image = true;
+          }
+        } catch(coverError) {
+          console.warn('Cover image error:', coverError);
+        }
         
         bar.style.width = '40%';
-        text.textContent = 'Cover image uploaded! 40%';
+        text.textContent = 'Cover image processed! 40%';
       }
 
+      // ── UPLOAD PDF FILE ──
       bar.style.width = '50%';
       text.textContent = 'Uploading PDF file... 50%';
 
       const cleanFileName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
       const filePath = 'resources/' + level + '/' + subject + '/' + Date.now() + '_' + cleanFileName;
       
-      const storageResult = await sbClient.storage
-        .from('kenyavault-resources')
-        .upload(filePath, selectedFile, { 
-          cacheControl: '3600', 
-          upsert: false, 
-          contentType: 'application/pdf' 
-        });
-      
-      if (storageResult.error) throw storageResult.error;
+      try {
+        const storageResult = await uploadClient.storage
+          .from('kenyavault-resources')
+          .upload(filePath, selectedFile, { 
+            cacheControl: '3600', 
+            upsert: false, 
+            contentType: 'application/pdf' 
+          });
+        
+        if (storageResult.error) {
+          console.error('PDF upload error:', storageResult.error);
+          throw storageResult.error;
+        }
+        
+        const urlData = uploadClient.storage.from('kenyavault-resources').getPublicUrl(filePath);
+        resourceData.file_path = filePath;
+        resourceData.file_url = urlData.data.publicUrl;
+        
+      } catch(fileError) {
+        console.error('PDF upload failed:', fileError);
+        throw new Error('Failed to upload PDF: ' + fileError.message);
+      }
 
       bar.style.width = '75%';
       text.textContent = 'Saving to database... 75%';
 
-      const urlData = sbClient.storage.from('kenyavault-resources').getPublicUrl(filePath);
-      resourceData.file_path = filePath;
-      resourceData.file_url = urlData.data.publicUrl;
-
+      // ── SAVE TO DATABASE (use anon client for db) ──
       const dbResult = await sbClient.from('resources').insert([resourceData]);
-      if (dbResult.error) throw dbResult.error;
+      if (dbResult.error) {
+        // If database insert fails, try to delete the uploaded file
+        try {
+          await uploadClient.storage.from('kenyavault-resources').remove([filePath]);
+          if (coverPath) {
+            await uploadClient.storage.from('kenyavault-resources').remove([coverPath]);
+          }
+        } catch(e) {
+          console.warn('Could not delete uploaded files:', e);
+        }
+        throw dbResult.error;
+      }
 
       bar.style.width = '100%';
       text.textContent = 'Complete! ✅';
-      showToast('"' + title + '" uploaded to Supabase!', 'success');
+      showToast('"' + title + '" uploaded successfully!', 'success');
 
     } catch(e) {
       console.error('Upload error:', e);
