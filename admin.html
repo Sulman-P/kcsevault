@@ -972,8 +972,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTc0OTM5OSwiZXhwIjoyMDk3MzI1Mzk5fQ.qkL7O1o1dhf9jCFuIQIUyJWFUBaq404ePWU0X4I5p1k';
 
 // ── ADMIN CREDENTIALS (CHANGE THESE) ──
-const ADMIN_USERNAME = 'admin';
-const ADMIN_PASSWORD = 'KenyaVault2026!';
+const ADMIN_USERNAME = 'adminnexalearn@gmail.com';
+const ADMIN_PASSWORD = '1@Sulman2026p';
 
 // ── GLOBALS ──
 let sbClient = null;        // Anon client for reading
@@ -1858,7 +1858,7 @@ function setFile(file) {
     return;
   }
   if (file.size > 20 * 1024 * 1024) {
-    showToast('File too large — maximum 20 MB', 'error');
+    showToast('File too large — maximum 50 MB', 'error');
     return;
   }
   selectedFile = file;
@@ -2045,6 +2045,72 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
     updated_at: new Date().toISOString()
   };
 
+  // ── UPLOAD BUTTON WITH SAFE COLUMN CHECK ──
+document.getElementById('uploadBtn').addEventListener('click', async function() {
+  const title = document.getElementById('resTitle').value.trim();
+  const price = document.getElementById('resPrice').value;
+  const level = document.getElementById('resLevel').value;
+  const subject = document.getElementById('resSubject').value;
+
+  if (!title || !price || !level || !subject) {
+    showToast('Please fill: Title, Price, Level and Subject', 'error');
+    return;
+  }
+  if (!selectedFile) {
+    showToast('Please select a PDF file to upload', 'error');
+    return;
+  }
+
+  const btn = this;
+  btn.disabled = true;
+  btn.textContent = '⏳ Uploading...';
+  document.getElementById('uploadProgress').style.display = 'block';
+
+  const bar = document.getElementById('uploadBar');
+  const text = document.getElementById('uploadText');
+
+  bar.style.width = '10%';
+  text.textContent = 'Preparing upload... 10%';
+
+  // ── BUILD RESOURCE DATA WITH SAFE DEFAULTS ──
+  const resourceData = {
+    title: title,
+    description: document.getElementById('resDesc').value || '',
+    price: parseInt(price),
+    level: level,
+    subject: subject,
+    grade: '',
+    type: 'notes',
+    badge: 'new',
+    emoji: '📄',
+    file_size: selectedFile.size,
+    pages: parseInt(document.getElementById('resPages').value) || 0,
+    downloads: 0,
+    published: document.getElementById('togPublish').classList.contains('on'),
+    featured: document.getElementById('togFeatured').classList.contains('on'),
+    // ── ONLY INCLUDE COLUMNS THAT EXIST ──
+    has_cover_image: !!selectedCoverFile,
+    kicd_aligned: document.getElementById('kicdAligned')?.checked !== false,
+    // These might not exist yet - use only if available
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+
+  // ── OPTIONAL FIELDS - ONLY ADD IF THEY EXIST ──
+  // Check if pricing_tier column exists
+  try {
+    const { data: columnCheck, error: colError } = await sbClient
+      .from('resources')
+      .select('pricing_tier')
+      .limit(1);
+    
+    if (!colError) {
+      resourceData.pricing_tier = document.getElementById('resPricingTier')?.value || 'single';
+    }
+  } catch(e) {
+    console.warn('pricing_tier column might not exist, skipping...');
+  }
+
   // ── USE ADMIN CLIENT (SERVICE ROLE) FOR UPLOADS ──
   const uploadClient = sbAdminClient || sbClient;
 
@@ -2123,7 +2189,7 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
       bar.style.width = '75%';
       text.textContent = 'Saving to database... 75%';
 
-      // ── SAVE TO DATABASE (use anon client for db) ──
+      // ── SAVE TO DATABASE ──
       const dbResult = await sbClient.from('resources').insert([resourceData]);
       if (dbResult.error) {
         // If database insert fails, try to delete the uploaded file
@@ -2163,38 +2229,7 @@ document.getElementById('uploadBtn').addEventListener('click', async function() 
     bar.style.width = '0%';
     loadDashboardData();
   }, 1500);
-});
-
-// ── CLEAR UPLOAD FORM ──
-document.getElementById('clearUploadBtn').addEventListener('click', clearUploadForm);
-
-function clearUploadForm() {
-  ['resTitle','resPrice','resDesc','resPages'].forEach(function(id) {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
   });
-  ['resLevel','resSubject','resPricingTier'].forEach(function(id) {
-    const el = document.getElementById(id);
-    if (el) el.selectedIndex = 0;
-  });
-  
-  selectedFile = null;
-  filePreview.style.display = 'none';
-  fileDropZone.style.display = 'block';
-  pdfInput.value = '';
-  
-  selectedCoverFile = null;
-  if (coverPreview) coverPreview.src = '';
-  if (coverPreviewContainer) coverPreviewContainer.style.display = 'none';
-  if (coverDropZoneContent) coverDropZoneContent.style.display = 'block';
-  if (coverInput) coverInput.value = '';
-  
-  document.querySelectorAll('.toggle-track').forEach(function(t) {
-    t.classList.remove('on');
-    t.classList.add('off');
-  });
-}
-
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function() {
   console.log('🚀 KenyaVault Admin Panel loaded');
