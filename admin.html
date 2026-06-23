@@ -59,7 +59,9 @@ button{font-family:inherit;}
 .admin-sidebar{
   width:230px;min-width:230px;background:#fff;border-right:1.5px solid var(--border);
   padding:18px 12px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;
+  display:flex;flex-direction:column;
 }
+.sidebar-nav{flex:1;}
 .sidebar-section-label{
   font-size:0.65rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
   color:var(--muted);padding:14px 10px 6px;
@@ -77,6 +79,21 @@ button{font-family:inherit;}
   margin-left:auto;background:var(--red);color:#fff;font-size:0.62rem;font-weight:700;
   padding:2px 7px;border-radius:99px;min-width:18px;text-align:center;
 }
+.sidebar-footer{
+  border-top:1px solid var(--border);padding:14px 10px 4px;margin-top:10px;
+}
+.sidebar-footer-card{
+  background:var(--surface);border-radius:10px;padding:12px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.sidebar-footer-avatar{
+  width:34px;height:34px;border-radius:50%;background:var(--green);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-weight:800;font-size:0.85rem;flex-shrink:0;
+}
+.sidebar-footer-text{flex:1;min-width:0;}
+.sidebar-footer-name{font-size:0.8rem;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sidebar-footer-role{font-size:0.7rem;color:var(--muted);}
 
 /* ════════ MAIN CONTENT ════════ */
 .admin-main{flex:1;padding:24px 28px;min-width:0;}
@@ -362,21 +379,33 @@ table tr:hover td{background:var(--surface);}
 
     <!-- SIDEBAR -->
     <aside class="admin-sidebar" id="adminSidebar">
-      <div class="sidebar-section-label">Overview</div>
-      <button class="sidebar-item active" data-tab="dashboard"><span class="sidebar-icon">📊</span>Dashboard</button>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Overview</div>
+        <button class="sidebar-item active" data-tab="dashboard"><span class="sidebar-icon">📊</span>Dashboard</button>
 
-      <div class="sidebar-section-label">Content</div>
-      <button class="sidebar-item" data-tab="upload"><span class="sidebar-icon">📤</span>Upload Resource</button>
-      <button class="sidebar-item" data-tab="resources"><span class="sidebar-icon">📚</span>Resources</button>
-      <button class="sidebar-item" data-tab="classes"><span class="sidebar-icon">📅</span>Live Classes</button>
+        <div class="sidebar-section-label">Content</div>
+        <button class="sidebar-item" data-tab="upload"><span class="sidebar-icon">📤</span>Upload Resource</button>
+        <button class="sidebar-item" data-tab="resources"><span class="sidebar-icon">📚</span>Resources</button>
+        <button class="sidebar-item" data-tab="classes"><span class="sidebar-icon">📅</span>Live Classes</button>
 
-      <div class="sidebar-section-label">Sales</div>
-      <button class="sidebar-item" data-tab="revenue"><span class="sidebar-icon">💰</span>Revenue</button>
-      <button class="sidebar-item" data-tab="orders"><span class="sidebar-icon">📦</span>Orders<span class="sidebar-badge" id="sbPendingBadge" style="display:none;">0</span></button>
+        <div class="sidebar-section-label">Sales</div>
+        <button class="sidebar-item" data-tab="revenue"><span class="sidebar-icon">💰</span>Revenue</button>
+        <button class="sidebar-item" data-tab="orders"><span class="sidebar-icon">📦</span>Orders<span class="sidebar-badge" id="sbPendingBadge" style="display:none;">0</span></button>
 
-      <div class="sidebar-section-label">System</div>
-      <button class="sidebar-item" data-tab="integrations"><span class="sidebar-icon">🔌</span>Integrations</button>
-      <button class="sidebar-item" data-tab="settings"><span class="sidebar-icon">⚙️</span>Settings</button>
+        <div class="sidebar-section-label">System</div>
+        <button class="sidebar-item" data-tab="integrations"><span class="sidebar-icon">🔌</span>Integrations</button>
+        <button class="sidebar-item" data-tab="settings"><span class="sidebar-icon">⚙️</span>Settings</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-card">
+          <div class="sidebar-footer-avatar">KV</div>
+          <div class="sidebar-footer-text">
+            <div class="sidebar-footer-name">Admin</div>
+            <div class="sidebar-footer-role">KenyaVault Owner</div>
+          </div>
+        </div>
+      </div>
     </aside>
 
     <!-- MAIN CONTENT -->
@@ -881,12 +910,11 @@ function checkSession() {
   return false;
 }
 
+/* ════════ LOGOUT — redirects to public homepage ════════ */
 function logout() {
   sessionStorage.removeItem('admin_logged_in');
   sessionStorage.removeItem('admin_login_time');
-  $('adminContent').style.display = 'none';
-  $('unauthorizedOverlay').style.display = 'flex';
-  showToast('Logged out successfully', 'info');
+  window.location.href = 'index.html';
 }
 
 /* ════════ SUPABASE INIT ════════ */
