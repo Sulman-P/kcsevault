@@ -288,10 +288,19 @@ table tr:hover td{background:var(--surface);}
 .btn-accept-terms{
   background:var(--green);color:#fff;border:none;border-radius:10px;padding:11px 26px;
   font-family:'Sora',sans-serif;font-weight:700;font-size:0.86rem;cursor:pointer;
-  transition:var(--transition);opacity:0.5;
+  transition:var(--transition);opacity:0.5;pointer-events:none;
 }
-.btn-accept-terms.enabled{opacity:1;}
+.btn-accept-terms.enabled{
+  opacity:1;pointer-events:auto;
+}
 .btn-accept-terms.enabled:hover{background:var(--green-light);}
+.btn-accept-terms:disabled{
+  opacity:0.5;pointer-events:none;cursor:not-allowed;
+}
+.btn-accept-terms:not(:disabled){
+  opacity:1;pointer-events:auto;
+}
+.btn-accept-terms:not(:disabled):hover{background:var(--green-light);}}
 
 /* ════════ UNAUTHORIZED / LOGIN ════════ */
 .overlay-screen{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);
@@ -353,11 +362,10 @@ table tr:hover td{background:var(--surface);}
         <input type="checkbox" id="termsCheckbox"/>
         <label for="termsCheckbox">I have read and accept the Terms & Conditions</label>
       </div>
-      <button class="btn-accept-terms" id="acceptTermsBtn">Continue to Admin Panel</button>
+      <button class="btn-accept-terms" id="acceptTermsBtn" disabled>Continue to Admin Panel</button>
     </div>
   </div>
 </div>
-
 <!-- ════════════════════════════════════════ -->
 <!-- UNAUTHORIZED OVERLAY -->
 <!-- ════════════════════════════════════════ -->
@@ -840,20 +848,47 @@ function initTerms() {
   const acceptBtn = $('acceptTermsBtn');
   const accepted = localStorage.getItem('kv_terms_accepted') === 'true';
 
-  if (accepted) { overlay.style.display = 'none'; return; }
+  if (accepted) { 
+    overlay.style.display = 'none'; 
+    return; 
+  }
 
-  checkbox.addEventListener('change', () => {
-    acceptBtn.classList.toggle('enabled', checkbox.checked);
-  });
+  // Enable/disable button based on checkbox state
+  function updateButtonState() {
+    if (checkbox.checked) {
+      acceptBtn.disabled = false;
+      acceptBtn.classList.add('enabled');
+    } else {
+      acceptBtn.disabled = true;
+      acceptBtn.classList.remove('enabled');
+    }
+  }
 
-  acceptBtn.addEventListener('click', () => {
-    if (!checkbox.checked) { showToast('Please accept the terms to continue', 'warning'); return; }
+  checkbox.addEventListener('change', updateButtonState);
+  
+  // Initial state
+  updateButtonState();
+
+  acceptBtn.addEventListener('click', function() {
+    if (!checkbox.checked) { 
+      showToast('Please accept the terms to continue', 'warning'); 
+      return; 
+    }
     localStorage.setItem('kv_terms_accepted', 'true');
+    localStorage.setItem('kv_terms_accepted_date', new Date().toISOString());
     overlay.classList.add('fade-out');
     setTimeout(() => { overlay.style.display = 'none'; }, 500);
+    showToast('✅ Terms accepted! Welcome to the Admin Panel.', 'success');
+  });
+
+  // Also allow Enter key on checkbox
+  checkbox.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      this.checked = !this.checked;
+      updateButtonState();
+    }
   });
 }
-
 /* ════════ SIDEBAR NAVIGATION (FIXED) ════════ */
 const TAB_PANEL_MAP = {
   dashboard: 'panelDashboard',
