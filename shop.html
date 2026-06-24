@@ -155,6 +155,7 @@
   padding-bottom: 5px; border-bottom: 1px solid var(--border);
 }
 .slg-label.kjsea-label { color: #7C3AED; }
+.slg-label.self-label { color: #EC4899; }
 .sidebar-subject {
   display: flex; align-items: center; gap: 9px;
   padding: 8px 10px; border-radius: 8px;
@@ -195,6 +196,7 @@
 .category-count.purple { background: #7C3AED; }
 .category-count.blue { background: #2563EB; }
 .category-count.gold { background: #D97706; }
+.category-count.pink { background: #EC4899; }
 .category-view-all {
   font-size: 0.8rem; font-weight: 700; color: var(--green);
   text-decoration: none; display: flex; align-items: center; gap: 4px;
@@ -289,10 +291,12 @@
 .bio-bg { background: linear-gradient(135deg,#BBF7D0,#86EFAC); }
 .chem-bg { background: linear-gradient(135deg,#FECACA,#FCA5A5); }
 .phys-bg { background: linear-gradient(135deg,#C7D2FE,#A5B4FC); }
+.self-bg { background: linear-gradient(135deg,#FCE7F3,#F9A8D4); }
 .math-text { color: #92400E; } .eng-text { color: #1E40AF; } .kisw-text { color: #BE185D; }
 .sci-text { color: #047857; } .soc-text { color: #3730A3; } .tech-text { color: #C2410C; }
 .agri-text { color: #4D7C0F; } .re-text { color: #7E22CE; } .art-text { color: #BE185D; }
 .pe-text { color: #0369A1; } .bio-text { color: #15803D; } .chem-text { color: #B91C1C; } .phys-text { color: #4338CA; }
+.self-text { color: #BE185D; }
 
 /* ── PAYMENT MODAL ── */
 .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px; }
@@ -410,6 +414,12 @@
             <div class="dropdown-heading">8-4-4</div>
             <a href="shop.html?level=844">📚 Form 3 & 4 (Until 2028)</a>
           </div>
+          <div class="dropdown-col">
+            <div class="dropdown-heading">🌱 Self Development</div>
+            <a href="shop.html?level=self-development&subject=personal-growth">📖 Personal Growth</a>
+            <a href="shop.html?level=self-development&subject=financial-literacy">💰 Financial Literacy</a>
+            <a href="shop.html?level=self-development&subject=leadership">🏆 Leadership</a>
+          </div>
         </div>
       </li>
       <li><a href="about.html">About</a></li>
@@ -428,18 +438,19 @@
     <div class="shop-hero-inner">
       <div class="hero-eyebrow" style="display:inline-flex;align-items:center;gap:10px;background:rgba(212,160,23,0.12);border:1px solid rgba(212,160,23,0.3);color:var(--gold-light);font-size:0.78rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:7px 16px;border-radius:99px;margin-bottom:24px;">
         <span style="width:7px;height:7px;border-radius:50%;background:var(--gold-light);animation:pulse 2s infinite;"></span>
-        CBC · KJSEA 2026 · 8-4-4
+        CBC · KJSEA 2026 · 8-4-4 · Self Development
       </div>
       <h1>The <em>Complete</em> Shop</h1>
-      <p>Notes, past papers, worksheets & bundles for CBC Junior School, KJSEA 2026, CBC Senior School and 8-4-4 Form 3 & 4. <strong>Preview before you buy!</strong> Pay via M-PESA, download instantly.</p>
+      <p>Notes, past papers, worksheets & bundles for CBC Junior School, KJSEA 2026, CBC Senior School, 8-4-4 Form 3 & 4, and <strong>Self Development books</strong>. Preview before you buy! Pay via M-PESA, download instantly.</p>
     </div>
     <div class="level-tabs-bar" style="margin-top:28px;padding:0;">
       <div class="level-tabs" id="levelTabs" style="padding:0;">
         <button class="level-tab active" data-level="all">All Resources</button>
-        <button class="level-tab" data-level="kjsea">🏆 KJSEA 2026 Prediction <span class="tab-badge tb-hot">HOT</span></button>
+        <button class="level-tab" data-level="kjsea">🏆 KJSEA 2026 <span class="tab-badge tb-hot">HOT</span></button>
         <button class="level-tab" data-level="junior">🏫 Junior School Gr 7–9 <span class="tab-badge tb-new">CBC</span></button>
         <button class="level-tab" data-level="senior">🎓 Senior School Gr 10–12 <span class="tab-badge tb-new">CBC</span></button>
         <button class="level-tab" data-level="844">📚 Form 3 & 4 <span class="tab-badge tb-soon">8-4-4</span></button>
+        <button class="level-tab" data-level="self-development">🌱 Self Development <span class="tab-badge tb-new">New</span></button>
       </div>
     </div>
   </div>
@@ -477,6 +488,9 @@
       <button class="pill" data-filter="biology">🧬 Biology</button>
       <button class="pill" data-filter="chemistry">⚗️ Chemistry</button>
       <button class="pill" data-filter="physics">⚡ Physics</button>
+      <button class="pill" data-filter="personal-growth">🌱 Personal Growth</button>
+      <button class="pill" data-filter="financial-literacy">💰 Financial Literacy</button>
+      <button class="pill" data-filter="leadership">🏆 Leadership</button>
     </div>
     <select class="sort-select" id="sortSelect">
       <option value="popular">Sort: Popular</option>
@@ -494,14 +508,16 @@
   <aside class="sidebar">
     <div class="sidebar-card">
       <div class="sidebar-title">Curriculum Level</div>
+
       <div class="sidebar-level-group">
-        <div class="slg-label kjsea-label">🏆 KJSEA 2026 Prediction</div>
+        <div class="slg-label kjsea-label">🏆 KJSEA 2026</div>
         <a href="#" class="sidebar-subject" data-level-filter="kjsea">
           <span class="sub-dot" style="background:#7C3AED"></span>
           <span class="sub-label">KJSEA Grade 9 Exam</span>
           <span class="sub-count" id="kjseaCount">0</span>
         </a>
       </div>
+
       <div class="sidebar-level-group">
         <div class="slg-label">CBC Junior School</div>
         <a href="#" class="sidebar-subject active" data-level-filter="all">
@@ -515,6 +531,7 @@
           <span class="sub-count" id="juniorCount">0</span>
         </a>
       </div>
+
       <div class="sidebar-level-group">
         <div class="slg-label">CBC Senior School</div>
         <a href="#" class="sidebar-subject" data-level-filter="senior">
@@ -523,6 +540,7 @@
           <span class="sub-count" id="seniorCount">0</span>
         </a>
       </div>
+
       <div class="sidebar-level-group">
         <div class="slg-label">8-4-4 System</div>
         <a href="#" class="sidebar-subject" data-level-filter="844">
@@ -531,20 +549,29 @@
           <span class="sub-count" id="eight44Count">0</span>
         </a>
       </div>
+
+      <!-- ── SELF DEVELOPMENT ── -->
+      <div class="sidebar-level-group">
+        <div class="slg-label self-label">🌱 Self Development</div>
+        <a href="#" class="sidebar-subject" data-level-filter="self-development">
+          <span class="sub-dot" style="background:#EC4899"></span>
+          <span class="sub-label">Personal Growth Books</span>
+          <span class="sub-count" id="selfDevelopmentCount">0</span>
+        </a>
+      </div>
+
     </div>
   </aside>
 
   <!-- PRODUCTS AREA -->
   <div class="products-area">
 
-    <!-- Diagnostic panel — only shows if something is actually wrong -->
     <div class="diag-panel" id="diagPanel"></div>
 
     <div class="products-header">
       <p class="products-count">Showing <strong id="productCount">0</strong> resources</p>
     </div>
 
-    <!-- This is where grouped category sections OR a flat filtered grid get rendered -->
     <div id="shopContent">
       <div class="products-grid">
         <div class="loading-spinner">
@@ -729,6 +756,15 @@
       </ul>
     </div>
     <div class="footer-col">
+      <h4>🌱 Self Development</h4>
+      <ul>
+        <li><a href="shop.html?level=self-development&subject=personal-growth">📖 Personal Growth</a></li>
+        <li><a href="shop.html?level=self-development&subject=financial-literacy">💰 Financial Literacy</a></li>
+        <li><a href="shop.html?level=self-development&subject=leadership">🏆 Leadership</a></li>
+        <li><a href="shop.html?level=self-development">View All →</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
       <h4>Quick Links</h4>
       <ul>
         <li><a href="about.html">About Us</a></li>
@@ -750,10 +786,7 @@
 'use strict';
 
 /* ════════════════════════════════════════
-   KENYAVAULT SHOP — REBUILT
-   Fixes: confirmPayment() now actually inserts
-   the order and closes the loop. Resources are
-   grouped into category sections by level.
+   KENYAVAULT SHOP — WITH SELF DEVELOPMENT
 ════════════════════════════════════════ */
 
 const SUPABASE_URL = 'https://rewpminmqnrtwdvglxxr.supabase.co';
@@ -764,9 +797,10 @@ const LEVEL_META = {
   kjsea: { icon: '🏆', title: 'KJSEA 2026 Prediction Papers', countClass: 'purple' },
   junior: { icon: '🏫', title: 'CBC Junior School (Grade 7–9)', countClass: '' },
   senior: { icon: '🎓', title: 'CBC Senior School (Grade 10–12)', countClass: 'blue' },
-  '844': { icon: '📚', title: '8-4-4 Form 3 & 4', countClass: 'gold' }
+  '844': { icon: '📚', title: '8-4-4 Form 3 & 4', countClass: 'gold' },
+  'self-development': { icon: '🌱', title: 'Self Development Books', countClass: 'pink' }
 };
-const LEVEL_ORDER = ['kjsea', 'junior', 'senior', '844'];
+const LEVEL_ORDER = ['kjsea', 'junior', 'senior', '844', 'self-development'];
 
 let sbClient = null;
 let allResources = [];
@@ -819,7 +853,7 @@ async function loadResources() {
     var result = await sbClient.from('resources').select('*').order('created_at', { ascending: false });
 
     if (result.error) {
-      showDiagnostic('Supabase returned an error: <code>' + result.error.message + '</code>. This usually means your Row Level Security policy is blocking public SELECT on the <code>resources</code> table, or the anon key/URL is wrong.');
+      showDiagnostic('Supabase returned an error: <code>' + result.error.message + '</code>.');
       renderEmptyError(result.error);
       return;
     }
@@ -827,7 +861,7 @@ async function loadResources() {
     allResources = result.data || [];
 
     if (allResources.length === 0) {
-      showDiagnostic('Supabase connected successfully but returned <strong>0 rows</strong>. Either no resources have been uploaded yet in the Admin Panel, or every resource has <code>published = false</code> and your public RLS policy only allows <code>published = true</code> rows to be read.');
+      showDiagnostic('Supabase connected successfully but returned <strong>0 rows</strong>. Either no resources have been uploaded yet.');
     }
 
     filteredResources = allResources.slice();
@@ -861,19 +895,22 @@ function updateCounts() {
   var junior = allResources.filter(function (r) { return r.level === 'junior'; }).length;
   var senior = allResources.filter(function (r) { return r.level === 'senior'; }).length;
   var eight44 = allResources.filter(function (r) { return r.level === '844'; }).length;
+  var selfDev = allResources.filter(function (r) { return r.level === 'self-development'; }).length;
 
   document.getElementById('kjseaCount').textContent = kjsea;
   document.getElementById('juniorCount').textContent = junior;
   document.getElementById('seniorCount').textContent = senior;
   document.getElementById('eight44Count').textContent = eight44;
+  document.getElementById('selfDevelopmentCount').textContent = selfDev;
   document.getElementById('totalCount').textContent = allResources.length;
 }
 
 /* ── DISPLAY HELPERS ── */
 function getLevelDisplay(level) {
-  var map = { kjsea: '🏆 KJSEA 2026', junior: '🏫 Junior School', senior: '🎓 Senior School', '844': '📚 8-4-4' };
+  var map = { kjsea: '🏆 KJSEA 2026', junior: '🏫 Junior School', senior: '🎓 Senior School', '844': '📚 8-4-4', 'self-development': '🌱 Self Development' };
   return map[level] || level || 'All Levels';
 }
+
 function getPricingDisplay(product) {
   var tier = product.pricing_tier || 'single';
   var price = product.price || 0;
@@ -882,19 +919,39 @@ function getPricingDisplay(product) {
   if (tier === 'kjsea') return '<span class="price-sale">KSh ' + price + '</span>';
   return 'KSh ' + price;
 }
+
 function getCurriculumBadges(product) {
   var b = '';
   if (product.kicd_aligned !== false) b += '<span class="curriculum-badge badge-kicd">✅ KICD</span>';
   if (product.cbc_compliant !== false) b += '<span class="curriculum-badge badge-cbc">📋 CBC</span>';
   if (product.teacher_reviewed !== false) b += '<span class="curriculum-badge badge-reviewed">👩‍🏫 Reviewed</span>';
+  if (product.level === 'self-development') b += '<span class="curriculum-badge" style="background:#FCE7F3;color:#BE185D;border:1px solid #FBCFE8;">🌱 Self Growth</span>';
   return b;
 }
+
 function getBannerColor(subject) {
-  var map = { mathematics: 'math-bg', english: 'eng-bg', kiswahili: 'kisw-bg', 'integrated-science': 'sci-bg', 'social-studies': 'soc-bg', 'pre-technical': 'tech-bg', agriculture: 'agri-bg', 'religious-education': 're-bg', 'creative-arts': 'art-bg', 'health-pe': 'pe-bg', biology: 'bio-bg', chemistry: 'chem-bg', physics: 'phys-bg' };
+  var map = {
+    mathematics: 'math-bg', english: 'eng-bg', kiswahili: 'kisw-bg',
+    'integrated-science': 'sci-bg', 'social-studies': 'soc-bg',
+    'pre-technical': 'tech-bg', agriculture: 'agri-bg',
+    'religious-education': 're-bg', 'creative-arts': 'art-bg',
+    'health-pe': 'pe-bg', biology: 'bio-bg', chemistry: 'chem-bg',
+    physics: 'phys-bg', 'personal-growth': 'self-bg',
+    'financial-literacy': 'self-bg', leadership: 'self-bg'
+  };
   return map[subject] || 'sci-bg';
 }
+
 function getTextColor(subject) {
-  var map = { mathematics: 'math-text', english: 'eng-text', kiswahili: 'kisw-text', 'integrated-science': 'sci-text', 'social-studies': 'soc-text', 'pre-technical': 'tech-text', agriculture: 'agri-text', 'religious-education': 're-text', 'creative-arts': 'art-text', 'health-pe': 'pe-text', biology: 'bio-text', chemistry: 'chem-text', physics: 'phys-text' };
+  var map = {
+    mathematics: 'math-text', english: 'eng-text', kiswahili: 'kisw-text',
+    'integrated-science': 'sci-text', 'social-studies': 'soc-text',
+    'pre-technical': 'tech-text', agriculture: 'agri-text',
+    'religious-education': 're-text', 'creative-arts': 'art-text',
+    'health-pe': 'pe-text', biology: 'bio-text', chemistry: 'chem-text',
+    physics: 'phys-text', 'personal-growth': 'self-text',
+    'financial-literacy': 'self-text', leadership: 'self-text'
+  };
   return map[subject] || 'tech-text';
 }
 
@@ -965,7 +1022,7 @@ function renderEmptyError(e) {
   document.getElementById('pagination').style.display = 'none';
 }
 
-/* ── RENDER: MAIN SHOP (grouped categories OR flat filtered grid) ── */
+/* ── RENDER: MAIN SHOP ── */
 function renderShop() {
   if (activeLevel === 'all') {
     renderGroupedByCategory();
@@ -974,7 +1031,6 @@ function renderShop() {
   }
 }
 
-/* Grouped view — used when "All Resources" is selected */
 function renderGroupedByCategory() {
   document.getElementById('pagination').style.display = 'none';
 
@@ -1002,7 +1058,7 @@ function renderGroupedByCategory() {
     if (items.length === 0) return;
 
     var meta = LEVEL_META[level];
-    var displayItems = items.slice(0, 8); // preview cap per category on the "All" view
+    var displayItems = items.slice(0, 8);
 
     html += '<div class="category-section">' +
       '<div class="category-header">' +
@@ -1024,10 +1080,8 @@ function renderGroupedByCategory() {
   document.getElementById('shopContent').innerHTML = html || '<div class="products-grid"><div class="empty-state"><span class="empty-icon">📭</span><h3>No resources found</h3></div></div>';
 }
 
-/* Flat paginated grid — used when a specific level tab/sidebar filter is active */
 function renderFlatGrid() {
   var total = filteredResources.length;
-  var grid;
 
   if (total === 0) {
     document.getElementById('shopContent').innerHTML =
@@ -1211,7 +1265,7 @@ function initiatePayment() {
   setTimeout(function () { document.getElementById('mpesaCode').focus(); }, 1800);
 }
 
-/* ── STEP 2: CONFIRM PAYMENT (FIXED — actually inserts the order now) ── */
+/* ── STEP 2: CONFIRM PAYMENT ── */
 async function confirmPayment() {
   var mpesaCodeInput = document.getElementById('mpesaCode');
   var mpesaCode = mpesaCodeInput.value.trim().toUpperCase();
@@ -1315,7 +1369,10 @@ function getSampleContent(product, pageNum) {
   var samples = {
     mathematics: ['This section covers number operations including addition, subtraction, multiplication, and division of integers.', 'Algebraic expressions are introduced with clear explanations and step-by-step examples.', 'Geometry concepts including angles, shapes, and measurement with practice problems.'],
     english: ['Comprehensive grammar review covering parts of speech, sentence structure, and common errors.', 'Reading comprehension strategies with sample passages and questions.', 'Writing skills development including essay structure and creative writing.'],
-    'integrated-science': ['Introduction to scientific inquiry and the scientific method with practical examples.', 'Life sciences covering cells, plant and animal systems, and ecosystems.', 'Physical sciences including matter, energy, forces, and simple machines.']
+    'integrated-science': ['Introduction to scientific inquiry and the scientific method with practical examples.', 'Life sciences covering cells, plant and animal systems, and ecosystems.', 'Physical sciences including matter, energy, forces, and simple machines.'],
+    'personal-growth': ['Discover the power of self-awareness and emotional intelligence in personal development.', 'Learn to set and achieve meaningful goals that align with your values.', 'Build resilience and overcome obstacles on your growth journey.'],
+    'financial-literacy': ['Understanding the basics of money management and wealth creation.', 'Practical strategies for budgeting, saving, and investing wisely.', 'Building financial independence through smart decision-making.'],
+    leadership: ['Core principles of effective leadership and influence.', 'Developing emotional intelligence and communication skills for leaders.', 'Strategies for building and leading high-performing teams.']
   };
   var subjectSamples = samples[product.subject] || ['Comprehensive coverage of key concepts with clear explanations and examples.', 'Practice questions with detailed answers to reinforce learning.', 'Revision notes summarizing important points for quick reference.'];
   return subjectSamples[(pageNum - 1) % subjectSamples.length] || 'Content preview showing the quality and structure of this resource.';
