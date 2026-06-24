@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KenyaVault — CBC, KJSEA 2026 & 8-4-4 Resources</title>
     <meta name="description" content="Premium CBC Junior School, KJSEA 2025, Senior School and Form 3-4 revision resources. Preview before you buy! Download instantly via M-PESA." />
-    <link rel="icon" type="image/webp" href="images/kenyavault-logo.webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
@@ -120,44 +119,60 @@
             color: #6B9980;
         }
 
-        /* ── HERO LOGO ── */
+        /* ── NAV LOGO (TEXT BANNER) ── */
+        .nav-logo {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            color: var(--white);
+            display: inline-flex;
+            align-items: baseline;
+        }
+        .nav-logo span {
+            color: var(--gold-light);
+        }
+
+        /* ── HERO LOGO (TEXT BANNER, LARGER) ── */
         .hero-logo {
             position: relative;
             z-index: 1;
-            margin-bottom: 28px;
+            margin-bottom: 22px;
             animation: kvFadeUp 0.7s ease both;
             animation-delay: 0s;
         }
-        .hero-logo img {
-            height: 96px;
-            width: auto;
-            display: block;
-        }
-
-        /* ── NAV LOGO IMAGE ── */
-        .nav-logo-img {
-            display: flex;
+        .hero-logo .hero-logo-text {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1.6rem, 3vw, 2.1rem);
+            letter-spacing: -0.5px;
+            color: var(--white);
+            display: inline-flex;
             align-items: center;
             gap: 10px;
         }
-        .nav-logo-img img {
-            height: 38px;
-            width: auto;
+        .hero-logo .hero-logo-text span.accent {
+            color: var(--gold-light);
+        }
+        .hero-logo .hero-logo-tagline {
             display: block;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #6B9980;
+            font-weight: 600;
+            margin-top: 4px;
         }
 
-        /* ── FOOTER LOGO IMAGE ── */
+        /* ── FOOTER LOGO (TEXT BANNER) ── */
         .footer-logo-img {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 8px;
         }
-        .footer-logo-img img {
-            height: 40px;
-            width: auto;
-            display: block;
-            filter: brightness(1.1);
+        .footer-brand .nav-logo {
+            font-size: 1.25rem;
         }
 
         /* ── TRUST BADGES ── */
@@ -185,6 +200,118 @@
         }
         .trust-badge .label {
             font-weight: 500;
+        }
+
+        /* ── NAVBAR STYLING ENHANCEMENT ── */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            background: rgba(11, 26, 18, 0.97);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 160, 23, 0.15);
+            box-shadow: 0 1px 0 rgba(212, 160, 23, 0.35);
+        }
+        .nav-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 5%;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .nav-links li a {
+            color: #C8DDD0;
+            font-size: 0.88rem;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: var(--gold-light);
+            background: rgba(212, 160, 23, 0.08);
+        }
+        .nav-dropdown {
+            position: relative;
+        }
+        .nav-dropdown .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            background: var(--dark);
+            border: 1px solid rgba(212, 160, 23, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 24px;
+            min-width: 360px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-col {
+            min-width: 150px;
+        }
+        .dropdown-heading {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(212,160,23,0.15);
+        }
+        .dropdown-col a {
+            display: block;
+            padding: 6px 4px;
+            font-size: 0.83rem;
+            color: #C8DDD0;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .dropdown-col a:hover {
+            color: var(--gold-light);
+            background: rgba(212,160,23,0.06);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-nav-cta {
+            color: var(--white);
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 9px 18px;
+            border-radius: 99px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 14px rgba(124,58,237,0.35);
+        }
+        .btn-nav-cta:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.08);
         }
         
         /* ── FEATURES SECTION ── */
@@ -255,6 +382,7 @@
         .pricing-card:hover {
             border-color: var(--green);
             transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(13,110,63,0.12);
         }
         .pricing-card.featured {
             border-color: var(--gold);
@@ -455,6 +583,11 @@
             border-radius: var(--radius);
             padding: 24px;
             border: 1.5px solid var(--border);
+            transition: var(--transition);
+        }
+        .testimonial-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
         .testimonial-card .stars {
             color: #FCD34D;
@@ -538,7 +671,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── MOBILE NAV (FIXED) ── */
+        /* ── MOBILE NAV ── */
         .nav-links {
             transition: all 0.3s ease;
         }
@@ -593,6 +726,9 @@
                 border-radius: 0;
                 border: none;
                 width: 100%;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
             }
             .nav-dropdown.dropdown-open .dropdown-menu {
                 display: block;
@@ -643,7 +779,7 @@
             display: none;
         }
 
-        /* ── TERMS CONSENT OVERLAY ── */
+        /* ── TERMS CONSENT OVERLAY (FIRST VISIT) ── */
         .kv-consent-overlay {
             position: fixed;
             inset: 0;
@@ -798,7 +934,7 @@
             display: none !important;
         }
 
-        /* ── TERMS MODAL ── */
+        /* ── TERMS MODAL (Manual Re-open) ── */
         #termsFloatingModal {
             display: none;
             position: fixed;
@@ -923,8 +1059,6 @@
             .preview-banner-inner { flex-direction: column; }
             .kv-consent-actions { flex-direction: column; align-items: stretch; }
             .kv-btn-accept, .kv-btn-decline { width: 100%; text-align: center; }
-            .hero-logo img { height: 72px; }
-            .nav-logo-img img { height: 32px; }
             .terms-modal-box { padding: 28px 20px; }
             #termsFloatingButton { padding: 10px 14px; font-size: 0.75rem; }
         }
@@ -961,9 +1095,7 @@
     <!-- ════════════ NAVBAR ════════════ -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a class="nav-logo nav-logo-img" href="index.html">
-                <img src="images/kenyavault-logo.webp" alt="KenyaVault" />
-            </a>
+            <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="shop.html">Shop</a></li>
@@ -1001,7 +1133,8 @@
     <section class="hero">
         <div class="container" style="max-width:1240px;margin:0 auto;padding:0 5%;">
             <div class="hero-logo">
-                <img src="images/kenyavault-logo.webp" alt="KenyaVault — Quality Resources. Brighter Futures." />
+                <span class="hero-logo-text">Kenya<span class="accent">Vault</span></span>
+                <span class="hero-logo-tagline">Quality Resources. Brighter Futures.</span>
             </div>
             <div class="hero-eyebrow" style="display:inline-flex;align-items:center;gap:10px;background:rgba(212,160,23,0.12);border:1px solid rgba(212,160,23,0.3);color:var(--gold-light);font-size:0.78rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:7px 16px;border-radius:99px;margin-bottom:24px;position:relative;z-index:1;">
                 <span style="width:7px;height:7px;border-radius:50%;background:var(--gold-light);animation:pulse 2s infinite;"></span>
@@ -1268,9 +1401,7 @@
     <footer class="footer">
         <div class="footer-top">
             <div class="footer-brand">
-                <a class="nav-logo footer-logo-img" href="index.html">
-                    <img src="images/kenyavault-logo.webp" alt="KenyaVault" />
-                </a>
+                <a class="nav-logo" href="index.html">Kenya<span>Vault</span></a>
                 <p>Premium CBC and 8-4-4 resources for Kenyan learners. Made by a certified teacher.</p>
                 <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
                     <a href="https://www.tsc.go.ke" target="_blank" style="color:var(--gold-light);font-size:0.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
@@ -1413,12 +1544,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // ── HAMBURGER MENU (FIXED) ──
+            // ── HAMBURGER MENU ──
             const hamburger = document.getElementById('hamburger');
             const navLinks = document.getElementById('navLinks');
 
             if (hamburger && navLinks) {
-                // Toggle menu on hamburger click
                 hamburger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const isOpen = navLinks.classList.toggle('active');
@@ -1426,11 +1556,9 @@
                     hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 });
 
-                // Close menu when clicking a link (except dropdown toggle)
                 navLinks.querySelectorAll('a').forEach(function(link) {
                     link.addEventListener('click', function(e) {
                         if (link.id === 'navDropdownToggle') {
-                            // Handle dropdown toggle on mobile
                             if (window.innerWidth <= 900) {
                                 e.preventDefault();
                                 const parent = link.closest('.nav-dropdown');
@@ -1440,7 +1568,6 @@
                             }
                             return;
                         }
-                        // Close menu on link click (mobile)
                         if (window.innerWidth <= 900) {
                             navLinks.classList.remove('active');
                             hamburger.classList.remove('active');
@@ -1449,7 +1576,6 @@
                     });
                 });
 
-                // Close menu when clicking outside
                 document.addEventListener('click', function(e) {
                     if (window.innerWidth <= 900) {
                         const nav = document.querySelector('.nav-container');
@@ -1478,10 +1604,12 @@
                 revealEls.forEach(function(el) { el.classList.add('kv-visible'); });
             }
 
-            // ── FLOATING TERMS & CONDITIONS CONSENT (First Visit) ──
+            // ── TERMS STATE — SINGLE SOURCE OF TRUTH ──
             const consentOverlay = document.getElementById('kvConsentOverlay');
             const acceptBtn = document.getElementById('kvAcceptBtn');
             const declineBtn = document.getElementById('kvDeclineBtn');
+            const termsBtn = document.getElementById('termsFloatingButton');
+            const termsModal = document.getElementById('termsFloatingModal');
             const CONSENT_KEY = 'kv_terms_accepted_public';
 
             function hasAccepted() {
@@ -1493,21 +1621,28 @@
                 try { localStorage.setItem(CONSENT_KEY, 'true'); } catch (e) {}
             }
 
-            // ── FLOATING TERMS BUTTON (Hide after acceptance) ──
-            const termsBtn = document.getElementById('termsFloatingButton');
-            const termsModal = document.getElementById('termsFloatingModal');
+            // Keeps the floating button + overlay in sync, always
+            function syncTermsUI() {
+                const accepted = hasAccepted();
 
-            function updateTermsButton() {
-                if (hasAccepted()) {
-                    // Hide the floating button entirely
-                    if (termsBtn) {
-                        termsBtn.classList.add('hidden');
-                        termsBtn.classList.add('accepted');
+                if (consentOverlay) {
+                    if (accepted) {
+                        consentOverlay.classList.add('kv-hidden');
+                        consentOverlay.style.display = 'none';
+                        document.body.style.overflow = '';
+                    } else {
+                        consentOverlay.classList.remove('kv-hidden', 'kv-hide');
+                        consentOverlay.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
                     }
-                } else {
-                    // Show the button
-                    if (termsBtn) {
+                }
+
+                if (termsBtn) {
+                    if (accepted) {
+                        termsBtn.classList.add('hidden', 'accepted');
+                    } else {
                         termsBtn.classList.remove('hidden');
+                        termsBtn.classList.add('accepted'); // subtle styling once seen once
                         termsBtn.innerHTML = `
                             <span style="font-size:1.2rem;">📋</span>
                             <span>Terms &amp; Conditions</span>
@@ -1517,41 +1652,28 @@
                 }
             }
 
-            // Initial update
-            updateTermsButton();
+            // Initial sync on page load
+            syncTermsUI();
 
-            if (consentOverlay) {
-                if (hasAccepted()) {
-                    consentOverlay.classList.add('kv-hidden');
-                    consentOverlay.style.display = 'none';
-                } else {
-                    document.body.style.overflow = 'hidden';
-                }
-
-                if (acceptBtn) {
-                    acceptBtn.addEventListener('click', function() {
-                        setAccepted();
-                        consentOverlay.classList.add('kv-hide');
-                        document.body.style.overflow = '';
-                        setTimeout(function() {
-                            consentOverlay.classList.add('kv-hidden');
-                            consentOverlay.style.display = 'none';
-                        }, 450);
-                        updateTermsButton();
+            if (acceptBtn) {
+                acceptBtn.addEventListener('click', function() {
+                    setAccepted();
+                    consentOverlay.classList.add('kv-hide');
+                    setTimeout(function() {
+                        syncTermsUI();
                         showToast('✅ Terms accepted! Welcome to KenyaVault.');
-                    });
-                }
-
-                if (declineBtn) {
-                    declineBtn.addEventListener('click', function() {
-                        window.open('terms.html', '_blank');
-                    });
-                }
+                    }, 450);
+                });
             }
 
-            // ── TERMS MODAL FUNCTIONS ──
+            if (declineBtn) {
+                declineBtn.addEventListener('click', function() {
+                    window.open('terms.html', '_blank');
+                });
+            }
+
+            // ── FLOATING BUTTON: manual re-open (only relevant if not yet accepted) ──
             window.openTermsModal = function() {
-                // If already accepted, don't open modal
                 if (hasAccepted()) {
                     showToast('✅ You have already accepted the Terms & Conditions.');
                     return;
@@ -1562,13 +1684,14 @@
 
             window.closeTermsModal = function() {
                 termsModal.classList.remove('open');
-                document.body.style.overflow = '';
+                if (!hasAccepted()) document.body.style.overflow = 'hidden';
+                else document.body.style.overflow = '';
             };
 
             window.acceptTerms = function() {
                 setAccepted();
                 closeTermsModal();
-                updateTermsButton();
+                syncTermsUI();
                 showToast('✅ Terms accepted! You can now make purchases.');
             };
 
@@ -1577,7 +1700,6 @@
                 showToast('ℹ️ You must accept the Terms & Conditions to make purchases.');
             };
 
-            // Close modal on overlay click
             termsModal.addEventListener('click', function(e) {
                 if (e.target === this) closeTermsModal();
             });
@@ -1586,7 +1708,7 @@
             function showToast(msg, type) {
                 type = type || 'success';
                 const icons = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️' };
-                
+
                 let toast = document.getElementById('floatingToast');
                 if (!toast) {
                     toast = document.createElement('div');
@@ -1603,11 +1725,11 @@
                     `;
                     document.body.appendChild(toast);
                 }
-                
+
                 toast.innerHTML = `<span>${icons[type] || '✅'}</span> ${msg}`;
                 toast.style.opacity = '1';
                 toast.style.transform = 'translateX(-50%) translateY(0)';
-                
+
                 setTimeout(function() {
                     toast.style.opacity = '0';
                     toast.style.transform = 'translateX(-50%) translateY(20px)';
