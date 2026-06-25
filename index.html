@@ -96,6 +96,27 @@
             background: rgba(255,255,255,0.2);
             transform: translateY(-2px);
         }
+        .btn-tutor {
+            background: var(--gold);
+            color: var(--dark);
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.92rem;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-tutor:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(212,160,23,0.4);
+        }
         .hero-stats {
             display: flex;
             gap: 40px;
@@ -119,7 +140,7 @@
             color: #6B9980;
         }
 
-        /* ── NAV LOGO (TEXT BANNER) ── */
+        /* ── NAV LOGO ── */
         .nav-logo {
             font-family: 'Sora', sans-serif;
             font-weight: 800;
@@ -133,7 +154,7 @@
             color: var(--gold-light);
         }
 
-        /* ── HERO LOGO (TEXT BANNER, LARGER) ── */
+        /* ── HERO LOGO ── */
         .hero-logo {
             position: relative;
             z-index: 1;
@@ -164,17 +185,6 @@
             margin-top: 4px;
         }
 
-        /* ── FOOTER LOGO (TEXT BANNER) ── */
-        .footer-logo-img {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .footer-brand .nav-logo {
-            font-size: 1.25rem;
-        }
-
         /* ── TRUST BADGES ── */
         .trust-badges {
             display: flex;
@@ -202,7 +212,7 @@
             font-weight: 500;
         }
 
-        /* ── NAVBAR STYLING ENHANCEMENT ── */
+        /* ── NAVBAR STYLING ── */
         .navbar {
             position: sticky;
             top: 0;
@@ -313,8 +323,164 @@
             transform: translateY(-1px);
             filter: brightness(1.08);
         }
+
+        /* ── TUTOR BUTTONS IN NAV ── */
+        .btn-nav-tutor {
+            color: var(--dark);
+            background: var(--gold-light);
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            padding: 8px 16px;
+            border-radius: 99px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-nav-tutor:hover {
+            background: var(--gold);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(212,160,23,0.35);
+        }
+        .btn-nav-tutor-outline {
+            color: var(--gold-light);
+            background: transparent;
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            padding: 8px 16px;
+            border-radius: 99px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1.5px solid rgba(212,160,23,0.3);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-nav-tutor-outline:hover {
+            background: rgba(212,160,23,0.1);
+            border-color: var(--gold-light);
+            transform: translateY(-1px);
+        }
+
+        /* ── MOBILE NAV ── */
+        .nav-links {
+            transition: all 0.3s ease;
+        }
         
-        /* ── FEATURES SECTION ── */
+        @media (max-width: 900px) {
+            .nav-links {
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: var(--dark);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0 5%;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                pointer-events: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+                z-index: 998;
+                transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            }
+            .nav-links.active {
+                max-height: 80vh;
+                opacity: 1;
+                pointer-events: auto;
+                padding: 16px 5% 24px;
+                overflow-y: auto;
+            }
+            .nav-links li {
+                width: 100%;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+            .nav-links a {
+                display: block;
+                padding: 12px 4px;
+                width: 100%;
+                font-size: 0.95rem;
+            }
+            .nav-dropdown .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                margin-top: 0;
+                padding: 0 0 0 16px;
+                display: none;
+                background: rgba(255,255,255,0.03);
+                border-radius: 0;
+                border: none;
+                width: 100%;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+            .nav-dropdown.dropdown-open .dropdown-menu {
+                display: block;
+            }
+            .nav-dropdown .dropdown-menu .dropdown-col {
+                padding: 8px 0;
+                min-width: auto;
+            }
+            .nav-dropdown .dropdown-menu .dropdown-heading {
+                font-size: 0.75rem;
+                padding: 4px 0;
+            }
+            .nav-dropdown .dropdown-menu a {
+                padding: 8px 0;
+                font-size: 0.85rem;
+            }
+            .hamburger {
+                display: flex !important;
+                flex-direction: column;
+                gap: 4px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 6px;
+                z-index: 999;
+            }
+            .hamburger span {
+                display: block;
+                width: 24px;
+                height: 2px;
+                background: var(--white);
+                transition: all 0.3s ease;
+                border-radius: 2px;
+            }
+            .hamburger.active span:nth-child(1) {
+                transform: translateY(6px) rotate(45deg);
+            }
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            .hamburger.active span:nth-child(3) {
+                transform: translateY(-6px) rotate(-45deg);
+            }
+            .nav-actions .btn-nav-tutor,
+            .nav-actions .btn-nav-tutor-outline {
+                display: none;
+            }
+        }
+
+        .hamburger {
+            display: none;
+        }
+
+        /* ── FEATURES ── */
         .features {
             padding: 80px 0;
             background: var(--surface);
@@ -358,7 +524,7 @@
             line-height: 1.6;
         }
 
-        /* ── PRICING SHOWCASE ── */
+        /* ── PRICING ── */
         .pricing-showcase {
             padding: 60px 0 40px;
             background: var(--white);
@@ -427,7 +593,7 @@
             margin-top: 6px;
         }
 
-        /* ── KICD ALIGNMENT BANNER ── */
+        /* ── KICD BANNER ── */
         .kicd-banner {
             background: linear-gradient(135deg, #F0FDF4, #DCFFE4);
             padding: 20px 0;
@@ -474,7 +640,7 @@
             border: 1px solid #86EFAC;
         }
 
-        /* ── PREVIEW FEATURE BANNER ── */
+        /* ── PREVIEW BANNER ── */
         .preview-banner {
             background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
             padding: 16px 0;
@@ -510,7 +676,7 @@
             gap: 6px;
         }
 
-        /* ── CATEGORY SECTION ── */
+        /* ── CATEGORIES ── */
         .categories {
             padding: 80px 0;
             background: var(--white);
@@ -671,115 +837,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── MOBILE NAV ── */
-        .nav-links {
-            transition: all 0.3s ease;
-        }
-        
-        @media (max-width: 900px) {
-            .nav-links {
-                position: fixed;
-                top: 64px;
-                left: 0;
-                right: 0;
-                background: var(--dark);
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 0 5%;
-                gap: 0;
-                max-height: 0;
-                overflow: hidden;
-                opacity: 0;
-                pointer-events: none;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-                box-shadow: 0 12px 24px rgba(0,0,0,0.25);
-                z-index: 998;
-                transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-            }
-            .nav-links.active {
-                max-height: 80vh;
-                opacity: 1;
-                pointer-events: auto;
-                padding: 16px 5% 24px;
-                overflow-y: auto;
-            }
-            .nav-links li {
-                width: 100%;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
-            }
-            .nav-links li:last-child {
-                border-bottom: none;
-            }
-            .nav-links a {
-                display: block;
-                padding: 12px 4px;
-                width: 100%;
-                font-size: 0.95rem;
-            }
-            .nav-dropdown .dropdown-menu {
-                position: static;
-                box-shadow: none;
-                margin-top: 0;
-                padding: 0 0 0 16px;
-                display: none;
-                background: rgba(255,255,255,0.03);
-                border-radius: 0;
-                border: none;
-                width: 100%;
-                opacity: 1;
-                visibility: visible;
-                transform: none;
-            }
-            .nav-dropdown.dropdown-open .dropdown-menu {
-                display: block;
-            }
-            .nav-dropdown .dropdown-menu .dropdown-col {
-                padding: 8px 0;
-                min-width: auto;
-            }
-            .nav-dropdown .dropdown-menu .dropdown-heading {
-                font-size: 0.75rem;
-                padding: 4px 0;
-            }
-            .nav-dropdown .dropdown-menu a {
-                padding: 8px 0;
-                font-size: 0.85rem;
-            }
-            .hamburger {
-                display: flex !important;
-                flex-direction: column;
-                gap: 4px;
-                background: none;
-                border: none;
-                cursor: pointer;
-                padding: 6px;
-                z-index: 999;
-            }
-            .hamburger span {
-                display: block;
-                width: 24px;
-                height: 2px;
-                background: var(--white);
-                transition: all 0.3s ease;
-                border-radius: 2px;
-            }
-            .hamburger.active span:nth-child(1) {
-                transform: translateY(6px) rotate(45deg);
-            }
-            .hamburger.active span:nth-child(2) {
-                opacity: 0;
-                transform: scaleX(0);
-            }
-            .hamburger.active span:nth-child(3) {
-                transform: translateY(-6px) rotate(-45deg);
-            }
-        }
-
-        .hamburger {
-            display: none;
-        }
-
-        /* ── TERMS CONSENT OVERLAY (FIRST VISIT) ── */
+        /* ── TERMS CONSENT OVERLAY ── */
         .kv-consent-overlay {
             position: fixed;
             inset: 0;
@@ -887,7 +945,7 @@
             line-height: 1.5;
         }
 
-        /* ── FLOATING TERMS BUTTON (HIDDEN AFTER ACCEPTANCE) ── */
+        /* ── FLOATING TERMS BUTTON ── */
         #termsFloatingButton {
             position: fixed;
             bottom: 24px;
@@ -934,7 +992,7 @@
             display: none !important;
         }
 
-        /* ── TERMS MODAL (Manual Re-open) ── */
+        /* ── TERMS MODAL ── */
         #termsFloatingModal {
             display: none;
             position: fixed;
@@ -1120,6 +1178,9 @@
             </ul>
             <div class="nav-actions">
                 <a href="shop.html?level=kjsea" class="btn-nav-cta" style="background:#7C3AED;">🏆 KJSEA 2026</a>
+                <!-- ── TUTOR BUTTONS ── -->
+                <a href="tutor.html" class="btn-nav-tutor">👨‍🏫 Tutor Sign In</a>
+                <a href="tutor.html" class="btn-nav-tutor-outline">📝 Sign Up</a>
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
                     <span></span>
                     <span></span>
@@ -1145,6 +1206,7 @@
             <div class="hero-buttons">
                 <a href="shop.html" class="btn-primary">🛒 Start Shopping</a>
                 <a href="shop.html?level=kjsea" class="btn-secondary">🏆 KJSEA 2026 Resources</a>
+                <a href="tutor.html" class="btn-tutor">👨‍🏫 Become a Tutor</a>
             </div>
 
             <!-- ── TRUST BADGES ── -->
@@ -1393,6 +1455,7 @@
             <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
                 <a href="shop.html" class="btn-primary">🛒 Browse Resources</a>
                 <a href="shop.html?level=kjsea" class="btn-secondary" style="background:rgba(124,58,237,0.2);border-color:rgba(124,58,237,0.3);">🏆 KJSEA 2026</a>
+                <a href="tutor.html" class="btn-tutor" style="background:var(--gold);color:var(--dark);">👨‍🏫 Become a Tutor</a>
             </div>
         </div>
     </section>
@@ -1450,6 +1513,7 @@
                 <ul>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="classes.html">📅 Live Classes</a></li>
+                    <li><a href="tutor.html">👨‍🏫 Tutor Portal</a></li>
                     <li><a href="terms.html">📋 Terms &amp; Conditions</a></li>
                     <li><a href="privacy.html">🔒 Privacy Policy</a></li> 
                     <li><a href="admin.html">🔑 Admin</a></li>
@@ -1604,7 +1668,7 @@
                 revealEls.forEach(function(el) { el.classList.add('kv-visible'); });
             }
 
-            // ── TERMS STATE — SINGLE SOURCE OF TRUTH ──
+            // ── TERMS STATE ──
             const consentOverlay = document.getElementById('kvConsentOverlay');
             const acceptBtn = document.getElementById('kvAcceptBtn');
             const declineBtn = document.getElementById('kvDeclineBtn');
@@ -1621,7 +1685,6 @@
                 try { localStorage.setItem(CONSENT_KEY, 'true'); } catch (e) {}
             }
 
-            // Keeps the floating button + overlay in sync, always
             function syncTermsUI() {
                 const accepted = hasAccepted();
 
@@ -1642,7 +1705,6 @@
                         termsBtn.classList.add('hidden', 'accepted');
                     } else {
                         termsBtn.classList.remove('hidden');
-                        termsBtn.classList.add('accepted'); // subtle styling once seen once
                         termsBtn.innerHTML = `
                             <span style="font-size:1.2rem;">📋</span>
                             <span>Terms &amp; Conditions</span>
@@ -1652,7 +1714,6 @@
                 }
             }
 
-            // Initial sync on page load
             syncTermsUI();
 
             if (acceptBtn) {
@@ -1672,7 +1733,7 @@
                 });
             }
 
-            // ── FLOATING BUTTON: manual re-open (only relevant if not yet accepted) ──
+            // ── TERMS MODAL FUNCTIONS ──
             window.openTermsModal = function() {
                 if (hasAccepted()) {
                     showToast('✅ You have already accepted the Terms & Conditions.');
@@ -1704,7 +1765,7 @@
                 if (e.target === this) closeTermsModal();
             });
 
-            // ── TOAST NOTIFICATION ──
+            // ── TOAST ──
             function showToast(msg, type) {
                 type = type || 'success';
                 const icons = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️' };
@@ -1736,14 +1797,14 @@
                 }, 3800);
             }
 
-            // ── ESC KEY TO CLOSE MODAL ──
+            // ── ESC KEY ──
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     if (termsModal.classList.contains('open')) closeTermsModal();
                 }
             });
 
-            // ── HAMBURGER VISIBILITY ON RESIZE ──
+            // ── RESIZE ──
             function handleResize() {
                 if (window.innerWidth > 900) {
                     navLinks.classList.remove('active');
