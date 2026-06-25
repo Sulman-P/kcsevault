@@ -125,6 +125,22 @@ button{font-family:inherit;}
 .admin-card-header h4{font-size:0.92rem;font-weight:700;color:var(--dark);}
 .admin-card-body{padding:20px;}
 
+/* ════════ TUTOR CARDS ════════ */
+.tutor-card {
+  background:var(--surface);border-radius:var(--radius);padding:16px;border:1.5px solid var(--border);margin-bottom:12px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;transition:var(--transition);
+}
+.tutor-card:hover{border-color:var(--green);}
+.tutor-card .info .name{font-weight:700;font-size:0.95rem;color:var(--dark);}
+.tutor-card .info .meta{font-size:0.8rem;color:var(--muted);margin-top:2px;}
+.tutor-card .info .meta span{margin-right:12px;}
+.tutor-card .stats{text-align:right;}
+.tutor-card .stats .amount{font-family:'Sora',sans-serif;font-weight:800;font-size:1rem;color:var(--gold);}
+.tutor-card .stats .label{font-size:0.72rem;color:var(--muted);}
+.tutor-status{font-size:0.7rem;font-weight:700;padding:3px 12px;border-radius:99px;display:inline-block;}
+.tutor-status.active{background:#DCFCE7;color:#15803D;}
+.tutor-status.pending{background:#FEF3C7;color:#92400E;}
+
 /* ════════ QUICK ACTIONS ════════ */
 .quick-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px;}
 .qa-btn{
@@ -137,7 +153,6 @@ button{font-family:inherit;}
 
 /* ════════ FORMS ════════ */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.form-row-3{grid-template-columns:1fr 1fr 1fr;}
 .form-group{display:flex;flex-direction:column;gap:5px;}
 .form-group label{font-weight:600;font-size:0.82rem;color:var(--text);}
 .req{color:var(--red);}
@@ -396,6 +411,9 @@ table tr:hover td{background:var(--surface);}
         <button class="sidebar-item" data-tab="revenue"><span class="sidebar-icon">💰</span>Revenue</button>
         <button class="sidebar-item" data-tab="orders"><span class="sidebar-icon">📦</span>Orders<span class="sidebar-badge" id="sbPendingBadge" style="display:none;">0</span></button>
 
+        <div class="sidebar-section-label">Users</div>
+        <button class="sidebar-item" data-tab="tutors"><span class="sidebar-icon">👨‍🏫</span>Tutors</button>
+
         <div class="sidebar-section-label">System</div>
         <button class="sidebar-item" data-tab="integrations"><span class="sidebar-icon">🔌</span>Integrations</button>
         <button class="sidebar-item" data-tab="settings"><span class="sidebar-icon">⚙️</span>Settings</button>
@@ -445,6 +463,7 @@ table tr:hover td{background:var(--surface);}
           <button class="qa-btn" style="background:var(--gold);" data-goto="orders"><span class="qa-icon">📦</span>Orders</button>
           <button class="qa-btn" style="background:var(--blue);" data-goto="revenue"><span class="qa-icon">💰</span>Revenue</button>
           <button class="qa-btn" style="background:#6B7280;" data-goto="settings"><span class="qa-icon">⚙️</span>Settings</button>
+          <button class="qa-btn" style="background:#7C3AED;" data-goto="tutors"><span class="qa-icon">👨‍🏫</span>Tutors</button>
         </div>
 
         <div class="admin-card">
@@ -490,7 +509,6 @@ table tr:hover td{background:var(--surface);}
             <div class="form-group"><label>Subject <span class="req">*</span></label>
               <select id="resSubject">
                 <option value="">Select subject...</option>
-                <!-- Academic Subjects -->
                 <optgroup label="📚 Academic Subjects">
                   <option value="mathematics">Mathematics</option>
                   <option value="english">English</option>
@@ -511,7 +529,6 @@ table tr:hover td{background:var(--surface);}
                   <option value="business">Business Studies</option>
                   <option value="computer-studies">Computer Studies</option>
                 </optgroup>
-                <!-- Self Development Subjects -->
                 <optgroup label="🌱 Self Development">
                   <option value="personal-growth">Personal Growth</option>
                   <option value="financial-literacy">Financial Literacy</option>
@@ -688,6 +705,58 @@ table tr:hover td{background:var(--surface);}
         </div></div>
       </div>
 
+      <!-- ═══ TUTORS PANEL ═══ -->
+      <div class="panel-content" id="panelTutors">
+        <div class="panel-header">
+          <h2>👨‍🏫 Tutors Management</h2>
+          <p>View and manage all registered tutors on the platform.</p>
+        </div>
+
+        <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+          <div class="stat-card">
+            <div class="number text-green" id="totalTutors">0</div>
+            <div class="label">Total Tutors</div>
+          </div>
+          <div class="stat-card">
+            <div class="number text-gold" id="totalTutorResources">0</div>
+            <div class="label">Tutor Resources</div>
+          </div>
+          <div class="stat-card">
+            <div class="number text-purple" id="totalTutorEarnings">KES 0</div>
+            <div class="label">Total Tutor Earnings</div>
+          </div>
+          <div class="stat-card">
+            <div class="number text-blue" id="totalTutorClasses">0</div>
+            <div class="label">Tutor Classes</div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h4>📋 All Tutors</h4>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-sm btn-sm-success" onclick="filterTutors('all')">All</button>
+              <button class="btn-sm btn-sm-info" onclick="filterTutors('active')">Active</button>
+              <button class="btn-sm btn-sm-warning" onclick="filterTutors('pending')">Pending</button>
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div id="tutorsList">
+              <div style="text-align:center;padding:30px;color:var(--muted);font-size:0.85rem;">Loading tutors...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header"><h4>📊 Tutor Earnings Summary</h4></div>
+          <div class="admin-card-body">
+            <div id="tutorEarningsSummary">
+              <div style="text-align:center;padding:30px;color:var(--muted);font-size:0.85rem;">Loading earnings data...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ═══ INTEGRATIONS ═══ -->
       <div class="panel-content" id="panelIntegrations">
         <div class="panel-header"><h2>🔌 Integrations</h2><p>Manage Supabase database and Megapay payment connections</p></div>
@@ -792,11 +861,14 @@ table tr:hover td{background:var(--surface);}
 const SUPABASE_URL = 'https://rewpminmqnrtwdvglxxr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
 const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTc0OTM5OSwiZXhwIjoyMDk3MzI1Mzk5fQ.qkL7O1o1dhf9jCFuIQIUyJWFUBaq404ePWU0X4I5p1k';
+
+// ── ADMIN CREDENTIALS ──
 const ADMIN_USERNAME = 'adminnexalearn@gmail.com';
 const ADMIN_PASSWORD = 'KenyaVault2026';
 
 let sbClient = null, sbAdminClient = null;
-let allResources = [], allClasses = [], allOrders = [], revenueData = {};
+let allResources = [], allClasses = [], allOrders = [], allTutors = [];
+let revenueData = {};
 let currentOrderFilter = 'all';
 let selectedFile = null, selectedCoverFile = null;
 
@@ -854,6 +926,7 @@ const TAB_PANEL_MAP = {
   classes: 'panelClasses',
   revenue: 'panelRevenue',
   orders: 'panelOrders',
+  tutors: 'panelTutors',
   integrations: 'panelIntegrations',
   settings: 'panelSettings'
 };
@@ -874,6 +947,7 @@ function switchTab(tabName) {
   if (tabName === 'orders') renderOrders(currentOrderFilter);
   if (tabName === 'resources') renderResources();
   if (tabName === 'classes') renderClasses();
+  if (tabName === 'tutors') renderTutors();
 }
 
 function initNavigation() {
@@ -1016,17 +1090,20 @@ function calculateRevenue(orders) {
 async function loadDashboardData() {
   if (!sbClient) return;
   try {
+    // Load resources
     const { data: resources } = await sbClient.from('resources').select('*');
     allResources = resources || [];
     safeText('totalResources', allResources.length);
     safeText('totalDownloads', allResources.reduce((s,r)=>s+(r.downloads||0),0));
     renderResources();
 
+    // Load classes
     const { data: classes } = await sbClient.from('classes').select('*');
     allClasses = classes || [];
     safeText('totalClasses', allClasses.length);
     renderClasses();
 
+    // Load orders
     const { data: orders } = await sbClient.from('orders').select('*').order('created_at',{ascending:false});
     allOrders = orders || [];
     safeText('totalOrders', allOrders.length);
@@ -1036,6 +1113,28 @@ async function loadDashboardData() {
     renderRevenueOrders();
     renderRecentPendingOrders();
     updatePendingBadge();
+
+    // Load tutors
+    const { data: tutors } = await sbClient.from('tutors').select('*');
+    allTutors = tutors || [];
+    safeText('totalTutors', allTutors.length);
+    renderTutors();
+
+    // Load tutor resources stats
+    const { data: tutorResources } = await sbClient.from('tutor_resources').select('*');
+    const tutorRes = tutorResources || [];
+    safeText('totalTutorResources', tutorRes.length);
+
+    // Load tutor earnings stats
+    const { data: tutorEarnings } = await sbClient.from('tutor_earnings').select('*');
+    const tutorEarn = tutorEarnings || [];
+    const totalEarnings = tutorEarn.reduce((s, e) => s + (e.tutor_earnings || 0), 0);
+    safeText('totalTutorEarnings', 'KES ' + totalEarnings.toLocaleString());
+
+    // Load tutor classes
+    const { data: tutorClasses } = await sbClient.from('tutor_classes').select('*');
+    safeText('totalTutorClasses', (tutorClasses || []).length);
+
   } catch(e) {
     console.error('Dashboard load error:', e);
     showToast('Error loading data: ' + e.message, 'error');
@@ -1075,6 +1174,124 @@ function findMostPopular() {
   let max=0, title='—';
   for (const [t,c] of Object.entries(counts)) if (c>max){max=c;title=t;}
   safeText('qsPopular', title + ' (' + max + ')');
+}
+
+/* ════════ RENDER TUTORS ════════ */
+let tutorFilter = 'all';
+
+function renderTutors() {
+  const container = $('tutorsList');
+  if (!container) return;
+
+  let filtered = allTutors;
+  if (tutorFilter === 'active') filtered = allTutors.filter(t => t.status === 'active' || t.approved === true);
+  else if (tutorFilter === 'pending') filtered = allTutors.filter(t => t.status === 'pending' || t.approved === false);
+
+  if (!filtered.length) {
+    container.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:0.85rem;">
+      <span style="font-size:2rem;display:block;margin-bottom:8px;">👨‍🏫</span>
+      <p>No tutors found.</p>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(t => `
+    <div class="tutor-card">
+      <div class="info">
+        <div class="name">${t.name || 'Unnamed Tutor'}</div>
+        <div class="meta">
+          <span>📧 ${t.email || 'N/A'}</span>
+          <span>📱 ${t.phone || 'N/A'}</span>
+          <span>📚 ${t.expertise ? t.expertise.join(', ') : 'N/A'}</span>
+        </div>
+        <div style="margin-top:4px;">
+          <span class="tutor-status ${t.status === 'active' || t.approved === true ? 'active' : 'pending'}">
+            ${t.status === 'active' || t.approved === true ? '✅ Active' : '⏳ Pending'}
+          </span>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="amount">KES ${t.total_earnings || 0}</div>
+        <div class="label">Total Earnings</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:4px;">
+          Pending: KES ${t.pending_earnings || 0}
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+          <button class="btn-sm btn-sm-success" onclick="approveTutor('${t.id}')">✅ Approve</button>
+          <button class="btn-sm btn-sm-info" onclick="viewTutorDetails('${t.id}')">👁️ View</button>
+          ${t.pending_earnings > 0 ? `<button class="btn-sm btn-sm-warning" onclick="payoutTutor('${t.id}')">💰 Payout</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterTutors(filter) {
+  tutorFilter = filter;
+  renderTutors();
+}
+
+async function approveTutor(tutorId) {
+  if (!confirm('Approve this tutor? They will be able to upload resources and create classes.')) return;
+  try {
+    const { error } = await sbClient
+      .from('tutors')
+      .update({ status: 'active', approved: true })
+      .eq('id', tutorId);
+    if (error) throw error;
+    showToast('✅ Tutor approved successfully!', 'success');
+    loadDashboardData();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
+function viewTutorDetails(tutorId) {
+  const tutor = allTutors.find(t => t.id === tutorId);
+  if (!tutor) { showToast('Tutor not found', 'error'); return; }
+  alert(`📋 Tutor Details
+─────────────────
+Name: ${tutor.name || 'N/A'}
+Email: ${tutor.email || 'N/A'}
+Phone: ${tutor.phone || 'N/A'}
+M-PESA: ${tutor.mpesa_number || 'N/A'}
+Expertise: ${tutor.expertise ? tutor.expertise.join(', ') : 'N/A'}
+Status: ${tutor.status || 'pending'}
+Total Earnings: KES ${tutor.total_earnings || 0}
+Pending Earnings: KES ${tutor.pending_earnings || 0}
+Bio: ${tutor.bio || 'N/A'}`);
+}
+
+async function payoutTutor(tutorId) {
+  const tutor = allTutors.find(t => t.id === tutorId);
+  if (!tutor) { showToast('Tutor not found', 'error'); return; }
+  if (!confirm(`Pay out KES ${tutor.pending_earnings || 0} to ${tutor.name} via M-PESA ${tutor.mpesa_number || 'N/A'}?`)) return;
+
+  try {
+    // Update tutor earnings
+    const { error } = await sbClient
+      .from('tutors')
+      .update({
+        total_earnings: (tutor.total_earnings || 0) + (tutor.pending_earnings || 0),
+        pending_earnings: 0,
+        paid_earnings: (tutor.paid_earnings || 0) + (tutor.pending_earnings || 0)
+      })
+      .eq('id', tutorId);
+    if (error) throw error;
+
+    // Mark earnings as paid
+    const { error: earnError } = await sbClient
+      .from('tutor_earnings')
+      .update({ paid: true, paid_at: new Date().toISOString() })
+      .eq('tutor_id', tutorId)
+      .eq('paid', false);
+    if (earnError) throw earnError;
+
+    showToast('💰 Payout processed successfully!', 'success');
+    loadDashboardData();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
 }
 
 /* ════════ RECENT PENDING ORDERS (Dashboard) ════════ */
