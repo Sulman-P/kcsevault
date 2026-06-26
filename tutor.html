@@ -411,11 +411,16 @@
 
         let sbClient = null;
         let isSubmitting = false;
+        let tableColumns = [];
 
         async function init() {
             try {
                 if (!window.supabase) await loadSupabaseLibrary();
                 sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                
+                // Get table schema first
+                await getTableSchema();
+                
                 setupForm();
                 
                 // Show info alert initially
@@ -435,6 +440,26 @@
                 script.onerror = reject;
                 document.head.appendChild(script);
             });
+        }
+
+        async function getTableSchema() {
+            try {
+                // Try to get the table structure by selecting one row
+                const result = await sbClient.from('tutors').select('*').limit(1);
+                if (result.data && result.data.length > 0) {
+                    tableColumns = Object.keys(result.data[0]);
+                    console.log('Table columns:', tableColumns);
+                } else {
+                    // If no data, try to get column info from a dummy insert attempt
+                    // We'll just use common column names as fallback
+                    tableColumns = ['first_name', 'last_name', 'phone', 'password', 'experience', 'subjects', 'levels', 'bio', 'status', 'created_at'];
+                    console.log('Using fallback columns:', tableColumns);
+                }
+            } catch (e) {
+                console.error('Error getting schema:', e);
+                // Use fallback columns
+                tableColumns = ['first_name', 'last_name', 'phone', 'password', 'experience', 'subjects', 'levels', 'bio', 'status', 'created_at'];
+            }
         }
 
         function setupForm() {
@@ -551,7 +576,6 @@
 
         function showSuccess(msg) {
             hideAllAlerts();
-            document.getElementById('successAlert').querySelector('span').textContent = msg;
             document.getElementById('successAlert').classList.add('show');
         }
 
@@ -563,8 +587,35 @@
 
         function showInfo(msg) {
             hideAllAlerts();
-            document.getElementById('infoAlert').querySelector('span').textContent = msg;
             document.getElementById('infoAlert').classList.add('show');
+        }
+
+        function buildInsertData(formData) {
+            const data = {};
+            
+            // Map form fields to database columns
+            const columnMap = {
+                'first_name': formData.first_name,
+                'last_name': formData.last_name,
+                'email': formData.email,
+                'phone': formData.phone,
+                'password': formData.password,
+                'experience': formData.experience,
+                'subjects': formData.subjects,
+                'levels': formData.levels,
+                'bio': formData.bio,
+                'status': formData.status,
+                'created_at': formData.created_at
+            };
+
+            // Only include columns that exist in the table
+            for (const [key, value] of Object.entries(columnMap)) {
+                if (tableColumns.includes(key)) {
+                    data[key] = value;
+                }
+            }
+
+            return data;
         }
 
         async function handleSubmit(e) {
@@ -606,41 +657,36 @@
                     created_at: new Date().toISOString()
                 };
 
-                // Check if approved column exists
-                let hasApprovedColumn = false;
-                try {
-                    const testResult = await sbClient.from('tutors').select('approved').limit(1);
-                    if (!testResult.error) {
-                        hasApprovedColumn = true;
-                    }
-                } catch (e) {
-                    console.log('No approved column detected');
-                }
-
-                // Prepare data for insertion
-                let insertData = { ...formData };
-                if (hasApprovedColumn) {
-                    insertData.approved = false;
-                }
+                // Build insert data based on actual table columns
+                const insertData = buildInsertData(formData);
+                
+                console.log('Inserting data:', insertData);
 
                 const result = await sbClient.from('tutors').insert([insertData]).select();
 
                 if (result.error) {
                     console.error('Supabase error:', result.error);
                     
-                    // If error is about approved column, retry without it
-                    if (result.error.message && result.error.message.toLowerCase().includes('approved')) {
-                        const { approved, ...dataWithoutApproved } = insertData;
-                        const retryResult = await sbClient.from('tutors').insert([dataWithoutApproved]).select();
-                        if (retryResult.error) {
-                            throw retryResult.error;
+                    // If error is about a column, try to remove it and retry
+                    if (result.error.message && result.error.message.includes('column')) {
+                        const columnMatch = result.error.message.match(/'([^']+)'/);
+                        if (columnMatch) {
+                            const missingColumn = columnMatch[1];
+                            console.log('Missing column:', missingColumn);
+                            // Remove the problematic column
+                            delete insertData[missingColumn];
+                            
+                            const retryResult = await sbClient.from('tutors').insert([insertData]).select();
+                            if (retryResult.error) {
+                                throw retryResult.error;
+                            }
+                            showSuccess('Account created successfully! Our team will review your application within 48 hours.');
+                            document.getElementById('tutorForm').reset();
+                            btn.disabled = false;
+                            btn.textContent = '🚀 Create Tutor Account';
+                            isSubmitting = false;
+                            return;
                         }
-                        showSuccess('Account created successfully! Our team will review your application within 48 hours.');
-                        document.getElementById('tutorForm').reset();
-                        btn.disabled = false;
-                        btn.textContent = '🚀 Create Tutor Account';
-                        isSubmitting = false;
-                        return;
                     }
                     throw result.error;
                 }
