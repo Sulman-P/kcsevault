@@ -317,6 +317,21 @@
         .status-badge.approved .dot { background: #16A34A; }
         .status-badge.rejected .dot { background: #DC2626; }
 
+        .debug-info {
+            background: #1E293B;
+            color: #A5B4FC;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            margin-top: 12px;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
         @media (max-width: 480px) {
             .tutor-container { padding: 20px 16px; }
             .form-row { grid-template-columns: 1fr; }
@@ -506,6 +521,9 @@
 
                 <button type="submit" class="btn-submit secondary" id="loginBtn">🔑 Sign In</button>
             </form>
+            
+            <!-- Debug Info (hidden by default) -->
+            <div class="debug-info" id="debugInfo"></div>
         </div>
 
         <a href="index.html" class="back-link">← Back to KenyaVault</a>
@@ -587,6 +605,7 @@
                     }
                     
                     hideAllAlerts();
+                    document.getElementById('debugInfo').style.display = 'none';
                 });
             });
         }
@@ -772,6 +791,12 @@
             document.getElementById('warningAlert').classList.add('show');
         }
 
+        function showDebug(message) {
+            const debugEl = document.getElementById('debugInfo');
+            debugEl.textContent = message;
+            debugEl.style.display = 'block';
+        }
+
         function buildInsertData(formData) {
             const data = {};
             
@@ -824,6 +849,7 @@
                 const firstName = document.getElementById('firstName').value.trim();
                 const lastName = document.getElementById('lastName').value.trim();
                 const phone = document.getElementById('signupPhone').value.trim().replace(/\s/g, '');
+                const password = document.getElementById('signupPassword').value;
                 
                 // Format phone to start with 254
                 let formattedPhone = phone;
@@ -838,7 +864,7 @@
                     first_name: firstName,
                     last_name: lastName,
                     phone: formattedPhone,
-                    password: document.getElementById('signupPassword').value,
+                    password: password,
                     experience: document.getElementById('experience').value,
                     bio: document.getElementById('bio').value.trim() || null,
                     subjects: Array.from(document.querySelectorAll('#subjectsGrid input[type="checkbox"]:checked'))
@@ -911,6 +937,7 @@
             if (isSubmitting) return;
 
             hideAllAlerts();
+            document.getElementById('debugInfo').style.display = 'none';
 
             if (!validateLoginForm()) {
                 const firstError = document.querySelector('.error');
@@ -938,7 +965,11 @@
                     formattedPhone = '254' + formattedPhone;
                 }
 
+                // Store the raw phone for display
+                const originalPhone = phone;
+
                 console.log('Looking for phone:', formattedPhone);
+                showDebug(`🔍 Searching for phone: ${formattedPhone}\n(Original: ${originalPhone})`);
 
                 // Query for the tutor using phone number
                 const result = await sbClient
@@ -949,6 +980,7 @@
 
                 if (result.error) {
                     console.error('Query error:', result.error);
+                    showDebug(`❌ Query error: ${result.error.message}\nCode: ${result.error.code}`);
                     if (result.error.code === 'PGRST116') {
                         showError('No account found with this phone number. Please sign up first.');
                     } else {
@@ -959,6 +991,9 @@
 
                 const tutor = result.data;
                 console.log('Found tutor:', tutor);
+                
+                // Show debug info about the found tutor
+                showDebug(`✅ Found tutor: ${tutor.name}\n📱 Phone: ${tutor.phone}\n🔑 Password (stored): ${tutor.password}\n🔑 Password (entered): ${password}\n📊 Status: ${tutor.status}\n🔍 Password match: ${tutor.password === password ? '✅ YES' : '❌ NO'}`);
 
                 // Check password
                 if (tutor.password !== password) {
@@ -992,6 +1027,7 @@
 
             } catch (err) {
                 console.error('Login error:', err);
+                showDebug(`❌ Login error: ${err.message}`);
                 showError('Could not sign in: ' + (err.message || 'Please try again later.'));
             } finally {
                 isSubmitting = false;
