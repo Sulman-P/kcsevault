@@ -197,6 +197,28 @@
             background: #B8860B;
         }
 
+        .btn-submit.danger {
+            background: #DC2626;
+        }
+        .btn-submit.danger:hover:not(:disabled) {
+            background: #B91C1C;
+        }
+
+        .btn-link {
+            background: none;
+            color: var(--green);
+            font-weight: 600;
+            font-size: 0.82rem;
+            padding: 8px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: underline;
+        }
+        .btn-link:hover {
+            color: var(--green-light);
+        }
+
         .alert {
             padding: 12px 16px;
             border-radius: 10px;
@@ -316,6 +338,16 @@
         .status-badge.pending .dot { background: #D97706; }
         .status-badge.approved .dot { background: #16A34A; }
         .status-badge.rejected .dot { background: #DC2626; }
+
+        .reset-password-section {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1.5px solid var(--border);
+        }
+        .reset-password-section.active {
+            display: block;
+        }
 
         .debug-info {
             background: #1E293B;
@@ -521,7 +553,35 @@
 
                 <button type="submit" class="btn-submit secondary" id="loginBtn">🔑 Sign In</button>
             </form>
-            
+
+            <!-- Reset Password Section -->
+            <div class="reset-password-section" id="resetPasswordSection">
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="resetPhone" placeholder="0712345678" required />
+                    <div class="form-hint" id="resetPhoneHint">Enter your registered phone number</div>
+                    <div class="form-hint error-text" id="resetPhoneError"></div>
+                </div>
+                <div class="form-group">
+                    <label>New Password <span class="required">*</span></label>
+                    <input type="password" id="resetPassword" placeholder="Min 8 characters" required minlength="8" />
+                    <div class="form-hint" id="resetPasswordHint">Must be at least 8 characters</div>
+                    <div class="form-hint error-text" id="resetPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password <span class="required">*</span></label>
+                    <input type="password" id="resetConfirmPassword" placeholder="Confirm your new password" required minlength="8" />
+                    <div class="form-hint error-text" id="resetConfirmPasswordError"></div>
+                </div>
+                <button type="button" class="btn-submit danger" id="resetPasswordBtn">🔑 Reset Password</button>
+                <button type="button" class="btn-link" id="cancelResetBtn" style="margin-top:10px;display:block;text-align:center;width:100%;">← Back to Sign In</button>
+            </div>
+
+            <!-- Forgot Password Link -->
+            <div style="text-align:center;margin-top:12px;">
+                <button type="button" class="btn-link" id="forgotPasswordBtn">Forgot Password?</button>
+            </div>
+
             <!-- Debug Info (hidden by default) -->
             <div class="debug-info" id="debugInfo"></div>
         </div>
@@ -550,6 +610,7 @@
                 setupAuthTabs();
                 setupSignupForm();
                 setupLoginForm();
+                setupResetPassword();
                 checkExistingSession();
             } catch (e) {
                 console.error('Init error:', e);
@@ -606,6 +667,7 @@
                     
                     hideAllAlerts();
                     document.getElementById('debugInfo').style.display = 'none';
+                    document.getElementById('resetPasswordSection').classList.remove('active');
                 });
             });
         }
@@ -656,6 +718,82 @@
                     }
                 });
             });
+
+            // Forgot password button
+            document.getElementById('forgotPasswordBtn').addEventListener('click', function() {
+                document.getElementById('resetPasswordSection').classList.toggle('active');
+                if (document.getElementById('resetPasswordSection').classList.contains('active')) {
+                    this.textContent = 'Hide Reset Password';
+                } else {
+                    this.textContent = 'Forgot Password?';
+                }
+            });
+
+            // Cancel reset button
+            document.getElementById('cancelResetBtn').addEventListener('click', function() {
+                document.getElementById('resetPasswordSection').classList.remove('active');
+                document.getElementById('forgotPasswordBtn').textContent = 'Forgot Password?';
+                hideAllAlerts();
+            });
+        }
+
+        function setupResetPassword() {
+            document.getElementById('resetPasswordBtn').addEventListener('click', function() {
+                handleResetPassword();
+            });
+
+            document.querySelectorAll('#resetPasswordSection input').forEach(el => {
+                el.addEventListener('blur', function() {
+                    validateResetField(this);
+                });
+                el.addEventListener('input', function() {
+                    if (this.classList.contains('error')) {
+                        validateResetField(this);
+                    }
+                });
+            });
+        }
+
+        function validateResetField(field) {
+            const errorEl = document.getElementById(field.id + 'Error');
+            if (!errorEl) return;
+
+            field.classList.remove('error');
+            errorEl.textContent = '';
+
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                errorEl.textContent = 'This field is required';
+                return false;
+            }
+
+            if (field.id === 'resetPhone' && field.value.trim()) {
+                const clean = field.value.replace(/\s/g, '');
+                if (!/^(07|7|2547)\d{8}$/.test(clean) && !/^07\d{8}$/.test(clean) && !/^7\d{8}$/.test(clean)) {
+                    field.classList.add('error');
+                    errorEl.textContent = 'Please enter a valid Kenyan phone number (e.g., 0712345678)';
+                    return false;
+                }
+            }
+
+            if (field.id === 'resetPassword' && field.value.trim()) {
+                if (field.value.length < 8) {
+                    field.classList.add('error');
+                    errorEl.textContent = 'Password must be at least 8 characters';
+                    return false;
+                }
+            }
+
+            if (field.id === 'resetConfirmPassword' && field.value.trim()) {
+                const password = document.getElementById('resetPassword').value;
+                if (field.value !== password) {
+                    field.classList.add('error');
+                    errorEl.textContent = 'Passwords do not match';
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         function validateSignupField(field) {
@@ -755,6 +893,20 @@
             fields.forEach(id => {
                 const field = document.getElementById(id);
                 if (!validateLoginField(field)) {
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        function validateResetForm() {
+            let isValid = true;
+            
+            const fields = ['resetPhone', 'resetPassword', 'resetConfirmPassword'];
+            fields.forEach(id => {
+                const field = document.getElementById(id);
+                if (!validateResetField(field)) {
                     isValid = false;
                 }
             });
@@ -965,7 +1117,6 @@
                     formattedPhone = '254' + formattedPhone;
                 }
 
-                // Store the raw phone for display
                 const originalPhone = phone;
 
                 console.log('Looking for phone:', formattedPhone);
@@ -992,11 +1143,14 @@
                 const tutor = result.data;
                 console.log('Found tutor:', tutor);
                 
-                // Show debug info about the found tutor
+                // Show debug info
                 showDebug(`✅ Found tutor: ${tutor.name}\n📱 Phone: ${tutor.phone}\n🔑 Password (stored): ${tutor.password}\n🔑 Password (entered): ${password}\n📊 Status: ${tutor.status}\n🔍 Password match: ${tutor.password === password ? '✅ YES' : '❌ NO'}`);
 
-                // Check password
-                if (tutor.password !== password) {
+                // Check password - try both exact match and trim
+                const storedPassword = (tutor.password || '').trim();
+                const enteredPassword = password.trim();
+                
+                if (storedPassword !== enteredPassword) {
                     showError('Incorrect password. Please try again.');
                     return;
                 }
@@ -1033,6 +1187,84 @@
                 isSubmitting = false;
                 btn.disabled = false;
                 btn.textContent = '🔑 Sign In';
+            }
+        }
+
+        async function handleResetPassword() {
+            hideAllAlerts();
+            document.getElementById('debugInfo').style.display = 'none';
+
+            if (!validateResetForm()) {
+                const firstError = document.querySelector('.error');
+                if (firstError) {
+                    firstError.focus();
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            if (isSubmitting) return;
+            isSubmitting = true;
+            const btn = document.getElementById('resetPasswordBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Resetting password...';
+
+            try {
+                const phone = document.getElementById('resetPhone').value.trim().replace(/\s/g, '');
+                const newPassword = document.getElementById('resetPassword').value;
+                
+                // Format phone to match stored format
+                let formattedPhone = phone;
+                if (formattedPhone.startsWith('0')) {
+                    formattedPhone = '254' + formattedPhone.substring(1);
+                } else if (formattedPhone.startsWith('7')) {
+                    formattedPhone = '254' + formattedPhone;
+                }
+
+                // Check if tutor exists
+                const result = await sbClient
+                    .from('tutors')
+                    .select('*')
+                    .eq('phone', formattedPhone)
+                    .single();
+
+                if (result.error) {
+                    if (result.error.code === 'PGRST116') {
+                        showError('No account found with this phone number.');
+                    } else {
+                        throw result.error;
+                    }
+                    return;
+                }
+
+                // Update password
+                const updateResult = await sbClient
+                    .from('tutors')
+                    .update({ password: newPassword })
+                    .eq('phone', formattedPhone);
+
+                if (updateResult.error) {
+                    throw updateResult.error;
+                }
+
+                showSuccess('Password Reset!', 'Your password has been successfully reset. You can now sign in with your new password.');
+                
+                // Clear reset form
+                document.getElementById('resetPhone').value = '';
+                document.getElementById('resetPassword').value = '';
+                document.getElementById('resetConfirmPassword').value = '';
+                
+                // Close reset section
+                document.getElementById('resetPasswordSection').classList.remove('active');
+                document.getElementById('forgotPasswordBtn').textContent = 'Forgot Password?';
+
+            } catch (err) {
+                console.error('Reset password error:', err);
+                showError('Could not reset password: ' + (err.message || 'Please try again later.'));
+            } finally {
+                isSubmitting = false;
+                btn.disabled = false;
+                btn.textContent = '🔑 Reset Password';
             }
         }
 
