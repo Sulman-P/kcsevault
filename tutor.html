@@ -338,6 +338,7 @@ table tr:hover td{background:var(--surface);}
             <div class="subject-checkbox"><input type="checkbox" id="subj-geography" value="geography"/><label for="subj-geography">🌏 Geography</label></div>
             <div class="subject-checkbox"><input type="checkbox" id="subj-cre" value="cre"/><label for="subj-cre">✝️ CRE</label></div>
             <div class="subject-checkbox"><input type="checkbox" id="subj-business" value="business-studies"/><label for="subj-business">💼 Business Studies</label></div>
+            <div class="subject-checkbox"><input type="checkbox" id="subj-pre-technical" value="pre-technical"/><label for="subj-pre-technical">🔧 Pre-Technical Studies</label></div>
           </div>
           <div class="form-hint error-text" id="subjectsError"></div>
         </div>
@@ -506,6 +507,7 @@ table tr:hover td{background:var(--surface);}
                   <option value="kiswahili">Kiswahili</option>
                   <option value="integrated-science">Integrated Science</option>
                   <option value="social-studies">Social Studies</option>
+                  <option value="pre-technical">🔧 Pre-Technical Studies</option>
                   <option value="biology">Biology</option>
                   <option value="chemistry">Chemistry</option>
                   <option value="physics">Physics</option>
@@ -848,7 +850,7 @@ function initFieldValidation() {
   });
 }
 
-/* ════════ SIGNUP — auto-approved immediately ════════ */
+/* ════════ SIGNUP ════════ */
 async function handleSignup(e) {
   e.preventDefault();
   if (isSubmitting) return;
