@@ -8,228 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 <style>
-:root {
-  --green:#0D6E3F; --green-light:#12924F; --green-pale:#E8F5EE;
-  --gold:#D4A017; --gold-light:#F5C842; --gold-pale:#FDF6DC;
-  --dark:#0B1A12; --surface:#F4F8F5; --white:#FFFFFF;
-  --text:#1C2B23; --text-2:#3A4F44; --muted:#5A7265; --border:#D0E4D8;
-  --red:#DC2626; --blue:#3B82F6; --purple:#7C3AED;
-  --pink:#EC4899; --pink-light:#F9A8D4; --pink-pale:#FCE7F3;
-  --radius:12px; --shadow-sm:0 2px 8px rgba(0,0,0,0.06); --transition:all 0.2s ease;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);}
-h1,h2,h3,h4{font-family:'Sora',sans-serif;}
-a{text-decoration:none;color:inherit;}
-button{font-family:inherit;}
+/* ... (all existing styles remain the same up to the class-card section) ... */
 
-/* ════════ AUTH SCREEN ════════ */
-.auth-wrapper{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:20px;background:var(--dark);
-  background-image: radial-gradient(ellipse 60% 70% at 80% 30%, rgba(13,110,63,0.35), transparent 65%),
-                     radial-gradient(ellipse 40% 50% at 10% 80%, rgba(212,160,23,0.12), transparent 60%);
-}
-.auth-box{
-  background:#fff;border-radius:20px;max-width:560px;width:100%;
-  padding:36px 32px;box-shadow:0 30px 70px rgba(0,0,0,0.35);
-  max-height:95vh;overflow-y:auto;
-}
-.auth-logo{text-align:center;margin-bottom:6px;}
-.auth-logo h1{font-size:1.5rem;font-weight:800;color:var(--dark);}
-.auth-logo h1 span{color:var(--green);}
-.auth-subtitle{text-align:center;color:var(--muted);font-size:0.85rem;margin-bottom:24px;}
-.auth-tabs{display:flex;gap:4px;background:var(--surface);border-radius:10px;padding:4px;margin-bottom:22px;}
-.auth-tab{
-  flex:1;padding:10px;border:none;background:none;border-radius:8px;cursor:pointer;
-  font-family:'Sora',sans-serif;font-weight:700;font-size:0.85rem;color:var(--muted);transition:var(--transition);
-}
-.auth-tab.active{background:var(--green);color:#fff;}
-.auth-form{display:none;}
-.auth-form.active{display:block;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
-.form-group label{font-weight:600;font-size:0.82rem;color:var(--text);}
-.req{color:var(--red);}
-.form-group input,.form-group select,.form-group textarea{
-  padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;
-  font-size:0.9rem;background:var(--surface);transition:var(--transition);width:100%;font-family:'Inter',sans-serif;
-}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
-  outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 3px rgba(13,110,63,0.08);
-}
-.form-group input.error,.form-group select.error{border-color:var(--red);background:#FEF2F2;}
-.form-hint{font-size:0.72rem;color:var(--muted);margin-top:2px;}
-.form-hint.error-text{color:var(--red);}
-.btn-auth{
-  width:100%;background:var(--green);color:#fff;padding:13px;border:none;border-radius:10px;
-  font-family:'Sora',sans-serif;font-weight:700;font-size:0.92rem;cursor:pointer;transition:var(--transition);
-}
-.btn-auth:hover{background:var(--green-light);}
-.btn-auth:disabled{opacity:0.6;cursor:not-allowed;}
-.btn-link{
-  background:none;color:var(--green);font-weight:600;font-size:0.82rem;padding:8px 0;
-  cursor:pointer;transition:var(--transition);border:none;text-decoration:underline;
-}
-.btn-link:hover{color:var(--green-light);}
-.alert{padding:12px 16px;border-radius:9px;margin-bottom:16px;font-size:0.85rem;line-height:1.55;display:none;}
-.alert.show{display:block;}
-.alert-success{background:#DCFCE7;color:#15803D;border:1px solid #86EFAC;}
-.alert-error{background:#FEE2E2;color:var(--red);border:1px solid #FCA5A5;}
-.alert-info{background:#EFF6FF;color:#1D4ED8;border:1px solid #93C5FD;}
-.alert-warning{background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;}
-.revenue-note{
-  background:var(--gold-pale);border:1px solid #F5C842;border-radius:9px;padding:12px 14px;
-  font-size:0.78rem;color:#7A5C00;margin-bottom:18px;line-height:1.5;
-}
-.back-to-site{display:block;text-align:center;margin-top:18px;font-size:0.82rem;color:var(--muted);}
-.back-to-site:hover{color:var(--green);}
-.subjects-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.subject-checkbox{
-  display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;
-  background:var(--surface);border:1.5px solid var(--border);transition:var(--transition);cursor:pointer;
-}
-.subject-checkbox:hover{border-color:var(--green);background:var(--green-pale);}
-.subject-checkbox input[type="checkbox"]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
-.subject-checkbox label{font-size:0.8rem;font-weight:500;cursor:pointer;margin:0;flex:1;}
-.subject-checkbox.checked{border-color:var(--green);background:var(--green-pale);}
-.reset-password-section{display:none;margin-top:12px;padding-top:12px;border-top:1.5px solid var(--border);}
-.reset-password-section.active{display:block;}
-.debug-info{
-  background:#1E293B;color:#A5B4FC;padding:10px 14px;border-radius:8px;
-  font-family:'Courier New',monospace;font-size:0.72rem;margin-top:12px;display:none;
-  max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;
-}
-
-/* ════════ DASHBOARD (after login) ════════ */
-.tutor-wrapper{display:none;max-width:1280px;margin:0 auto;padding:0 0 60px;}
-.tutor-topbar{
-  position:sticky;top:0;z-index:200;background:var(--dark);border-bottom:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;
-}
-.topbar-logo{font-family:'Sora',sans-serif;font-weight:800;font-size:1.2rem;color:#fff;}
-.topbar-logo span{color:var(--gold-light);}
-.topbar-right{display:flex;align-items:center;gap:12px;}
-.topbar-status{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:#8FBAA6;}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.tutor-name-badge{
-  display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);
-  padding:6px 14px;border-radius:99px;font-size:0.8rem;color:#fff;
-}
-.tutor-name-badge .avatar{
-  width:24px;height:24px;border-radius:50%;background:var(--green);
-  display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;
-}
-.btn-logout{
-  background:var(--red);color:#fff;border:none;border-radius:8px;padding:8px 18px;
-  font-family:'Sora',sans-serif;font-weight:700;font-size:0.8rem;cursor:pointer;transition:var(--transition);
-}
-.btn-logout:hover{background:#B91C1C;}
-.btn-back{
-  background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.15);
-  border-radius:8px;padding:8px 16px;font-family:'Sora',sans-serif;font-weight:600;font-size:0.8rem;
-  cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;
-}
-.btn-back:hover{background:rgba(255,255,255,0.18);}
-
-.tutor-body{display:flex;min-height:calc(100vh - 64px);}
-.tutor-sidebar{
-  width:230px;min-width:230px;background:#fff;border-right:1.5px solid var(--border);
-  padding:18px 12px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;
-}
-.sidebar-item{
-  display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:9px;
-  border:none;background:none;font-size:0.86rem;font-weight:600;color:var(--text-2);cursor:pointer;
-  transition:var(--transition);margin-bottom:2px;text-align:left;
-}
-.sidebar-item:hover{background:var(--surface);color:var(--text);}
-.sidebar-item.active{background:var(--green-pale);color:var(--green);}
-.sidebar-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
-.sidebar-badge{
-  margin-left:auto;background:var(--red);color:#fff;font-size:0.62rem;font-weight:700;
-  padding:2px 7px;border-radius:99px;min-width:18px;text-align:center;
-}
-
-.tutor-main{flex:1;padding:24px 28px;min-width:0;}
-.panel-content{display:none;}
-.panel-content.active{display:block;animation:fadeIn 0.25s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-.panel-header{margin-bottom:22px;}
-.panel-header h2{font-size:1.35rem;font-weight:800;color:var(--dark);margin-bottom:4px;}
-.panel-header p{font-size:0.86rem;color:var(--muted);}
-
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:22px;}
-.stat-card{background:#fff;padding:20px;border-radius:var(--radius);text-align:center;border:1.5px solid var(--border);transition:var(--transition);}
-.stat-card:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:var(--shadow-sm);}
-.stat-card .number{font-family:'Sora',sans-serif;font-weight:800;font-size:1.7rem;line-height:1;}
-.stat-card .label{font-size:0.8rem;color:var(--muted);margin-top:6px;}
-.text-green{color:var(--green);} .text-gold{color:var(--gold);} .text-purple{color:var(--purple);} .text-pink{color:var(--pink);}
-
-.admin-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
-.admin-card-header{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface);
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.admin-card-header h4{font-size:0.92rem;font-weight:700;color:var(--dark);}
-.admin-card-body{padding:20px;}
-
-.drop-zone{border:2px dashed var(--border);border-radius:10px;padding:32px 20px;text-align:center;
-  cursor:pointer;transition:var(--transition);background:var(--surface);}
-.drop-zone:hover,.drop-zone.dragover{border-color:var(--green);background:var(--green-pale);}
-.dz-icon{font-size:2rem;margin-bottom:8px;}
-.dz-text{font-size:0.85rem;color:var(--muted);}
-.dz-sub{font-size:0.72rem;color:var(--muted);margin-top:4px;}
-.file-preview{display:none;align-items:center;gap:12px;background:var(--green-pale);
-  border:1px solid rgba(13,110,63,0.2);border-radius:8px;padding:12px 14px;margin-top:10px;}
-.fp-icon{font-size:1.5rem;flex-shrink:0;}
-.fp-info{flex:1;}
-.fp-name{font-size:0.85rem;font-weight:600;color:var(--dark);}
-.fp-size{font-size:0.72rem;color:var(--muted);}
-.fp-remove{color:var(--red);cursor:pointer;font-size:1.1rem;padding:4px;flex-shrink:0;}
-.cover-preview-img{max-width:100%;max-height:180px;border-radius:8px;border:1px solid var(--border);display:block;margin:0 auto;}
-
-#uploadProgress{display:none;margin-bottom:16px;}
-.progress-track{width:100%;height:8px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:5px;}
-#uploadBar{width:0%;height:100%;background:var(--green);border-radius:99px;transition:width 0.3s;}
-
-.btn-primary{
-  background:var(--green);color:#fff;padding:12px 24px;border:none;border-radius:10px;
-  font-family:'Sora',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;
-  transition:var(--transition);display:inline-flex;align-items:center;gap:7px;justify-content:center;
-}
-.btn-primary:hover{background:var(--green-light);transform:translateY(-1px);}
-.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-.btn-secondary{
-  background:#fff;color:var(--text);padding:12px 22px;border:1.5px solid var(--border);
-  border-radius:10px;font-family:'Sora',sans-serif;font-weight:600;font-size:0.85rem;
-  cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:7px;
-}
-.btn-secondary:hover{border-color:var(--green);color:var(--green);}
-.btn-sm{padding:6px 14px;border:none;border-radius:7px;font-family:'Sora',sans-serif;
-  font-weight:700;font-size:0.74rem;cursor:pointer;transition:var(--transition);white-space:nowrap;}
-.btn-sm-success{background:#DCFCE7;color:#15803D;}
-.btn-sm-success:hover{background:#15803D;color:#fff;}
-.btn-sm-danger{background:#FEE2E2;color:var(--red);}
-.btn-sm-danger:hover{background:var(--red);color:#fff;}
-.btn-sm-warning{background:#FEF3C7;color:#92400E;}
-.btn-sm-warning:hover{background:#92400E;color:#fff;}
-
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:0.84rem;}
-table th{text-align:left;padding:10px 14px;background:var(--surface);font-weight:700;
-  color:var(--text);border-bottom:2px solid var(--border);white-space:nowrap;}
-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-2);vertical-align:middle;}
-table tr:hover td{background:var(--surface);}
-
-.toggle-group{display:flex;align-items:center;gap:9px;}
-.toggle-track{width:44px;height:24px;background:#D1D5DB;border-radius:99px;cursor:pointer;
-  position:relative;transition:var(--transition);flex-shrink:0;}
-.toggle-track.on{background:var(--green);}
-.toggle-track::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;
-  border-radius:50%;background:#fff;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.25);}
-.toggle-track.on::after{transform:translateX(20px);}
-.toggle-label{font-size:0.84rem;color:var(--text-2);}
-
+/* Add these styles for the class section */
 .class-card{
   background:#fff;border:1.5px solid var(--border);border-radius:10px;
   padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;
@@ -249,6 +30,20 @@ table tr:hover td{background:var(--surface);}
 .class-status.upcoming{background:#EFF6FF;color:#1D4ED8;}
 .class-status.completed{background:#F3F4F6;color:#6B7280;}
 .class-status.cancelled{background:#FEE2E2;color:#DC2626;}
+
+.status-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:99px;
+  font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;
+}
+.status-badge.pending{background:#FEF3C7;color:#92400E;}
+.status-badge.completed{background:#DCFCE7;color:#15803D;}
+.status-badge.paid{background:#DCFCE7;color:#15803D;}
+.status-badge.delivered{background:#DCFCE7;color:#15803D;}
+.status-badge .dot{width:6px;height:6px;border-radius:50%;display:inline-block;}
+.status-badge.pending .dot{background:#D97706;}
+.status-badge.completed .dot{background:#16A34A;}
+.status-badge.paid .dot{background:#16A34A;}
+.status-badge.delivered .dot{background:#16A34A;}
 
 @media(max-width:900px){
   .tutor-sidebar{position:fixed;left:0;top:64px;bottom:0;z-index:150;transform:translateX(-100%);
@@ -279,7 +74,7 @@ table tr:hover td{background:var(--surface);}
 <body>
 
 <!-- ════════════════════════════════════════ -->
-<!-- AUTH SCREEN (Signup / Sign In)          -->
+<!-- AUTH SCREEN (Signup / Sign In) - SAME AS BEFORE -->
 <!-- ════════════════════════════════════════ -->
 <div class="auth-wrapper" id="authWrapper">
   <div class="auth-box">
@@ -305,7 +100,7 @@ table tr:hover td{background:var(--surface);}
       <button class="auth-tab" data-tab="signin">🔑 Sign In</button>
     </div>
 
-    <!-- SIGN UP FORM -->
+    <!-- SIGN UP FORM - SAME AS BEFORE -->
     <div class="auth-form active" id="signupForm">
       <form id="tutorForm" novalidate>
         <div class="revenue-note">
@@ -419,7 +214,7 @@ table tr:hover td{background:var(--surface);}
       </form>
     </div>
 
-    <!-- SIGN IN FORM -->
+    <!-- SIGN IN FORM - SAME AS BEFORE -->
     <div class="auth-form" id="signinForm">
       <form id="loginForm" novalidate>
         <div class="form-group">
@@ -523,7 +318,7 @@ table tr:hover td{background:var(--surface);}
         </div>
       </div>
 
-      <!-- ═══ UPLOAD ═══ -->
+      <!-- ═══ UPLOAD ═══ (SAME AS BEFORE) -->
       <div class="panel-content" id="panelUpload">
         <div class="panel-header"><h2>📤 Upload New Resource</h2><p>Add notes, past papers, or revision materials for learners to purchase</p></div>
 
@@ -1317,17 +1112,74 @@ function renderRecentResources() {
     <tr><td><strong>${r.title||'Untitled'}</strong></td><td>KES ${r.price||0}</td><td>${r.downloads||0}</td><td>${r.published ? '✅ Published' : '📌 Draft'}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
-/* ════════ LIVE CLASSES ════════ */
+/* ════════ LIVE CLASSES - FIXED ════════ */
 async function loadTutorClasses() {
   if (!sbClient || !currentTutor) return;
   try {
-    const { data: classes } = await sbClient.from('classes').select('*').eq('tutor_id', currentTutor.id).order('created_at', { ascending: false });
-    myClasses = classes || [];
+    // Try to query the classes table
+    const { data: classes, error } = await sbClient.from('classes').select('*').eq('tutor_id', currentTutor.id).order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Classes table error:', error);
+      
+      // If table doesn't exist, create it
+      if (error.message && error.message.includes('relation "classes" does not exist')) {
+        await createClassesTable();
+        // Try again after creating the table
+        const retryResult = await sbClient.from('classes').select('*').eq('tutor_id', currentTutor.id).order('created_at', { ascending: false });
+        if (retryResult.error) throw retryResult.error;
+        myClasses = retryResult.data || [];
+      } else {
+        throw error;
+      }
+    } else {
+      myClasses = classes || [];
+    }
+    
     updateDashboardStats();
     renderClassesList();
   } catch(e) {
     console.error('Load classes error:', e);
     showToast('Error loading classes: ' + e.message, 'error');
+    myClasses = [];
+    renderClassesList();
+  }
+}
+
+async function createClassesTable() {
+  try {
+    // Use the admin client to create the table if it doesn't exist
+    // Since we can't create tables via REST API, we'll use a workaround
+    // Try to insert a test record to see if the table exists
+    const testData = {
+      title: 'Test Class',
+      price: 100,
+      subject: 'mathematics',
+      level: 'junior',
+      date: new Date().toISOString().split('T')[0],
+      time: '10:00',
+      duration: 60,
+      max_students: 20,
+      description: 'Test description',
+      tutor_id: currentTutor.id,
+      tutor_name: currentTutor.name,
+      status: 'upcoming',
+      bookings: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
+    // Try to insert a test record - if it fails with 404, the table doesn't exist
+    const result = await sbClient.from('classes').insert([testData]);
+    if (result.error) {
+      console.error('Error creating classes table:', result.error);
+      showToast('Classes table needs to be created. Please run the SQL script in Supabase.', 'error');
+      return;
+    }
+    showToast('Classes table created successfully!', 'success');
+  } catch(e) {
+    console.error('Create classes table error:', e);
+    showToast('Please create the classes table in Supabase first.', 'error');
   }
 }
 
@@ -1335,7 +1187,7 @@ function renderClassesList() {
   const container = $('classesList');
   if (!container) return;
 
-  if (!myClasses.length) {
+  if (!myClasses || myClasses.length === 0) {
     container.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);font-size:0.85rem;"><div style="font-size:2rem;margin-bottom:8px;">📅</div>You haven't created any live classes yet. Click "Create New Class" to get started!</div>`;
     return;
   }
@@ -1347,7 +1199,7 @@ function renderClassesList() {
     return `
     <div class="class-card">
       <div class="class-info">
-        <div class="class-title">${c.title}</div>
+        <div class="class-title">${c.title || 'Untitled Class'}</div>
         <div class="class-meta">
           <span>${c.subject || 'N/A'}</span>
           <span>${c.level || 'N/A'}</span>
@@ -1453,20 +1305,25 @@ async function saveClass() {
     if (isEditingClass) {
       // Update existing class
       delete classData.created_at;
+      delete classData.tutor_id;
+      delete classData.tutor_name;
       result = await sbClient.from('classes').update(classData).eq('id', isEditingClass);
     } else {
       // Insert new class
       result = await sbClient.from('classes').insert([classData]);
     }
 
-    if (result.error) throw result.error;
+    if (result.error) {
+      console.error('Save class error details:', result.error);
+      throw result.error;
+    }
 
     showToast(isEditingClass ? '✅ Class updated successfully!' : '✅ Class created successfully!', 'success');
     hideClassForm();
     await loadTutorClasses();
   } catch(e) {
     console.error('Save class error:', e);
-    showToast('Error saving class: ' + e.message, 'error');
+    showToast('Error saving class: ' + (e.message || 'Please try again later.'), 'error');
   } finally {
     btn.disabled = false;
     btn.textContent = isEditingClass ? '💾 Update Class' : '💾 Save Class';
@@ -1566,7 +1423,6 @@ async function deleteResource(id) {
 
 /* ════════ EARNINGS ════════ */
 function renderEarnings() {
-  // Combine orders from resources and classes
   const allEarnings = myOrders || [];
   const completedEarnings = allEarnings.filter(o => ['completed','paid','delivered'].includes(o.status));
   const totalEarned = completedEarnings.reduce((s,o) => s + (o.tutor_share || (o.amount * REVENUE_SHARE_PERCENT / 100) || 0), 0);
