@@ -1189,6 +1189,8 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+        #toastIcon { display: inline-block; }
+        #toastMessage { display: inline-block; }
     </style>
 </head>
 <body>
@@ -1735,6 +1737,29 @@
             const termsModal = document.getElementById('termsFloatingModal');
             const CONSENT_KEY = 'kv_terms_accepted_public';
 
+            // ── TOAST FUNCTION ──
+            function showToast(message, type) {
+                type = type || 'success';
+                const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+                const toast = document.getElementById('floatingToast');
+                const iconEl = document.getElementById('toastIcon');
+                const msgEl = document.getElementById('toastMessage');
+                
+                if (iconEl) iconEl.textContent = icons[type] || '✅';
+                if (msgEl) msgEl.textContent = message;
+                
+                if (toast) {
+                    toast.classList.add('show');
+                    clearTimeout(toast._timeout);
+                    toast._timeout = setTimeout(function() {
+                        toast.classList.remove('show');
+                    }, 3800);
+                } else {
+                    // Fallback if toast doesn't exist
+                    console.log(message);
+                }
+            }
+
             function hasAccepted() {
                 try { return localStorage.getItem(CONSENT_KEY) === 'true'; }
                 catch (e) { return false; }
@@ -1828,29 +1853,6 @@
             termsModal.addEventListener('click', function(e) {
                 if (e.target === this) closeTermsModal();
             });
-
-            // ── TOAST FUNCTION ──
-            function showToast(message, type) {
-                type = type || 'success';
-                const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
-                const toast = document.getElementById('floatingToast');
-                const iconEl = document.getElementById('toastIcon');
-                const msgEl = document.getElementById('toastMessage');
-                
-                if (iconEl) iconEl.textContent = icons[type] || '✅';
-                if (msgEl) msgEl.textContent = message;
-                
-                if (toast) {
-                    toast.classList.add('show');
-                    clearTimeout(toast._timeout);
-                    toast._timeout = setTimeout(function() {
-                        toast.classList.remove('show');
-                    }, 3800);
-                } else {
-                    // Fallback if toast doesn't exist
-                    alert(message);
-                }
-            }
 
             // ── ESC KEY ──
             document.addEventListener('keydown', function(e) {
