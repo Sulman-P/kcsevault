@@ -1281,7 +1281,7 @@ function buildCardHTML(r) {
   var isFree = (r.price || 0) === 0;
   var priceDisplay = isFree ? 'FREE' : getPricingDisplay(r);
   var productId = r.id || 'unknown';
-  var safeTitle = (r.title || '').replace(/"/g, '&quot;');
+  var safeTitle = (r.title || '').replace(/"/g, '&quot;').replace(/'/g, "\\'");
 
   var coverHTML;
   if (r.cover_image_url) {
@@ -1297,6 +1297,7 @@ function buildCardHTML(r) {
       '<span class="cover-level">' + getLevelDisplay(r.level) + '</span></div>';
   }
 
+  // FIXED: Use data attributes instead of inline onclick
   return `
     <div class="product-card" data-id="${productId}">
       ${coverHTML}
@@ -1315,8 +1316,8 @@ function buildCardHTML(r) {
       <div class="pc-footer">
         <span class="pc-price">${priceDisplay}</span>
         <div style="display:flex;gap:6px;">
-          ${r.preview_url ? '<button class="btn-preview" onclick="openPreview(\'' + productId + '\')">👁️ Preview</button>' : ''}
-          <button class="btn-buy" onclick="openPaymentModal(\'' + productId + '\')">${isFree ? '📥 Get Free' : '📱 Buy'}</button>
+          ${r.preview_url ? '<button class="btn-preview" data-product-id="' + productId + '" onclick="openPreview(this.dataset.productId)">👁️ Preview</button>' : ''}
+          <button class="btn-buy" data-product-id="${productId}" onclick="openPaymentModal(this.dataset.productId)">${isFree ? '📥 Get Free' : '📱 Buy'}</button>
         </div>
       </div>
     </div>
@@ -1359,8 +1360,13 @@ function resetFilters() {
 }
 
 /* ── PAYMENT MODAL ── */
-function openPaymentModal(productId, fromPending) {
+function openPaymentModal(productId) {
   console.log('Opening payment for product:', productId);
+  
+  if (!productId) {
+    showToast('⚠️', 'Product ID is missing. Please try again.');
+    return;
+  }
   
   var product = allResources.find(function(r) { return r.id === productId; });
   if (!product) {
@@ -1388,9 +1394,7 @@ function openPaymentModal(productId, fromPending) {
   document.getElementById('mpesaCode').classList.remove('error');
   document.getElementById('customerPhone').classList.remove('error');
 
-  if (!fromPending) {
-    sessionStorage.setItem('pending_order', JSON.stringify({ productId: productId, timestamp: Date.now() }));
-  }
+  sessionStorage.setItem('pending_order', JSON.stringify({ productId: productId, timestamp: Date.now() }));
 
   document.getElementById('paymentModal').classList.add('open');
 }
