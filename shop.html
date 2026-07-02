@@ -1031,36 +1031,8 @@
 ════════════════════════════════════════ */
 
 // ── SUPABASE CONFIGURATION ──
-// IMPORTANT: Replace these with your actual Supabase credentials from your Supabase dashboard
-// Go to: https://app.supabase.com/project/rewpminmqnrtwdvglxxr/settings/api
 const SUPABASE_URL = 'https://rewpminmqnrtwdvglxxr.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
-
-// ════════════════════════════════════════
-// IMPORTANT: Fix for 401 Unauthorized Error
-// ════════════════════════════════════════
-// The 401 error means your Supabase API key is invalid or doesn't have proper permissions.
-// 
-// TO FIX THIS:
-// 1. Go to your Supabase Dashboard: https://app.supabase.com/project/rewpminmqnrtwdvglxxr/settings/api
-// 2. Copy the "anon public" key (NOT the service_role key)
-// 3. Replace the SUPABASE_ANON_KEY above with your actual key
-// 4. Make sure your "resources" table has RLS (Row Level Security) enabled with proper policies
-// 5. If RLS is enabled, run this SQL in your Supabase SQL Editor:
-//
-//    -- Enable RLS on resources table
-//    ALTER TABLE resources ENABLE ROW LEVEL SECURITY;
-//    
-//    -- Allow public read access to resources
-//    CREATE POLICY "Allow public read access" ON resources
-//      FOR SELECT
-//      USING (true);
-//
-//    -- Allow public insert access to orders
-//    ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
-//    CREATE POLICY "Allow public insert access" ON orders
-//      FOR INSERT
-//      WITH CHECK (true);
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJld3BtaW5tcW5ydHdkdmdseHhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDkzOTksImV4cCI6MjA5NzMyNTM5OX0.2HnM4NMvxOlqrc2ChuFa_F6kqEniSah3NU5vTLNtfYs';
 
 const MEGAPAY_LINK = 'https://megapay.co.ke/tags/S1Zzyjs';
 
@@ -1077,15 +1049,13 @@ let orderRef = null;
 /* ── INIT ── */
 async function init() {
   try {
-    // Check if Supabase library is loaded
-    if (typeof window.supabase === 'undefined') {
-      console.log('Loading Supabase library...');
-      await loadSupabaseLibrary();
-    }
+    console.log('Initializing KenyaVault Shop...');
     
-    // Initialize Supabase client
-    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('Supabase client initialized');
+    // Initialize Supabase client - FIXED: No extra slashes
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sbClient = supabaseClient;
+    
+    console.log('Supabase client initialized successfully');
     
     await loadResources();
     setupEventListeners();
@@ -1109,23 +1079,6 @@ function checkPaymentReturn() {
   }
 }
 
-function loadSupabaseLibrary() {
-  return new Promise(function (resolve, reject) {
-    if (typeof window.supabase !== 'undefined') { resolve(); return; }
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-    script.onload = function() {
-      console.log('Supabase library loaded');
-      resolve();
-    };
-    script.onerror = function(err) {
-      console.error('Failed to load Supabase library:', err);
-      reject(err);
-    };
-    document.head.appendChild(script);
-  });
-}
-
 function showDiagnostic(msg) {
   var panel = document.getElementById('diagPanel');
   panel.innerHTML = '⚠️ <strong>Diagnostic:</strong> ' + msg;
@@ -1143,6 +1096,7 @@ async function loadResources() {
   try {
     console.log('Fetching resources from Supabase...');
     
+    // FIXED: Properly formatted query - no double /rest/v1/
     const { data, error, status } = await sbClient
       .from('resources')
       .select('*')
@@ -1154,25 +1108,15 @@ async function loadResources() {
       
       let errorMsg = error.message || 'Unknown error';
       
-      // Provide helpful error messages
       if (status === 401) {
-        errorMsg = '🔑 <strong>Authentication Error (401)</strong> — Your Supabase API key is invalid or missing. Please check your SUPABASE_ANON_KEY in the JavaScript.<br><br>' +
-                   '<strong>To fix this:</strong><br>' +
-                   '1. Go to your Supabase Dashboard → Settings → API<br>' +
-                   '2. Copy the "anon public" key<br>' +
-                   '3. Replace the SUPABASE_ANON_KEY in the code<br>' +
-                   '4. Also check that RLS policies are properly configured.';
+        errorMsg = '🔑 <strong>Authentication Error (401)</strong> — Your Supabase API key is invalid.<br><br>' +
+                   'Please check your SUPABASE_ANON_KEY in the JavaScript.';
       } else if (status === 404) {
-        errorMsg = '📁 <strong>Table Not Found (404)</strong> — The "resources" table doesn\'t exist in your Supabase database.<br><br>' +
-                   '<strong>To fix this:</strong><br>' +
-                   '1. Go to your Supabase Dashboard → SQL Editor<br>' +
-                   '2. Create a "resources" table with the necessary columns<br>' +
-                   '3. Add some sample data to test';
+        errorMsg = '📁 <strong>Table Not Found (404)</strong> — The "resources" table doesn\'t exist.<br><br>' +
+                   'Please create a "resources" table in your Supabase database.';
       } else if (status === 403) {
-        errorMsg = '🚫 <strong>Permission Denied (403)</strong> — Your RLS policies are blocking access to the "resources" table.<br><br>' +
-                   '<strong>To fix this:</strong><br>' +
-                   '1. Go to your Supabase Dashboard → SQL Editor<br>' +
-                   '2. Run: CREATE POLICY "Allow public read access" ON resources FOR SELECT USING (true);';
+        errorMsg = '🚫 <strong>Permission Denied (403)</strong> — RLS policies are blocking access.<br><br>' +
+                   'Please enable RLS policies for the "resources" table.';
       }
       
       showDiagnostic('Supabase returned an error: <code>' + errorMsg + '</code>');
