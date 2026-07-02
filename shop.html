@@ -865,29 +865,29 @@
         <button class="btn-mpesa" id="payNowBtn">💳 Pay with M-PESA</button>
       </div>
 
-      <div id="mpesaVerificationSection">
-        <div style="background:#F0FDF4;border-radius:8px;padding:12px 16px;margin-bottom:16px;border:1px solid #BBF7D0;">
-          <p style="font-size:0.82rem;color:#15803D;margin:0;">
-            ✅ <strong>Payment initiated!</strong> Complete the payment on your phone, then enter the verification code below.
-          </p>
-        </div>
+      <!-- M-PESA Verification Section -->
+    <div id="mpesaVerificationSection" style="display:none; margin-top: 16px; padding-top: 16px; border-top: 2px dashed var(--border); animation: slideDown 0.4s ease;">
+         <div style="background:#F0FDF4;border-radius:8px;padding:12px 16px;margin-bottom:16px;border:1px solid #BBF7D0;">
+             <p style="font-size:0.82rem;color:#15803D;margin:0;">
+                ✅ <strong>Payment initiated!</strong> Complete the payment on your phone, then enter the verification code below.
+             </p>
+         </div>
 
-        <div class="phone-input-group">
-          <label>🔑 M-PESA Verification Code <span class="required">*</span></label>
-          <input type="text" id="mpesaCode" placeholder="Enter last 4 characters" maxlength="4"/>
-          <div class="phone-hint">
-            📝 Enter the <strong>last 4 characters</strong> of your M-PESA transaction code<br>
-            <span style="font-size:0.75rem;color:#6B7280;">Example: If code is QWERTX3TR, enter <strong>X3TR</strong></span>
+         <div class="phone-input-group">
+             <label>🔑 M-PESA Verification Code <span class="required">*</span></label>
+                 <input type="text" id="mpesaCode" placeholder="Enter last 4 characters" maxlength="4" style="font-size:1.2rem;letter-spacing:4px;text-align:center;font-weight:700;text-transform:uppercase;"/>
+            <div class="phone-hint">
+                 📝 Enter the <strong>last 4 characters</strong> of your M-PESA transaction code<br>
+              <span style="font-size:0.75rem;color:#6B7280;">Example: If code is <strong>QWERTX3TR</strong>, enter <strong>X3TR</strong></span>
+            </div>
           </div>
-        </div>
 
-        <div class="payment-actions">
-          <button class="btn-mpesa" id="confirmPaymentBtn" style="background:#7C3AED;">
-            ✅ Confirm Payment & Record Order
-          </button>
-        </div>
+         <div class="payment-actions">
+           <button class="btn-mpesa" id="confirmPaymentBtn" style="background:#7C3AED;">
+                ✅ Confirm Payment & Record Order
+           </button>
+         </div>
       </div>
-
       <div class="modal-note">🔒 Your number is only used for sending the download link</div>
 
     </div>
@@ -1439,82 +1439,129 @@ function closePreviewModal() {
 
 /* ── PAYMENT FLOW ── */
 document.addEventListener('DOMContentLoaded', function() {
-  // Pay Now button
-  document.getElementById('payNowBtn').addEventListener('click', function() {
-    var phone = document.getElementById('customerPhone').value.trim();
-    if (!phone) {
-      document.getElementById('customerPhone').classList.add('error');
-      showToast('⚠️', 'Please enter your WhatsApp number');
-      return;
-    }
-    document.getElementById('customerPhone').classList.remove('error');
+    // Pay Now button - Opens Megapay and shows verification section
+    document.getElementById('payNowBtn').addEventListener('click', function() {
+        var phone = document.getElementById('customerPhone').value.trim();
+        
+        // Validate phone number
+        if (!phone) {
+            document.getElementById('customerPhone').classList.add('error');
+            showToast('⚠️', 'Please enter your WhatsApp number');
+            return;
+        }
+        
+        // Basic phone validation (Kenyan format)
+        var phoneClean = phone.replace(/\s/g, '');
+        if (!phoneClean.match(/^0[0-9]{9}$/) && !phoneClean.match(/^254[0-9]{9}$/)) {
+            document.getElementById('customerPhone').classList.add('error');
+            showToast('⚠️', 'Please enter a valid Kenyan phone number (e.g., 0712345678)');
+            return;
+        }
+        
+        document.getElementById('customerPhone').classList.remove('error');
 
-    document.getElementById('mpesaVerificationSection').classList.add('show');
-    
-    var product = currentProduct;
-    var price = product.price || 0;
-    var title = encodeURIComponent(product.title || 'Resource');
-    
-    var megapayUrl = MEGAPAY_LINK + '?amount=' + price + '&description=' + title + '&phone=' + phone;
-    window.open(megapayUrl, '_blank', 'width=400,height=600');
-    
-    showToast('💳', 'Complete payment on your phone, then enter the verification code');
-  });
+        // Show the M-PESA verification section
+        var verificationSection = document.getElementById('mpesaVerificationSection');
+        verificationSection.classList.add('show');
+        verificationSection.style.display = 'block';
+        
+        // Scroll to the verification section
+        verificationSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Focus on the M-PESA code input
+        document.getElementById('mpesaCode').focus();
+        
+        // Open Megapay in new window
+        var product = currentProduct;
+        var price = product.price || 0;
+        var title = encodeURIComponent(product.title || 'Resource');
+        
+        var megapayUrl = MEGAPAY_LINK + '?amount=' + price + '&description=' + title + '&phone=' + phone;
+        window.open(megapayUrl, '_blank', 'width=400,height=600');
+        
+        showToast('💳', 'Complete payment on your phone, then enter the verification code below');
+    });
 
-  // Confirm Payment button
-  document.getElementById('confirmPaymentBtn').addEventListener('click', async function() {
-    var phone = document.getElementById('customerPhone').value.trim();
-    var code = document.getElementById('mpesaCode').value.trim().toUpperCase();
-    
-    if (!phone) {
-      document.getElementById('customerPhone').classList.add('error');
-      showToast('⚠️', 'Please enter your WhatsApp number');
-      return;
-    }
-    
-    if (!code || code.length < 4) {
-      document.getElementById('mpesaCode').classList.add('error');
-      showToast('⚠️', 'Please enter the 4-character verification code');
-      return;
-    }
+    // Confirm Payment button - Records the order
+    document.getElementById('confirmPaymentBtn').addEventListener('click', async function() {
+        var phone = document.getElementById('customerPhone').value.trim();
+        var code = document.getElementById('mpesaCode').value.trim().toUpperCase();
+        
+        // Validate phone
+        if (!phone) {
+            document.getElementById('customerPhone').classList.add('error');
+            showToast('⚠️', 'Please enter your WhatsApp number');
+            return;
+        }
+        document.getElementById('customerPhone').classList.remove('error');
+        
+        // Validate M-PESA code (must be 4 characters)
+        if (!code || code.length < 4) {
+            document.getElementById('mpesaCode').classList.add('error');
+            showToast('⚠️', 'Please enter the 4-character verification code from your M-PESA message');
+            return;
+        }
+        document.getElementById('mpesaCode').classList.remove('error');
 
-    document.getElementById('customerPhone').classList.remove('error');
-    document.getElementById('mpesaCode').classList.remove('error');
+        // Disable button to prevent double submission
+        var confirmBtn = document.getElementById('confirmPaymentBtn');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = '⏳ Recording order...';
 
-    try {
-      var orderData = {
-        product_id: currentProduct.id,
-        product_title: currentProduct.title,
-        product_price: currentProduct.price || 0,
-        customer_phone: phone,
-        mpesa_code: code,
-        status: 'pending',
-        download_accessed: false,
-        download_attempts: 0
-      };
+        try {
+            // Prepare order data
+            var orderData = {
+                product_id: currentProduct.id,
+                product_title: currentProduct.title,
+                product_price: currentProduct.price || 0,
+                customer_phone: phone,
+                mpesa_code: code,
+                status: 'pending',
+                download_accessed: false,
+                download_attempts: 0,
+                created_at: new Date().toISOString()
+            };
 
-      var result = await sbClient.from('orders').insert([orderData]).select();
+            console.log('Saving order:', orderData);
 
-      if (result.error) {
-        showToast('⚠️', 'Error recording order: ' + result.error.message);
-        return;
-      }
+            // Insert order into Supabase
+            var result = await sbClient.from('orders').insert([orderData]).select();
 
-      var order = result.data[0];
-      orderRef = order.id;
+            if (result.error) {
+                console.error('Insert error:', result.error);
+                showToast('⚠️', 'Error recording order: ' + result.error.message);
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = '✅ Confirm Payment & Record Order';
+                return;
+            }
 
-      document.getElementById('successOrderRef').textContent = '#' + orderRef.slice(0, 8).toUpperCase();
-      document.getElementById('successModal').classList.add('open');
-      
-      sessionStorage.removeItem('pending_order');
-      
-      showToast('✅', 'Order recorded successfully! Check your WhatsApp for the download link.');
+            var order = result.data[0];
+            orderRef = order.id;
 
-    } catch (e) {
-      console.error('Error recording order:', e);
-      showToast('⚠️', 'Error recording order. Please try again.');
-    }
-  });
+            // Show success modal
+            document.getElementById('successOrderRef').textContent = '#' + orderRef.slice(0, 8).toUpperCase();
+            document.getElementById('successModal').classList.add('open');
+            
+            // Clear pending order from session
+            sessionStorage.removeItem('pending_order');
+            
+            // Reset the form
+            document.getElementById('mpesaVerificationSection').classList.remove('show');
+            document.getElementById('mpesaVerificationSection').style.display = 'none';
+            document.getElementById('mpesaCode').value = '';
+            document.getElementById('customerPhone').value = '';
+            
+            showToast('✅', 'Order recorded successfully! Check your WhatsApp for the download link.');
+
+        } catch (e) {
+            console.error('Error recording order:', e);
+            showToast('⚠️', 'Error recording order. Please try again.');
+        }
+
+        // Re-enable button
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = '✅ Confirm Payment & Record Order';
+    });
 });
 
 /* ── PREVIEW MODAL ── */
